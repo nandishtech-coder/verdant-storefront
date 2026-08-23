@@ -1,0 +1,241 @@
+import seeds from "@/assets/p-seeds.jpg";
+import ceramic from "@/assets/p-ceramic.jpg";
+import mix from "@/assets/p-mix.jpg";
+import nutrient from "@/assets/p-nutrient.jpg";
+import tools from "@/assets/p-tools.jpg";
+import plants from "@/assets/p-plants.jpg";
+import gifting from "@/assets/gifting.jpg";
+
+export type Product = {
+  id: string;
+  title: string;
+  image: string;
+  price: number;
+  mrp: number;
+  rating: number;
+  reviews: number;
+  variantLabel: string;
+  variants: string[];
+  tags: string[];
+  badge?: string;
+};
+
+export const CATEGORY_TABS = [
+  "All",
+  "Best Sellers",
+  "Plant Care",
+  "Ceramic Planters",
+  "Organic Manures",
+] as const;
+
+export const PRODUCTS: Product[] = [
+  {
+    id: "p1",
+    title: "Heirloom Vegetable Seed Vault — 12 Varieties",
+    image: seeds,
+    price: 499,
+    mrp: 799,
+    rating: 4.8,
+    reviews: 1284,
+    variantLabel: "Pack",
+    variants: ["4 Packs", "8 Packs", "12 Packs"],
+    tags: ["Best Sellers"],
+    badge: "4 for ₹499",
+  },
+  {
+    id: "p2",
+    title: "Sage Dip Ceramic Planter with Saucer",
+    image: ceramic,
+    price: 649,
+    mrp: 899,
+    rating: 4.7,
+    reviews: 512,
+    variantLabel: "Colour",
+    variants: ["Sage", "Chalk", "Terracotta"],
+    tags: ["Best Sellers", "Ceramic Planters"],
+    badge: "Sale",
+  },
+  {
+    id: "p3",
+    title: "Terrace-Ready Organic Potting Mix",
+    image: mix,
+    price: 349,
+    mrp: 449,
+    rating: 4.9,
+    reviews: 2310,
+    variantLabel: "Size",
+    variants: ["2 kg", "5 kg", "10 kg"],
+    tags: ["Best Sellers", "Plant Care", "Organic Manures"],
+    badge: "Sale",
+  },
+  {
+    id: "p4",
+    title: "Seaweed Biostimulant Growth Tonic",
+    image: nutrient,
+    price: 399,
+    mrp: 549,
+    rating: 4.6,
+    reviews: 874,
+    variantLabel: "Volume",
+    variants: ["250 ml", "500 ml", "1 L"],
+    tags: ["Plant Care"],
+    badge: "15% OFF",
+  },
+  {
+    id: "p5",
+    title: "Balcony Gardener 5-Piece Tool Kit",
+    image: tools,
+    price: 1099,
+    mrp: 1599,
+    rating: 4.7,
+    reviews: 431,
+    variantLabel: "Kit",
+    variants: ["Essential", "Pro"],
+    tags: ["Best Sellers"],
+    badge: "Sale",
+  },
+  {
+    id: "p6",
+    title: "Air-Purifying Indoor Plant Trio",
+    image: plants,
+    price: 899,
+    mrp: 1199,
+    rating: 4.8,
+    reviews: 965,
+    variantLabel: "Set",
+    variants: ["Trio", "Quintet"],
+    tags: ["Best Sellers"],
+  },
+  {
+    id: "p7",
+    title: "Vermicompost Enriched Organic Manure",
+    image: mix,
+    price: 279,
+    mrp: 379,
+    rating: 4.8,
+    reviews: 1544,
+    variantLabel: "Size",
+    variants: ["1 kg", "3 kg", "5 kg"],
+    tags: ["Organic Manures", "Plant Care"],
+  },
+  {
+    id: "p8",
+    title: "Neem Shield Organic Pest Control Spray",
+    image: nutrient,
+    price: 329,
+    mrp: 429,
+    rating: 4.5,
+    reviews: 612,
+    variantLabel: "Volume",
+    variants: ["250 ml", "500 ml"],
+    tags: ["Plant Care"],
+    badge: "15% OFF",
+  },
+  {
+    id: "p9",
+    title: "Fluted Studio Ceramic Pot — Matte White",
+    image: ceramic,
+    price: 799,
+    mrp: 1099,
+    rating: 4.6,
+    reviews: 288,
+    variantLabel: "Size",
+    variants: ['4"', '6"', '8"'],
+    tags: ["Ceramic Planters"],
+    badge: "Sale",
+  },
+  {
+    id: "p10",
+    title: "Grow-Your-Own Herb Gift Hamper",
+    image: gifting,
+    price: 1249,
+    mrp: 1699,
+    rating: 4.9,
+    reviews: 356,
+    variantLabel: "Hamper",
+    variants: ["Petite", "Signature"],
+    tags: ["Best Sellers"],
+    badge: "Gifting",
+  },
+  {
+    id: "p11",
+    title: "Kitchen Windowsill Herb Seed Set",
+    image: seeds,
+    price: 399,
+    mrp: 599,
+    rating: 4.7,
+    reviews: 742,
+    variantLabel: "Pack",
+    variants: ["4 Packs", "6 Packs"],
+    tags: ["Best Sellers"],
+  },
+  {
+    id: "p12",
+    title: "Cocopeat + Perlite Root Booster Blend",
+    image: mix,
+    price: 249,
+    mrp: 329,
+    rating: 4.6,
+    reviews: 419,
+    variantLabel: "Size",
+    variants: ["2 kg", "5 kg"],
+    tags: ["Plant Care", "Organic Manures"],
+  },
+];
+
+export const NAV = [
+  { label: "Seeds", items: ["Vegetable Seeds", "Herb Seeds", "Flower Seeds"] },
+  { label: "Plants", items: ["Indoor Plants", "Succulents", "Bonsai"] },
+  {
+    label: "Pots & Planters",
+    items: ["Ceramic", "Clay", "FRP", "Metal", "Hanging"],
+  },
+  {
+    label: "Plant Care",
+    items: ["Potting Mix", "Biostimulants", "Organic Pest Control"],
+  },
+  { label: "Garden Tools", items: ["Hand Tools", "Watering", "Accessories"] },
+  { label: "Green Gifts", items: ["Gift Hampers", "Corporate Gifting", "Gift Cards"] },
+];
+
+export const QUICK_CATEGORIES = [
+  { label: "Seeds", emoji: "🌰", image: seeds },
+  { label: "Ceramic Pots", emoji: "🪴", image: ceramic },
+  { label: "Organic Pot Mix", emoji: "🌱", image: mix },
+  { label: "Bio-Nutrients", emoji: "🧪", image: nutrient },
+  { label: "Garden Tools", emoji: "✂️", image: tools },
+  { label: "Gift Hampers", emoji: "🎁", image: gifting },
+];
+
+export const BLOGS = [
+  {
+    title: "Home Composting 101: Turn Scraps into Liquid Gold",
+    date: "12 Aug 2026",
+    read: "6 min read",
+    image: mix,
+  },
+  {
+    title: "7 Easy Herbs to Grow on Your Kitchen Windowsill",
+    date: "04 Aug 2026",
+    read: "4 min read",
+    image: seeds,
+  },
+  {
+    title: "Monsoon Plant Care: Preventing Root Rot",
+    date: "28 Jul 2026",
+    read: "5 min read",
+    image: plants,
+  },
+];
+
+export const UGC = [
+  { handle: "@balcony.banyan", likes: "2.4k", image: plants },
+  { handle: "@terrace.tulsi", likes: "1.8k", image: ceramic },
+  { handle: "@mumbai_microfarm", likes: "3.1k", image: seeds },
+  { handle: "@thegreenbylane", likes: "962", image: gifting },
+  { handle: "@potsandplots", likes: "1.2k", image: mix },
+];
+
+export const FREE_SHIPPING_THRESHOLD = 1999;
+
+export const inr = (n: number) => "₹" + n.toLocaleString("en-IN", { maximumFractionDigits: 0 });
