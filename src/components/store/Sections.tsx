@@ -529,46 +529,47 @@ function ReelVideo({
 export function InstagramReels() {
   const REELS = [
     {
-      src: "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4",
+      src: "https://mdn.github.io/shared-assets/videos/flower.mp4",
       poster:
         "https://images.unsplash.com/photo-1490682143684-14369e18dce8?q=80&w=600&auto=format&fit=crop",
     },
     {
-      src: "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/friday.mp4",
+      src: "https://mdn.github.io/shared-assets/videos/friday.mp4",
       poster:
         "https://images.unsplash.com/photo-1592150621744-aca64f48394a?q=80&w=600&auto=format&fit=crop",
     },
     {
-      src: "https://www.w3schools.com/html/mov_bbb.mp4",
+      src: "https://mdn.github.io/shared-assets/videos/flower.mp4",
       poster:
         "https://images.unsplash.com/photo-1416879598555-2591eeb00d81?q=80&w=600&auto=format&fit=crop",
     },
     {
-      src: "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4",
+      src: "https://mdn.github.io/shared-assets/videos/friday.mp4",
       poster:
         "https://images.unsplash.com/photo-1463320898484-cdefe81a04ad?q=80&w=600&auto=format&fit=crop",
     },
     {
-      src: "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/friday.mp4",
+      src: "https://mdn.github.io/shared-assets/videos/flower.mp4",
       poster:
         "https://images.unsplash.com/photo-1591857177580-dc82b9ac4e1e?q=80&w=600&auto=format&fit=crop",
     },
     {
-      src: "https://www.w3schools.com/html/mov_bbb.mp4",
+      src: "https://mdn.github.io/shared-assets/videos/friday.mp4",
       poster:
         "https://images.unsplash.com/photo-1622383563227-04401ab4e5ea?q=80&w=600&auto=format&fit=crop",
     },
     {
-      src: "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4",
+      src: "https://mdn.github.io/shared-assets/videos/flower.mp4",
       poster:
-        "https://images.unsplash.com/photo-1592150621744-aca64f48394a?q=80&w=600&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1524397057410-1e775ed476f3?q=80&w=600&auto=format&fit=crop",
     },
     {
-      src: "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/friday.mp4",
+      src: "https://mdn.github.io/shared-assets/videos/friday.mp4",
       poster:
-        "https://images.unsplash.com/photo-1416879598555-2591eeb00d81?q=80&w=600&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?q=80&w=600&auto=format&fit=crop",
     },
   ];
+
 
   const [currentIndex, setCurrentIndex] = useState(0);
 
