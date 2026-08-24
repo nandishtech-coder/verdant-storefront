@@ -648,12 +648,42 @@ export function InstagramReels() {
               <ReelVideo
                 src={item.src}
                 poster={item.poster}
-                isPlaying={isCenter}
-                onClick={() => setCurrentIndex(videoIndex)}
+                isPlaying={isCenter && openIndex === null}
+                onClick={() => {
+                  if (isCenter) setOpenIndex(videoIndex);
+                  else setCurrentIndex(videoIndex);
+                }}
               />
             </div>
           );
         })}
+
+        {/* Tapped reel plays here, with this same section still visible behind */}
+        {openIndex !== null && (
+          <div
+            className="absolute inset-0 z-[60] flex items-center justify-center bg-forest/60 backdrop-blur-sm"
+            onClick={() => setOpenIndex(null)}
+          >
+            <div
+              className="relative aspect-[9/16] h-[85%] max-w-[92vw] overflow-hidden rounded-3xl bg-black shadow-2xl"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <ReelVideo
+                src={REELS[openIndex]!.src}
+                poster={REELS[openIndex]!.poster}
+                isPlaying
+                onClick={() => {}}
+              />
+              <button
+                aria-label="Close reel"
+                className="absolute top-3 left-3 z-10 grid size-9 place-items-center rounded-full bg-black/60 text-white hover:bg-black/80"
+                onClick={() => setOpenIndex(null)}
+              >
+                <X className="size-5" />
+              </button>
+            </div>
+          </div>
+        )}
       </div>
 
       <div className="text-center mt-12">
