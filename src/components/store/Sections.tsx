@@ -572,9 +572,19 @@ export function InstagramReels() {
 
 
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   const handleNext = () => setCurrentIndex((prev) => (prev + 1) % REELS.length);
   const handlePrev = () => setCurrentIndex((prev) => (prev - 1 + REELS.length) % REELS.length);
+
+  useEffect(() => {
+    if (openIndex === null) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpenIndex(null);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [openIndex]);
 
   const positions = [
     { left: "15%", scale: 0.75, zIndex: 10, opacity: 0.5, brightness: "brightness-50" },
