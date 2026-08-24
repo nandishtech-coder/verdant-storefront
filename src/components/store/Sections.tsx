@@ -22,6 +22,10 @@ import {
   Video,
   X,
   ArrowLeft,
+  Building2,
+  Flower2,
+  Sprout,
+  Trees,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -41,6 +45,7 @@ import hero from "@/assets/hero-balcony.jpg";
 import gifting from "@/assets/gifting.jpg";
 import plants from "@/assets/p-plants.jpg";
 import ceramic from "@/assets/p-ceramic.jpg";
+import servicesPeaceLily from "@/assets/services-peace-lily.jpg";
 
 const SLIDES = [
   {
@@ -690,6 +695,86 @@ export function InstagramReels() {
         <Button className="rounded-full px-8 py-6 text-lg bg-black text-white hover:bg-black/90 font-medium">
           Visit Instagram
         </Button>
+      </div>
+    </section>
+  );
+}
+
+const SERVICES = [
+  {
+    icon: Trees,
+    title: "Lawn Care",
+    copy: "Seasonal upkeep & restoration",
+  },
+  {
+    icon: Sprout,
+    title: "Kitchen Gardening",
+    copy: "Fresh herbs & vegetables at home",
+  },
+  {
+    icon: Building2,
+    title: "Balcony Gardening",
+    copy: "Green spaces made for city living",
+  },
+  {
+    icon: Flower2,
+    title: "Vertical Gardening",
+    copy: "Living walls for compact spaces",
+  },
+];
+
+export function OurServices() {
+  return (
+    <section aria-labelledby="services-heading" className="bg-forest text-forest-foreground">
+      <div className="overflow-hidden leading-[0] text-background">
+        <svg
+          viewBox="0 0 1200 90"
+          preserveAspectRatio="none"
+          className="block h-10 w-full md:h-16"
+          aria-hidden="true"
+        >
+          <path
+            d="M0 12C90-18 144 86 220 36S338-4 408 45s145 37 224-8 155-53 239-4 136 39 202 2 92-13 127 3V0H0Z"
+            className="fill-current"
+          />
+        </svg>
+      </div>
+
+      <div className="px-4 pb-12 pt-2 lg:px-8 lg:pb-16">
+        <div className="mx-auto max-w-7xl">
+          <h2
+            id="services-heading"
+            className="text-center font-display text-3xl font-semibold lg:text-4xl"
+          >
+            Our Services
+          </h2>
+          <div className="mt-10 grid grid-cols-2 gap-x-4 gap-y-10 md:grid-cols-4 md:gap-8">
+            {SERVICES.map((service) => (
+              <div key={service.title} className="flex flex-col items-center text-center">
+                <span className="grid size-16 place-items-center border-b border-forest-foreground/40 md:size-20">
+                  <service.icon strokeWidth={1.35} className="size-11 md:size-14" />
+                </span>
+                <h3 className="mt-4 font-display text-base font-semibold md:text-lg">
+                  {service.title}
+                </h3>
+                <p className="mt-1 max-w-44 text-xs leading-relaxed text-forest-foreground/70 md:text-sm">
+                  {service.copy}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div className="relative aspect-[4/3] w-full overflow-hidden sm:aspect-[16/8] lg:aspect-[16/7]">
+        <img
+          src={servicesPeaceLily}
+          alt="Sunlit peace lily in a lush balcony garden"
+          loading="lazy"
+          width={1400}
+          height={900}
+          className="size-full object-cover"
+        />
       </div>
     </section>
   );

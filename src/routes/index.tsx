@@ -5,6 +5,7 @@ import { Header } from "@/components/store/Header";
 import {
   Blogs,
   InstagramReels,
+  OurServices,
   FeaturedProducts,
   Footer,
   GiftingBanner,
@@ -46,6 +47,7 @@ function Index() {
           <TrustRibbon />
           <Blogs />
           <InstagramReels />
+          <OurServices />
         </main>
         <Footer />
         <CartDrawer />
