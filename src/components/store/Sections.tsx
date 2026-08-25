@@ -724,6 +724,33 @@ const SERVICES = [
 ];
 
 export function OurServices() {
+  const [active, setActive] = useState(0);
+  const trackRef = useRef<HTMLDivElement>(null);
+
+  const goTo = (n: number) => {
+    const idx = (n + SERVICES.length) % SERVICES.length;
+    setActive(idx);
+    const el = trackRef.current?.children[idx] as HTMLElement | undefined;
+    el?.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+  };
+
+  const onScroll = () => {
+    const track = trackRef.current;
+    if (!track) return;
+    const center = track.scrollLeft + track.clientWidth / 2;
+    let best = 0;
+    let bestDist = Infinity;
+    Array.from(track.children).forEach((child, i) => {
+      const el = child as HTMLElement;
+      const dist = Math.abs(el.offsetLeft + el.offsetWidth / 2 - center);
+      if (dist < bestDist) {
+        bestDist = dist;
+        best = i;
+      }
+    });
+    setActive(best);
+  };
+
   return (
     <section aria-labelledby="services-heading" className="bg-forest text-forest-foreground">
       <div className="overflow-hidden leading-[0] text-background">
@@ -740,28 +767,70 @@ export function OurServices() {
         </svg>
       </div>
 
-      <div className="px-4 pb-12 pt-2 lg:px-8 lg:pb-16">
-        <div className="mx-auto max-w-7xl">
+      <div className="px-4 pt-2 pb-12 lg:px-8 lg:pb-16">
+        <div className="mx-auto max-w-3xl">
           <h2
             id="services-heading"
             className="text-center font-display text-3xl font-semibold lg:text-4xl"
           >
             Our Services
           </h2>
-          <div className="mt-10 grid grid-cols-2 gap-x-4 gap-y-10 md:grid-cols-4 md:gap-8">
-            {SERVICES.map((service) => (
-              <div key={service.title} className="flex flex-col items-center text-center">
-                <span className="grid size-16 place-items-center border-b border-forest-foreground/40 md:size-20">
-                  <service.icon strokeWidth={1.35} className="size-11 md:size-14" />
-                </span>
-                <h3 className="mt-4 font-display text-base font-semibold md:text-lg">
-                  {service.title}
-                </h3>
-                <p className="mt-1 max-w-44 text-xs leading-relaxed text-forest-foreground/70 md:text-sm">
-                  {service.copy}
-                </p>
+
+          <div className="relative mt-10">
+            <div
+              ref={trackRef}
+              onScroll={onScroll}
+              className="flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+            >
+              {SERVICES.map((service) => (
+                <div
+                  key={service.title}
+                  className="flex w-full shrink-0 snap-center flex-col items-center px-6 text-center"
+                >
+                  <span className="grid size-24 place-items-center border-b border-forest-foreground/40">
+                    <service.icon strokeWidth={1.3} className="size-16" />
+                  </span>
+                  <h3 className="mt-5 font-display text-xl font-semibold md:text-2xl">
+                    {service.title}
+                  </h3>
+                  <p className="mt-2 max-w-xs text-sm leading-relaxed text-forest-foreground/70">
+                    {service.copy}
+                  </p>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-6 flex items-center justify-center gap-4">
+              <button
+                onClick={() => goTo(active - 1)}
+                aria-label="Previous service"
+                className="grid size-9 place-items-center rounded-full border border-forest-foreground/30 transition-colors hover:bg-forest-foreground/10"
+              >
+                <ArrowLeft className="size-4" />
+              </button>
+              <div className="flex items-center gap-2">
+                {SERVICES.map((s, i) => (
+                  <button
+                    key={s.title}
+                    onClick={() => goTo(i)}
+                    aria-label={`Show ${s.title}`}
+                    className={cn(
+                      "h-2 rounded-full transition-all",
+                      i === active
+                        ? "w-6 bg-forest-foreground"
+                        : "w-2 bg-forest-foreground/40 hover:bg-forest-foreground/70",
+                    )}
+                  />
+                ))}
               </div>
-            ))}
+              <button
+                onClick={() => goTo(active + 1)}
+                aria-label="Next service"
+                className="grid size-9 place-items-center rounded-full border border-forest-foreground/30 transition-colors hover:bg-forest-foreground/10"
+              >
+                <ArrowRight className="size-4" />
+              </button>
+            </div>
           </div>
         </div>
       </div>
