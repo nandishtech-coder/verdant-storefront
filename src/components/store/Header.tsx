@@ -158,17 +158,32 @@ export function Header() {
             </SheetContent>
           </Sheet>
 
-          <a href="#top" className="flex items-center">
-            <span className="grid size-28 shrink-0 overflow-hidden place-items-center rounded-xl shadow-[var(--shadow-soft)] bg-transparent">
+          <a href="#top" className="flex items-center gap-2">
+            <span className="logo-glow grid size-16 shrink-0 place-items-center overflow-hidden rounded-2xl p-1.5 lg:size-20">
               <img
                 src="/logo.png"
                 alt="GreenRoots"
-                className="size-full object-cover scale-[1.75]"
+                className="size-full object-contain drop-shadow-[0_2px_6px_oklch(0.3_0.035_158/0.25)]"
               />
+            </span>
+            <span className="hidden font-display text-lg font-semibold tracking-tight text-forest sm:block lg:text-xl">
+              GreenRoots
             </span>
           </a>
 
-          <nav className="mx-auto hidden items-center lg:flex">
+          {/* Big search bar */}
+          <button
+            onClick={() => setSearchOpen(true)}
+            className="group flex h-12 flex-1 items-center gap-3 rounded-2xl border border-border bg-card px-4 text-left shadow-[var(--shadow-soft)] transition-all hover:border-primary lg:h-14 lg:max-w-xl"
+            aria-label="Search products"
+          >
+            <Search className="size-5 shrink-0 text-primary" />
+            <span className="line-clamp-1 text-sm text-muted-foreground lg:text-base">
+              Search seeds, planters, potting mix & plant care…
+            </span>
+          </button>
+
+          <nav className="hidden items-center xl:flex">
             {NAV.map((n) => (
               <div key={n.label} className="group relative">
                 <button className="flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-medium text-forest transition-colors hover:bg-secondary">
@@ -191,14 +206,6 @@ export function Header() {
           </nav>
 
           <div className="ml-auto flex items-center gap-1">
-            <Button
-              variant="ghost"
-              size="icon"
-              aria-label="Search"
-              onClick={() => setSearchOpen(true)}
-            >
-              <Search className="size-5" />
-            </Button>
             <Button variant="ghost" size="icon" aria-label="Wishlist" className="relative">
               <Heart className="size-5" />
               {wishlist.length > 0 && (
