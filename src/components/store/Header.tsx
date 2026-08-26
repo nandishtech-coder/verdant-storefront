@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
+import { Link } from "@tanstack/react-router";
 import {
   ChevronDown,
   Heart,
@@ -120,12 +121,44 @@ function SearchDialog({
 
 export function Header() {
   const { count, setOpen, wishlist } = useCart();
-  const [searchOpen, setSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [showResults, setShowResults] = useState(false);
+  const [placeholderText, setPlaceholderText] = useState("");
+  const searchRef = useRef<HTMLDivElement>(null);
+
+  const fullText = "Search for seeds, plants, planters & more...";
+
+  useEffect(() => {
+    let currentIndex = 0;
+    const interval = setInterval(() => {
+      setPlaceholderText(fullText.slice(0, currentIndex));
+      currentIndex++;
+      if (currentIndex > fullText.length + 10) {
+        currentIndex = 0;
+      }
+    }, 100);
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
+        setShowResults(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const results = searchQuery.trim()
+    ? PRODUCTS.filter((p) => p.title.toLowerCase().includes(searchQuery.toLowerCase())).slice(0, 6)
+    : [];
 
   return (
     <header className="sticky top-0 z-50">
-      <div className="bg-cream/95 backdrop-blur-md">
-        <div className="mx-auto flex max-w-7xl items-center gap-4 px-4 py-3 lg:px-8">
+      <AnnouncementBar />
+      <div className="bg-cream/95 backdrop-blur-md pb-3 lg:pb-0">
+        <div className="mx-auto flex w-full flex-wrap items-center gap-y-3 gap-x-2 sm:gap-x-4 px-3 sm:px-4 py-3 lg:px-8">
           {/* Mobile nav */}
           <Sheet>
             <SheetTrigger asChild>
@@ -171,18 +204,56 @@ export function Header() {
             </span>
           </a>
 
+          {/* Spacer for mobile so icons push right */}
+          <div className="flex-1 lg:hidden" />
 
           {/* Big search bar */}
-          <button
-            onClick={() => setSearchOpen(true)}
-            className="group flex h-12 flex-1 items-center gap-3 rounded-2xl border border-border bg-card px-4 text-left shadow-[var(--shadow-soft)] transition-all hover:border-primary lg:h-14 lg:max-w-xl"
-            aria-label="Search products"
-          >
-            <Search className="size-5 shrink-0 text-primary" />
-            <span className="line-clamp-1 text-sm text-muted-foreground lg:text-base">
-              Search seeds, planters, potting mix & plant care…
-            </span>
-          </button>
+          <div ref={searchRef} className="relative order-last w-full lg:order-none lg:w-auto lg:flex-1 z-50">
+            <Search className="absolute left-4 top-1/2 size-5 -translate-y-1/2 text-primary pointer-events-none" />
+            <Input
+              type="search"
+              placeholder={placeholderText}
+              value={searchQuery}
+              onChange={(e) => {
+                setSearchQuery(e.target.value);
+                setShowResults(true);
+              }}
+              onFocus={() => setShowResults(true)}
+              className="h-12 w-full rounded-2xl border-border bg-card pl-12 pr-4 shadow-[var(--shadow-soft)] transition-all hover:border-primary focus-visible:ring-1 focus-visible:ring-primary lg:h-14 lg:text-base"
+            />
+            {showResults && searchQuery.trim() !== "" && (
+              <div className="absolute top-full left-0 mt-2 w-full rounded-2xl border border-border bg-cream p-2 shadow-lg max-h-80 overflow-hidden">
+                <ul className="max-h-72 overflow-y-auto space-y-1 pr-1">
+                  {results.length === 0 ? (
+                    <li className="px-3 py-4 text-center text-sm text-muted-foreground">
+                      No matches — try a broader term.
+                    </li>
+                  ) : (
+                    results.map((p) => (
+                      <li key={p.id}>
+                        <Link 
+                          to="/product/$id"
+                          params={{ id: p.id }}
+                          onClick={() => setShowResults(false)}
+                          className="flex w-full items-center gap-3 rounded-xl p-2 text-left transition-colors hover:bg-secondary"
+                        >
+                          <img
+                            src={p.image}
+                            alt={p.title}
+                            loading="lazy"
+                            width={44}
+                            height={44}
+                            className="size-11 rounded-lg object-cover"
+                          />
+                          <span className="line-clamp-1 text-sm text-forest font-medium">{p.title}</span>
+                        </Link>
+                      </li>
+                    ))
+                  )}
+                </ul>
+              </div>
+            )}
+          </div>
 
           <nav className="hidden items-center xl:flex">
             {NAV.map((n) => (
@@ -193,7 +264,7 @@ export function Header() {
                 </button>
                 <div className="invisible absolute top-full left-0 w-56 translate-y-1 rounded-xl border border-border bg-card p-2 opacity-0 shadow-[var(--shadow-lift)] transition-all duration-200 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100">
                   {n.items.map((i) => (
-                    <a
+                     <a
                       key={i}
                       href="#products"
                       className="block rounded-lg px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-secondary hover:text-forest"
@@ -206,9 +277,9 @@ export function Header() {
             ))}
           </nav>
 
-          <div className="ml-auto flex items-center gap-1">
-            <Button variant="ghost" size="icon" aria-label="Wishlist" className="relative">
-              <Heart className="size-5" />
+          <div className="flex items-center gap-0.5 sm:gap-1 lg:ml-auto">
+            <Button variant="ghost" size="icon" aria-label="Wishlist" className="relative size-9 sm:size-10">
+              <Heart className="size-4 sm:size-5" />
               {wishlist.length > 0 && (
                 <span className="absolute top-1 right-1 grid size-4 place-items-center rounded-full bg-clay text-[10px] font-semibold text-forest-foreground">
                   {wishlist.length}
@@ -219,25 +290,24 @@ export function Header() {
               variant="ghost"
               size="icon"
               aria-label="Account"
-              className="hidden sm:inline-flex"
+              className="relative size-9 sm:size-10"
             >
-              <User className="size-5" />
+              <User className="size-4 sm:size-5" />
             </Button>
             <Button
               onClick={() => setOpen(true)}
-              className="relative ml-1 rounded-xl"
+              className="relative ml-0.5 sm:ml-1 rounded-xl h-9 sm:h-10 px-2.5 sm:px-4"
               aria-label="Open cart"
             >
-              <ShoppingBag className="size-4" />
+              <ShoppingBag className="size-4 mr-0 sm:mr-2" />
               <span className="hidden sm:inline">Cart</span>
-              <span className="grid min-w-5 place-items-center rounded-full bg-forest px-1.5 text-xs font-semibold text-forest-foreground">
+              <span className="absolute -top-1.5 -right-1.5 sm:static sm:-top-auto sm:-right-auto grid min-w-4 sm:min-w-5 place-items-center rounded-full bg-forest px-1 text-[10px] sm:text-xs font-semibold text-forest-foreground border-2 border-cream sm:border-none">
                 {count}
               </span>
             </Button>
           </div>
         </div>
       </div>
-      <SearchDialog open={searchOpen} onOpenChange={setSearchOpen} />
     </header>
   );
 }

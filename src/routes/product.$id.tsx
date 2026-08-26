@@ -75,7 +75,7 @@ function ProductPage() {
   };
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-8 lg:px-8 lg:py-12">
+    <div className="mx-auto w-full px-4 py-8 lg:px-8 lg:py-12">
       <div className="grid gap-12 lg:grid-cols-2">
         {/* Left Column: Image */}
         <div className="relative aspect-square overflow-hidden rounded-2xl bg-secondary md:aspect-[4/3] lg:aspect-square">

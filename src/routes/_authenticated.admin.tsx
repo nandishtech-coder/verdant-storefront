@@ -152,7 +152,7 @@ function AdminDashboard() {
           </section>
         ) : (
           <div className="mt-8 grid gap-4">
-            {enquiries.map((enquiry) => (
+            {enquiries.map((enquiry: any) => (
               <article key={enquiry.id} className="rounded-xl border border-border bg-card p-5 shadow-[var(--shadow-soft)] sm:p-6">
                 <div className="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
                   <div className="min-w-0">

@@ -35,7 +35,7 @@ function AdminLogin() {
   const [busy, setBusy] = useState(false);
 
   useEffect(() => {
-    supabase.auth.getUser().then(({ data }) => {
+    supabase.auth.getUser().then(({ data }: any) => {
       if (data.user) navigate({ to: "/admin", replace: true });
     });
   }, [navigate]);

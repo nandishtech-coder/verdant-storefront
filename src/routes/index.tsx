@@ -12,6 +12,7 @@ import {
   InstagramReels,
   OurServices,
   FeaturedProducts,
+  ProductRow,
   Footer,
   GiftingBanner,
   Hero,
@@ -19,7 +20,12 @@ import {
   QuickNav,
   TrustRibbon,
 } from "@/components/store/Sections";
-
+import {
+  ReviewsSection,
+  ContactSection,
+  MapSection,
+  StatsSection,
+} from "@/components/store/ExtraSections";
 
 const title = "GreenRoots — Seeds, Planters & Organic Plant Care";
 const description =
@@ -49,14 +55,19 @@ function Index() {
           <QuickNav />
           <Promos />
           <FeaturedProducts />
+          <ProductRow title="Premium Ceramic Pots" filterTag="Ceramic Planters" />
+          <ProductRow title="Bio Organic Cleaning Essentials" filterTag="Plant Care" />
           <GiftingBanner />
-          <TrustRibbon />
           <Blogs />
           <InstagramReels />
           <OurServices />
           <GiftsGrowWithTime />
           <FanFavorites />
           <LatestBlogs />
+          <ReviewsSection />
+          <ContactSection />
+          <MapSection />
+          <StatsSection />
         </main>
 
         <Footer />

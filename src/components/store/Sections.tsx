@@ -26,6 +26,8 @@ import {
   Flower2,
   Sprout,
   Trees,
+  Scissors,
+  Sun,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -80,7 +82,7 @@ export function Hero() {
 
   return (
     <section id="top" className="bg-cream px-4 pt-6 pb-2 lg:px-8">
-      <div className="mx-auto max-w-7xl">
+      <div className="mx-auto w-full">
         <Carousel setApi={setApi} opts={{ loop: true }} className="overflow-hidden rounded-3xl">
           <CarouselContent className="ml-0">
             {SLIDES.map((s, i) => (
@@ -204,7 +206,7 @@ const PROMOS = [
 export function Promos() {
   return (
     <section className="px-4 pb-10 lg:px-8 lg:pb-16">
-      <div className="mx-auto grid max-w-7xl gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="mx-auto grid w-full gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {PROMOS.map((p) => (
           <a
             key={p.title}
@@ -258,7 +260,7 @@ export function FeaturedProducts() {
 
   return (
     <section id="products" className="bg-card px-4 py-14 lg:px-8 lg:py-20">
-      <div className="mx-auto max-w-7xl">
+      <div className="mx-auto w-full">
         <div className="flex flex-col gap-6">
           <div>
             <p className="text-sm font-medium tracking-wide text-primary uppercase">
@@ -290,12 +292,42 @@ export function FeaturedProducts() {
           </Tabs>
         </div>
 
-        <div className="mt-10 grid grid-cols-2 gap-4 lg:grid-cols-4 lg:gap-6">
+        <div className="mt-10 flex overflow-x-auto gap-4 lg:gap-6 pb-6 snap-x snap-mandatory scroll-smooth w-full -mx-4 px-4 lg:-mx-8 lg:px-8" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
           {list.length > 0 ? (
-            list.map((p) => <ProductCard key={p.id} product={p} />)
+            list.map((p) => (
+              <div key={p.id} className="w-[160px] sm:w-[220px] lg:w-[280px] shrink-0 snap-start">
+                <ProductCard product={p} />
+              </div>
+            ))
           ) : (
-            <div className="col-span-full py-12 text-center text-muted-foreground">
+            <div className="w-full py-12 text-center text-muted-foreground">
               No products found matching "{searchQuery}"
+            </div>
+          )}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function ProductRow({ title, filterTag }: { title: string, filterTag?: string }) {
+  const list = filterTag ? PRODUCTS.filter(p => p.tags.includes(filterTag)) : PRODUCTS;
+  return (
+    <section className="bg-card px-4 py-10 lg:px-8 lg:py-14">
+      <div className="mx-auto w-full">
+        <h2 className="text-center font-display text-3xl font-semibold text-forest lg:text-4xl mb-8">
+          {title}
+        </h2>
+        <div className="flex overflow-x-auto gap-4 lg:gap-6 pb-6 snap-x snap-mandatory scroll-smooth w-full -mx-4 px-4 lg:-mx-8 lg:px-8" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+          {list.length > 0 ? (
+            list.map((p) => (
+              <div key={p.id} className="w-[160px] sm:w-[220px] lg:w-[280px] shrink-0 snap-start">
+                <ProductCard product={p} />
+              </div>
+            ))
+          ) : (
+            <div className="w-full py-12 text-center text-muted-foreground">
+              No products found
             </div>
           )}
         </div>
@@ -307,7 +339,7 @@ export function FeaturedProducts() {
 export function GiftingBanner() {
   return (
     <section id="gifting" className="px-4 py-14 lg:px-8 lg:py-20">
-      <div className="mx-auto grid max-w-7xl overflow-hidden rounded-3xl bg-forest lg:grid-cols-2">
+      <div className="mx-auto grid w-full overflow-hidden rounded-3xl bg-forest lg:grid-cols-2">
         <div className="relative min-h-72 lg:min-h-[460px]">
           <img
             src={gifting}
@@ -377,7 +409,7 @@ const TRUST = [
 export function TrustRibbon() {
   return (
     <section className="bg-secondary px-4 py-12 lg:px-8">
-      <div className="mx-auto grid max-w-7xl gap-8 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="mx-auto grid w-full gap-8 sm:grid-cols-2 lg:grid-cols-4">
         {TRUST.map((t) => (
           <div key={t.title} className="flex gap-4">
             <span className="grid size-11 shrink-0 place-items-center rounded-xl bg-card text-primary shadow-[var(--shadow-soft)]">
@@ -397,7 +429,7 @@ export function TrustRibbon() {
 export function Blogs() {
   return (
     <section className="px-4 py-14 lg:px-8 lg:py-20">
-      <div className="mx-auto max-w-7xl">
+      <div className="mx-auto w-full">
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
             <p className="text-sm font-medium tracking-wide text-primary uppercase">
@@ -622,7 +654,7 @@ export function InstagramReels() {
         </p>
       </div>
 
-      <div className="relative w-full max-w-6xl mx-auto px-4 h-[450px] md:h-[600px] flex items-center justify-center my-10">
+      <div className="relative w-full mx-auto px-4 h-[450px] md:h-[600px] flex items-center justify-center my-10">
         {/* Navigation Arrows */}
         <button
           className="absolute left-4 md:left-8 z-50 grid size-12 place-items-center rounded-full bg-white text-black shadow-lg hover:bg-white/90 transition-colors border-0"
@@ -685,7 +717,7 @@ export function InstagramReels() {
                 src={REELS[openIndex]!.src}
                 poster={REELS[openIndex]!.poster}
                 isPlaying
-                onClick={() => {}}
+                onClick={() => { }}
               />
               <button
                 aria-label="Close reel"
@@ -710,24 +742,34 @@ export function InstagramReels() {
 
 const SERVICES = [
   {
-    icon: Trees,
-    title: "Lawn Care",
-    copy: "Seasonal upkeep & restoration",
+    icon: Flower2,
+    title: "Verticle Gardening",
+    copy: "Living walls for compact spaces",
   },
   {
-    icon: Sprout,
-    title: "Kitchen Gardening",
-    copy: "Fresh herbs & vegetables at home",
-  },
-  {
-    icon: Building2,
-    title: "Balcony Gardening",
+    icon: Sun,
+    title: "Terrace Gardening",
     copy: "Green spaces made for city living",
   },
   {
-    icon: Flower2,
-    title: "Vertical Gardening",
-    copy: "Living walls for compact spaces",
+    icon: Sprout,
+    title: "Repotting",
+    copy: "Fresh soil and healthier roots",
+  },
+  {
+    icon: Trees,
+    title: "Landscaping",
+    copy: "Beautiful outdoor transformations",
+  },
+  {
+    icon: Scissors,
+    title: "Maintenance",
+    copy: "Expert care for your green assets",
+  },
+  {
+    icon: Trees,
+    title: "Lawn Care",
+    copy: "Seasonal upkeep & restoration",
   },
 ];
 
@@ -775,49 +817,38 @@ export function OurServices() {
         </svg>
       </div>
 
-      <div className="px-4 pt-2 pb-12 lg:px-8 lg:pb-16">
-        <div className="mx-auto max-w-3xl">
+      <div className="pt-2 pb-12 lg:pb-16">
+        <div className="px-4 lg:px-8 mx-auto max-w-3xl">
           <h2
             id="services-heading"
             className="text-center font-display text-3xl font-semibold lg:text-4xl"
           >
             Our Services
           </h2>
+        </div>
 
-          <div className="relative mt-10 overflow-hidden">
-            <div className="flex w-max services-marquee">
-              {[...SERVICES, ...SERVICES].map((service, i) => (
-                <div
-                  key={`${service.title}-${i}`}
-                  className="flex w-[min(88vw,32rem)] shrink-0 flex-col items-center px-6 text-center"
-                >
-                  <span className="grid size-24 place-items-center border-b border-forest-foreground/40">
-                    <service.icon strokeWidth={1.3} className="size-16" />
-                  </span>
-                  <h3 className="mt-5 font-display text-xl font-semibold md:text-2xl">
-                    {service.title}
-                  </h3>
-                  <p className="mt-2 max-w-xs text-sm leading-relaxed text-forest-foreground/70">
-                    {service.copy}
-                  </p>
-                </div>
-              ))}
-            </div>
+        <div className="relative mt-10 overflow-hidden w-full">
+          <div className="flex w-max marquee-track">
+            {[...SERVICES, ...SERVICES].map((service, i) => (
+              <div
+                key={`${service.title}-${i}`}
+                className="flex w-48 sm:w-64 shrink-0 flex-col items-center px-4 text-center"
+              >
+                <span className="grid size-20 sm:size-24 place-items-center border-b border-forest-foreground/40">
+                  <service.icon strokeWidth={1.3} className="size-12 sm:size-16" />
+                </span>
+                <h3 className="mt-5 font-display text-xl font-semibold md:text-2xl">
+                  {service.title}
+                </h3>
+                <p className="mt-2 max-w-xs text-sm leading-relaxed text-forest-foreground/70">
+                  {service.copy}
+                </p>
+              </div>
+            ))}
           </div>
-
         </div>
       </div>
 
-      <div className="relative aspect-[4/3] w-full overflow-hidden sm:aspect-[16/8] lg:aspect-[16/7]">
-        <img
-          src={servicesPeaceLily}
-          alt="Sunlit peace lily in a lush balcony garden"
-          loading="lazy"
-          width={1400}
-          height={900}
-          className="size-full object-cover"
-        />
-      </div>
     </section>
   );
 }
@@ -838,7 +869,7 @@ export function Footer() {
         </svg>
       </div>
       <div className="bg-forest px-4 pb-8 text-cream lg:px-8">
-        <div className="mx-auto grid max-w-7xl gap-10 md:grid-cols-2 lg:grid-cols-5">
+        <div className="mx-auto grid w-full gap-10 md:grid-cols-2 lg:grid-cols-5">
           {/* Column 1: Brand & Info */}
           <div className="flex flex-col lg:col-span-2 lg:pr-8">
             <div className="flex items-center gap-3">
@@ -967,7 +998,7 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mx-auto mt-16 max-w-7xl border-t border-cream/10 pt-8 flex flex-col gap-4 text-xs text-cream/60 md:flex-row md:items-end md:justify-between">
+        <div className="mx-auto mt-16 w-full border-t border-cream/10 pt-8 flex flex-col gap-4 text-xs text-cream/60 md:flex-row md:items-end md:justify-between">
           <div className="flex flex-col gap-2">
             <p>
               © 2026 <span className="text-primary font-medium">GreenRoots</span>. All rights
