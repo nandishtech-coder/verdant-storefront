@@ -137,35 +137,34 @@ export function Hero() {
 }
 
 export function QuickNav() {
+  const row = [...QUICK_CATEGORIES, ...QUICK_CATEGORIES];
   return (
-    <section className="px-4 py-10 lg:px-8 lg:py-14">
-      <div className="mx-auto max-w-7xl">
-        <div className="flex snap-x gap-6 overflow-x-auto pb-2 sm:grid sm:grid-cols-3 sm:overflow-visible lg:grid-cols-6">
-          {QUICK_CATEGORIES.map((c) => (
-            <a
-              key={c.label}
-              href="#products"
-              className="group flex shrink-0 snap-start flex-col items-center gap-3 text-center"
-            >
-              <span className="relative size-24 overflow-hidden rounded-full border-2 border-border p-1 transition-colors group-hover:border-primary lg:size-28">
-                <img
-                  src={c.image}
-                  alt={c.label}
-                  loading="lazy"
-                  width={200}
-                  height={200}
-                  className="size-full rounded-full object-cover transition-transform duration-500 group-hover:scale-110"
-                />
+    <section className="overflow-hidden px-0 py-10 lg:py-14">
+      <div className="group flex w-max marquee-track gap-6 pb-2 hover:[animation-play-state:paused]">
+        {row.map((c, i) => (
+          <a
+            key={`${c.label}-${i}`}
+            href="#products"
+            className="group/item flex w-28 shrink-0 flex-col items-center gap-3 text-center lg:w-32"
+          >
+            <span className="relative size-24 overflow-hidden rounded-full border-2 border-border p-1 transition-colors group-hover/item:border-primary lg:size-28">
+              <img
+                src={c.image}
+                alt={c.label}
+                loading="lazy"
+                width={200}
+                height={200}
+                className="size-full rounded-full object-cover transition-transform duration-500 group-hover/item:scale-110"
+              />
+            </span>
+            <span className="text-sm font-medium text-forest">
+              <span aria-hidden className="mr-1">
+                {c.emoji}
               </span>
-              <span className="text-sm font-medium text-forest">
-                <span aria-hidden className="mr-1">
-                  {c.emoji}
-                </span>
-                {c.label}
-              </span>
-            </a>
-          ))}
-        </div>
+              {c.label}
+            </span>
+          </a>
+        ))}
       </div>
     </section>
   );
