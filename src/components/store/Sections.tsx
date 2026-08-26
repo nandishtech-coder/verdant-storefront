@@ -69,10 +69,18 @@ const SLIDES = [
 ];
 
 export function Hero() {
+  const [api, setApi] = useState<CarouselApi | null>(null);
+
+  useEffect(() => {
+    if (!api) return;
+    const id = setInterval(() => api.scrollNext(), 3000);
+    return () => clearInterval(id);
+  }, [api]);
+
   return (
     <section id="top" className="bg-cream px-4 pt-6 pb-2 lg:px-8">
       <div className="mx-auto max-w-7xl">
-        <Carousel opts={{ loop: true }} className="overflow-hidden rounded-3xl">
+        <Carousel setApi={setApi} opts={{ loop: true }} className="overflow-hidden rounded-3xl">
           <CarouselContent className="ml-0">
             {SLIDES.map((s, i) => (
               <CarouselItem key={s.title} className="pl-0">
