@@ -37,6 +37,7 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
+  type CarouselApi,
 } from "@/components/ui/carousel";
 import { cn } from "@/lib/utils";
 import { BLOGS, CATEGORY_TABS, PRODUCTS, QUICK_CATEGORIES } from "@/lib/store-data";
