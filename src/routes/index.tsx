@@ -54,7 +54,11 @@ function Index() {
           <Blogs />
           <InstagramReels />
           <OurServices />
+          <GiftsGrowWithTime />
+          <FanFavorites />
+          <LatestBlogs />
         </main>
+
         <Footer />
         <CartDrawer />
       </div>
