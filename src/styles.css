@@ -127,6 +127,40 @@
   animation: ug-marquee 26s linear infinite;
 }
 
+@utility logo-glow {
+  background: radial-gradient(
+    circle at 50% 40%,
+    oklch(1 0 0) 0%,
+    var(--cream) 55%,
+    color-mix(in oklab, var(--leaf) 18%, var(--cream)) 100%
+  );
+  box-shadow:
+    0 0 0 1px color-mix(in oklab, var(--leaf) 25%, transparent),
+    0 8px 24px -10px color-mix(in oklab, var(--forest) 45%, transparent);
+  transition: transform 400ms ease, box-shadow 400ms ease;
+  animation: logo-breathe 4.5s ease-in-out infinite;
+  &:hover {
+    transform: translateY(-2px) scale(1.04);
+    box-shadow:
+      0 0 0 2px color-mix(in oklab, var(--leaf) 45%, transparent),
+      0 14px 34px -10px color-mix(in oklab, var(--forest) 55%, transparent);
+  }
+}
+
+@keyframes logo-breathe {
+  0%,
+  100% {
+    box-shadow:
+      0 0 0 1px color-mix(in oklab, var(--leaf) 25%, transparent),
+      0 8px 24px -10px color-mix(in oklab, var(--forest) 40%, transparent);
+  }
+  50% {
+    box-shadow:
+      0 0 0 3px color-mix(in oklab, var(--leaf) 30%, transparent),
+      0 12px 30px -10px color-mix(in oklab, var(--forest) 55%, transparent);
+  }
+}
+
 @keyframes ug-marquee {
   from {
     transform: translateX(0);
