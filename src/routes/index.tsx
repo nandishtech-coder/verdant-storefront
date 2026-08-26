@@ -3,6 +3,11 @@ import { CartProvider } from "@/components/store/cart";
 import { CartDrawer } from "@/components/store/CartDrawer";
 import { Header } from "@/components/store/Header";
 import {
+  GiftsGrowWithTime,
+  FanFavorites,
+  LatestBlogs,
+} from "@/components/store/FeatureSections";
+import {
   Blogs,
   InstagramReels,
   OurServices,
@@ -14,6 +19,7 @@ import {
   QuickNav,
   TrustRibbon,
 } from "@/components/store/Sections";
+
 
 const title = "GreenRoots — Seeds, Planters & Organic Plant Care";
 const description =
@@ -48,7 +54,11 @@ function Index() {
           <Blogs />
           <InstagramReels />
           <OurServices />
+          <GiftsGrowWithTime />
+          <FanFavorites />
+          <LatestBlogs />
         </main>
+
         <Footer />
         <CartDrawer />
       </div>

@@ -800,14 +800,7 @@ export function OurServices() {
               ))}
             </div>
 
-            <div className="mt-6 flex items-center justify-center gap-4">
-              <button
-                onClick={() => goTo(active - 1)}
-                aria-label="Previous service"
-                className="grid size-9 place-items-center rounded-full border border-forest-foreground/30 transition-colors hover:bg-forest-foreground/10"
-              >
-                <ArrowLeft className="size-4" />
-              </button>
+            <div className="mt-6 flex items-center justify-center">
               <div className="flex items-center gap-2">
                 {SERVICES.map((s, i) => (
                   <button
@@ -823,14 +816,8 @@ export function OurServices() {
                   />
                 ))}
               </div>
-              <button
-                onClick={() => goTo(active + 1)}
-                aria-label="Next service"
-                className="grid size-9 place-items-center rounded-full border border-forest-foreground/30 transition-colors hover:bg-forest-foreground/10"
-              >
-                <ArrowRight className="size-4" />
-              </button>
             </div>
+
           </div>
         </div>
       </div>
