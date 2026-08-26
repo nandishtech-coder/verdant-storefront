@@ -159,17 +159,18 @@ export function Header() {
           </Sheet>
 
           <a href="#top" className="flex items-center gap-2">
-            <span className="logo-glow grid size-16 shrink-0 place-items-center overflow-hidden rounded-2xl p-1.5 lg:size-20">
+            <span className="logo-glow grid size-14 shrink-0 place-items-center overflow-hidden rounded-2xl bg-card lg:size-16">
               <img
                 src="/logo.png"
                 alt="GreenRoots"
-                className="size-full object-contain drop-shadow-[0_2px_6px_oklch(0.3_0.035_158/0.25)]"
+                className="size-full scale-[1.02] object-cover"
               />
             </span>
             <span className="hidden font-display text-lg font-semibold tracking-tight text-forest sm:block lg:text-xl">
               GreenRoots
             </span>
           </a>
+
 
           {/* Big search bar */}
           <button
