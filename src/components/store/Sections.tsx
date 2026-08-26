@@ -784,16 +784,12 @@ export function OurServices() {
             Our Services
           </h2>
 
-          <div className="relative mt-10">
-            <div
-              ref={trackRef}
-              onScroll={onScroll}
-              className="flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-            >
-              {SERVICES.map((service) => (
+          <div className="relative mt-10 overflow-hidden">
+            <div className="flex w-max services-marquee">
+              {[...SERVICES, ...SERVICES].map((service, i) => (
                 <div
-                  key={service.title}
-                  className="flex w-full shrink-0 snap-center flex-col items-center px-6 text-center"
+                  key={`${service.title}-${i}`}
+                  className="flex w-[min(88vw,32rem)] shrink-0 flex-col items-center px-6 text-center"
                 >
                   <span className="grid size-24 place-items-center border-b border-forest-foreground/40">
                     <service.icon strokeWidth={1.3} className="size-16" />
@@ -807,26 +803,8 @@ export function OurServices() {
                 </div>
               ))}
             </div>
-
-            <div className="mt-6 flex items-center justify-center">
-              <div className="flex items-center gap-2">
-                {SERVICES.map((s, i) => (
-                  <button
-                    key={s.title}
-                    onClick={() => goTo(i)}
-                    aria-label={`Show ${s.title}`}
-                    className={cn(
-                      "h-2 rounded-full transition-all",
-                      i === active
-                        ? "w-6 bg-forest-foreground"
-                        : "w-2 bg-forest-foreground/40 hover:bg-forest-foreground/70",
-                    )}
-                  />
-                ))}
-              </div>
-            </div>
-
           </div>
+
         </div>
       </div>
 
