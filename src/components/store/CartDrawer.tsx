@@ -30,10 +30,11 @@ export function CartDrawer() {
 
     let message = `*New Order from GreenRoots!*\n\n`;
     message += `*Customer Details:*\n`;
-    message += `Name: ${data.firstName} ${data.lastName}\n`;
-    message += `Email/Phone: ${data.email}\n`;
-    message += `Phone: ${data.phone}\n`;
-    message += `Address: ${data.address}, ${data.apartment ? data.apartment + ', ' : ''}${data.city}, ${data.state} - ${data.pin}\n\n`;
+    message += `Name: ${data['firstName']} ${data['lastName']}\n`;
+    message += `Email/Phone: ${data['email']}\n`;
+    message += `Phone: ${data['phone']}\n`;
+    message += `Address: ${data['address']}, ${data['apartment'] ? data['apartment'] + ', ' : ''}${data['city']}, ${data['state']} - ${data['pin']}\n\n`;
+
 
     message += `*Order Items:*\n`;
     lines.forEach(l => {
