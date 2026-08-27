@@ -11,6 +11,7 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Minus, Plus, CheckCircle2 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Reveal } from "@/components/store/Reveal";
 
 export const Route = createFileRoute("/product/$id")({
   component: ProductPageWrapper,
