@@ -11,6 +11,7 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Minus, Plus, CheckCircle2 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Reveal } from "@/components/store/Reveal";
 
 export const Route = createFileRoute("/product/$id")({
   component: ProductPageWrapper,
@@ -78,17 +79,21 @@ function ProductPage() {
     <div className="mx-auto w-full px-4 py-8 lg:px-8 lg:py-12">
       <div className="grid gap-12 lg:grid-cols-2">
         {/* Left Column: Image */}
-        <div className="relative aspect-square overflow-hidden rounded-2xl bg-secondary md:aspect-[4/3] lg:aspect-square">
-          <img src={product.image} alt={product.title} className="size-full object-cover" />
-          {product.badge && (
-            <Badge className="absolute top-4 left-4 rounded-full text-sm px-3 py-1">
-              {product.badge}
-            </Badge>
-          )}
-        </div>
+        <Reveal variant="zoom">
+          <div className="hover-zoom-media relative aspect-square overflow-hidden rounded-2xl bg-secondary md:aspect-[4/3] lg:aspect-square">
+            <img src={product.image} alt={product.title} className="size-full object-cover" />
+            {product.badge && (
+              <Badge className="absolute top-4 left-4 rounded-full text-sm px-3 py-1">
+                {product.badge}
+              </Badge>
+            )}
+          </div>
+        </Reveal>
 
         {/* Right Column: Details */}
-        <div className="flex flex-col">
+        <Reveal variant="right" className="flex flex-col">
+          <div className="flex flex-col">
+
           {product.badge === "Sale" && (
             <div className="mb-4 inline-block bg-primary text-primary-foreground px-3 py-1 rounded text-xs font-semibold tracking-wider uppercase w-fit">
               Sale
@@ -182,48 +187,54 @@ function ProductPage() {
             )}
           </div>
         </div>
+        </Reveal>
       </div>
 
       {/* About Section */}
-      <div className="mt-20 border-t border-border pt-12">
-        <h2 className="font-display text-2xl font-semibold text-forest">About the Product</h2>
-        <p className="mt-6 max-w-4xl text-base leading-relaxed text-muted-foreground">
-          Elevate your indoor and outdoor spaces with this premium {product.title.toLowerCase()}.
-          This elegant piece combines timeless design with practical functionality. Crafted from
-          premium materials, it showcases a smooth, refined finish available in versatile tones that
-          complement any décor style. Perfect for displaying flowering plants, ornamental foliage,
-          or succulents, this transforms living spaces into lush, curated environments. Whether
-          placed on a patio, balcony, or living room, it brings sophistication and natural beauty to
-          your home.
-        </p>
+      <Reveal variant="up">
+        <div className="mt-20 border-t border-border pt-12">
+          <h2 className="font-display text-2xl font-semibold text-forest">About the Product</h2>
+          <p className="mt-6 max-w-4xl text-base leading-relaxed text-muted-foreground">
+            Elevate your indoor and outdoor spaces with this premium {product.title.toLowerCase()}.
+            This elegant piece combines timeless design with practical functionality. Crafted from
+            premium materials, it showcases a smooth, refined finish available in versatile tones
+            that complement any décor style. Perfect for displaying flowering plants, ornamental
+            foliage, or succulents, this transforms living spaces into lush, curated environments.
+            Whether placed on a patio, balcony, or living room, it brings sophistication and natural
+            beauty to your home.
+          </p>
 
-        <div className="mt-10 grid max-w-2xl gap-y-4">
-          <div className="grid grid-cols-3 py-3 border-b border-border/50">
-            <span className="font-medium text-forest">Material Type:</span>
-            <span className="col-span-2 text-muted-foreground">Premium Quality</span>
-          </div>
-          <div className="grid grid-cols-3 py-3 border-b border-border/50">
-            <span className="font-medium text-forest">Weight:</span>
-            <span className="col-span-2 text-muted-foreground">Standard</span>
-          </div>
-          <div className="grid grid-cols-3 py-3">
-            <span className="font-medium text-forest">Customer Support:</span>
-            <span className="col-span-2 text-muted-foreground">8453084530</span>
+          <div className="mt-10 grid max-w-2xl gap-y-4">
+            <div className="grid grid-cols-3 py-3 border-b border-border/50 transition-colors hover:bg-secondary/60">
+              <span className="font-medium text-forest">Material Type:</span>
+              <span className="col-span-2 text-muted-foreground">Premium Quality</span>
+            </div>
+            <div className="grid grid-cols-3 py-3 border-b border-border/50 transition-colors hover:bg-secondary/60">
+              <span className="font-medium text-forest">Weight:</span>
+              <span className="col-span-2 text-muted-foreground">Standard</span>
+            </div>
+            <div className="grid grid-cols-3 py-3 transition-colors hover:bg-secondary/60">
+              <span className="font-medium text-forest">Customer Support:</span>
+              <span className="col-span-2 text-muted-foreground">8453084530</span>
+            </div>
           </div>
         </div>
-      </div>
+      </Reveal>
 
       {/* Similar Products */}
-      <div className="mt-24">
-        <h2 className="text-center font-display text-3xl font-semibold text-forest">
-          You may also like
-        </h2>
-        <div className="mt-10 grid grid-cols-2 gap-4 lg:grid-cols-4 lg:gap-6">
-          {similarProducts.map((p) => (
-            <ProductCard key={p.id} product={p} />
-          ))}
+      <Reveal variant="up">
+        <div className="mt-24">
+          <h2 className="text-center font-display text-3xl font-semibold text-forest">
+            You may also like
+          </h2>
+          <div className="mt-10 grid grid-cols-2 gap-4 lg:grid-cols-4 lg:gap-6">
+            {similarProducts.map((p) => (
+              <ProductCard key={p.id} product={p} />
+            ))}
+          </div>
         </div>
-      </div>
+      </Reveal>
+
     </div>
   );
 }

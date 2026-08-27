@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { CartProvider } from "@/components/store/cart";
+import { Reveal } from "@/components/store/Reveal";
 import { CartDrawer } from "@/components/store/CartDrawer";
 import { Header } from "@/components/store/Header";
 import {
@@ -52,27 +53,62 @@ function Index() {
         <Header />
         <main>
           <Hero />
-          <QuickNav />
-          <Promos />
-          <FeaturedProducts />
-          <ProductRow title="Premium Ceramic Pots" filterTag="Ceramic Planters" />
-          <ProductRow title="Bio Organic Cleaning Essentials" filterTag="Plant Care" />
-          <GiftingBanner />
-          <Blogs />
-          <InstagramReels />
-          <OurServices />
-          <GiftsGrowWithTime />
-          <FanFavorites />
-          <LatestBlogs />
-          <ReviewsSection />
-          <ContactSection />
-          <MapSection />
-          <StatsSection />
+          <Reveal variant="up">
+            <QuickNav />
+          </Reveal>
+          <Reveal variant="zoom">
+            <Promos />
+          </Reveal>
+          <Reveal variant="up">
+            <FeaturedProducts />
+          </Reveal>
+          <Reveal variant="left">
+            <ProductRow title="Premium Ceramic Pots" filterTag="Ceramic Planters" />
+          </Reveal>
+          <Reveal variant="right">
+            <ProductRow title="Bio Organic Cleaning Essentials" filterTag="Plant Care" />
+          </Reveal>
+          <Reveal variant="zoom">
+            <GiftingBanner />
+          </Reveal>
+          <Reveal variant="up">
+            <Blogs />
+          </Reveal>
+          <Reveal variant="blur">
+            <InstagramReels />
+          </Reveal>
+          <Reveal variant="up">
+            <OurServices />
+          </Reveal>
+          <Reveal variant="left">
+            <GiftsGrowWithTime />
+          </Reveal>
+          <Reveal variant="zoom">
+            <FanFavorites />
+          </Reveal>
+          <Reveal variant="up">
+            <LatestBlogs />
+          </Reveal>
+          <Reveal variant="up">
+            <ReviewsSection />
+          </Reveal>
+          <Reveal variant="left">
+            <ContactSection />
+          </Reveal>
+          <Reveal variant="blur">
+            <MapSection />
+          </Reveal>
+          <Reveal variant="zoom">
+            <StatsSection />
+          </Reveal>
         </main>
 
-        <Footer />
+        <Reveal variant="up">
+          <Footer />
+        </Reveal>
         <CartDrawer />
       </div>
     </CartProvider>
   );
 }
+
