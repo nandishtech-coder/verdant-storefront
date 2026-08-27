@@ -127,6 +127,111 @@
   animation: ug-marquee 26s linear infinite;
 }
 
+/* ---- Scroll reveal ---- */
+.reveal-up,
+.reveal-down,
+.reveal-left,
+.reveal-right,
+.reveal-zoom,
+.reveal-blur {
+  opacity: 0;
+  will-change: transform, opacity, filter;
+  transition:
+    opacity 750ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 750ms cubic-bezier(0.22, 1, 0.36, 1),
+    filter 750ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.reveal-up {
+  transform: translate3d(0, 40px, 0);
+}
+.reveal-down {
+  transform: translate3d(0, -40px, 0);
+}
+.reveal-left {
+  transform: translate3d(-48px, 0, 0);
+}
+.reveal-right {
+  transform: translate3d(48px, 0, 0);
+}
+.reveal-zoom {
+  transform: scale(0.94);
+}
+.reveal-blur {
+  filter: blur(10px);
+  transform: translate3d(0, 24px, 0);
+}
+
+.reveal-up.is-revealed,
+.reveal-down.is-revealed,
+.reveal-left.is-revealed,
+.reveal-right.is-revealed,
+.reveal-zoom.is-revealed,
+.reveal-blur.is-revealed {
+  opacity: 1;
+  transform: none;
+  filter: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal-up,
+  .reveal-down,
+  .reveal-left,
+  .reveal-right,
+  .reveal-zoom,
+  .reveal-blur {
+    opacity: 1;
+    transform: none;
+    filter: none;
+    transition: none;
+  }
+}
+
+/* ---- Hover interactions ---- */
+@utility hover-lift {
+  transition:
+    transform 350ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 350ms cubic-bezier(0.22, 1, 0.36, 1);
+  &:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-lift);
+  }
+}
+
+@utility hover-zoom-media {
+  & img,
+  & video {
+    transition: transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  &:hover img,
+  &:hover video {
+    transform: scale(1.07);
+  }
+}
+
+@utility hover-sheen {
+  position: relative;
+  overflow: hidden;
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    transform: translateX(-120%) skewX(-18deg);
+    background: linear-gradient(
+      90deg,
+      transparent,
+      color-mix(in oklab, var(--cream) 55%, transparent),
+      transparent
+    );
+    transition: transform 800ms ease;
+    pointer-events: none;
+  }
+  &:hover::after {
+    transform: translateX(120%) skewX(-18deg);
+  }
+}
+
+
 @utility logo-glow {
   background: radial-gradient(
     circle at 50% 40%,
