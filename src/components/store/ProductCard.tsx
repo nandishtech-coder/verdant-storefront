@@ -41,30 +41,30 @@ export function ProductCard({ product }: { product: Product }) {
         </button>
       </div>
 
-      <div className="flex flex-1 flex-col gap-3 p-4">
-        <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+      <div className="flex flex-1 flex-col gap-2.5 p-3 sm:gap-3 sm:p-4">
+        <div className="flex h-4 items-center gap-1.5 text-xs text-muted-foreground">
           <Star className="size-3.5 fill-clay text-clay" />
           <span className="font-medium text-forest">{product.rating}</span>
           <span>({product.reviews.toLocaleString("en-IN")})</span>
         </div>
 
-        <h3 className="line-clamp-2 text-sm leading-snug font-medium text-forest hover:underline">
+        <h3 className="line-clamp-2 h-10 text-sm leading-snug font-medium text-forest hover:underline sm:h-11 sm:text-[15px]">
           <Link to="/product/$id" params={{ id: product.id }}>
             {product.title}
           </Link>
         </h3>
 
-        <div>
-          <p className="mb-1.5 text-[11px] tracking-wide text-muted-foreground uppercase">
+        <div className="flex flex-1 flex-col">
+          <p className="mb-1.5 text-[10px] tracking-wide text-muted-foreground uppercase sm:text-[11px]">
             {product.variantLabel}
           </p>
-          <div className="flex flex-wrap gap-1.5">
-            {product.variants.map((v) => (
+          <div className="flex flex-wrap content-start gap-1.5">
+            {product.variants.slice(0, 4).map((v) => (
               <button
                 key={v}
                 onClick={() => setVariant(v)}
                 className={cn(
-                  "rounded-full border px-2.5 py-1 text-xs transition-colors",
+                  "rounded-full border px-2 py-0.5 text-[10px] transition-colors sm:px-2.5 sm:py-1 sm:text-xs",
                   variant === v
                     ? "border-primary bg-primary text-primary-foreground"
                     : "border-border bg-card text-muted-foreground hover:border-primary hover:text-forest",
@@ -77,6 +77,7 @@ export function ProductCard({ product }: { product: Product }) {
         </div>
 
         <div className="mt-auto flex items-end justify-between gap-2 pt-1">
+
           <div>
             <div className="flex items-baseline gap-2">
               <span className="font-display text-lg font-semibold text-forest">

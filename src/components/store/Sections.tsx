@@ -292,19 +292,16 @@ export function FeaturedProducts() {
           </Tabs>
         </div>
 
-        <div className="mt-10 flex overflow-x-auto gap-4 lg:gap-6 pb-6 snap-x snap-mandatory scroll-smooth w-full -mx-4 px-4 lg:-mx-8 lg:px-8" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+        <div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4 lg:gap-6">
           {list.length > 0 ? (
-            list.map((p) => (
-              <div key={p.id} className="w-[160px] sm:w-[220px] lg:w-[280px] shrink-0 snap-start">
-                <ProductCard product={p} />
-              </div>
-            ))
+            list.map((p) => <ProductCard key={p.id} product={p} />)
           ) : (
-            <div className="w-full py-12 text-center text-muted-foreground">
+            <div className="col-span-full py-12 text-center text-muted-foreground">
               No products found matching "{searchQuery}"
             </div>
           )}
         </div>
+
       </div>
     </section>
   );
@@ -318,19 +315,16 @@ export function ProductRow({ title, filterTag }: { title: string, filterTag?: st
         <h2 className="text-center font-display text-3xl font-semibold text-forest lg:text-4xl mb-8">
           {title}
         </h2>
-        <div className="flex overflow-x-auto gap-4 lg:gap-6 pb-6 snap-x snap-mandatory scroll-smooth w-full -mx-4 px-4 lg:-mx-8 lg:px-8" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4 lg:gap-6">
           {list.length > 0 ? (
-            list.map((p) => (
-              <div key={p.id} className="w-[160px] sm:w-[220px] lg:w-[280px] shrink-0 snap-start">
-                <ProductCard product={p} />
-              </div>
-            ))
+            list.map((p) => <ProductCard key={p.id} product={p} />)
           ) : (
-            <div className="w-full py-12 text-center text-muted-foreground">
+            <div className="col-span-full py-12 text-center text-muted-foreground">
               No products found
             </div>
           )}
         </div>
+
       </div>
     </section>
   );
