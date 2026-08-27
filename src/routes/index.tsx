@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { CartProvider } from "@/components/store/cart";
+import { Reveal } from "@/components/store/Reveal";
 import { CartDrawer } from "@/components/store/CartDrawer";
 import { Header } from "@/components/store/Header";
 import {
