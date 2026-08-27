@@ -78,17 +78,21 @@ function ProductPage() {
     <div className="mx-auto w-full px-4 py-8 lg:px-8 lg:py-12">
       <div className="grid gap-12 lg:grid-cols-2">
         {/* Left Column: Image */}
-        <div className="relative aspect-square overflow-hidden rounded-2xl bg-secondary md:aspect-[4/3] lg:aspect-square">
-          <img src={product.image} alt={product.title} className="size-full object-cover" />
-          {product.badge && (
-            <Badge className="absolute top-4 left-4 rounded-full text-sm px-3 py-1">
-              {product.badge}
-            </Badge>
-          )}
-        </div>
+        <Reveal variant="zoom">
+          <div className="hover-zoom-media relative aspect-square overflow-hidden rounded-2xl bg-secondary md:aspect-[4/3] lg:aspect-square">
+            <img src={product.image} alt={product.title} className="size-full object-cover" />
+            {product.badge && (
+              <Badge className="absolute top-4 left-4 rounded-full text-sm px-3 py-1">
+                {product.badge}
+              </Badge>
+            )}
+          </div>
+        </Reveal>
 
         {/* Right Column: Details */}
-        <div className="flex flex-col">
+        <Reveal variant="right" className="flex flex-col">
+          <div className="flex flex-col">
+
           {product.badge === "Sale" && (
             <div className="mb-4 inline-block bg-primary text-primary-foreground px-3 py-1 rounded text-xs font-semibold tracking-wider uppercase w-fit">
               Sale
