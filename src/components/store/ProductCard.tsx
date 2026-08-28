@@ -121,7 +121,7 @@ export function ProductCard({ product }: { product: Product }) {
           ) : (
             <Button
               size="sm"
-              className="rounded-xl h-9"
+              className="h-8 shrink-0 rounded-xl sm:h-9"
               onClick={() => add(product, variant, false)}
               aria-label={`Add ${product.title} to cart`}
             >
