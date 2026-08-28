@@ -280,9 +280,13 @@
     border-color: var(--color-border);
   }
 
+  html,
+  body {
+    overflow-x: clip;
+  }
+
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
-    overflow-x: clip;
   }
 }
