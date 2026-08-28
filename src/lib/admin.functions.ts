@@ -45,7 +45,7 @@ export const claimAdminRole = createServerFn({ method: "POST" })
 
 export const setEnquiryStatus = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((data: { id: string; status: string }) => data)
+  .validator((data: { id: string; status: string }) => data)
   .handler(async ({ data, context }) => {
     const { error } = await context.supabase
       .from("enquiries")
