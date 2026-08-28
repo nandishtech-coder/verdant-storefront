@@ -124,7 +124,7 @@ export function FanFavorites() {
             <Button
               size="lg"
               asChild
-              className="mt-10 h-14 w-full rounded-full bg-clay px-8 text-base font-medium text-forest-foreground hover:bg-clay/90 sm:w-auto"
+              className="mt-10 h-14 w-full rounded-full bg-forest px-8 text-base font-medium text-forest-foreground hover:bg-forest-deep sm:w-auto"
             >
               <a href="#products">
                 Shop Best Sellers
@@ -225,7 +225,7 @@ export function LatestBlogs() {
           <Button
             size="lg"
             asChild
-            className="h-14 rounded-none bg-clay px-10 text-sm font-semibold tracking-[0.1em] text-white uppercase hover:bg-clay/90"
+            className="h-14 rounded-full bg-forest px-10 text-sm font-semibold tracking-[0.1em] text-forest-foreground uppercase hover:bg-forest-deep hover:shadow-lg"
           >
             <a href="#blogs">
               VIEW ALL ARTICLES
