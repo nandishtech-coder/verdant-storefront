@@ -71,7 +71,7 @@ export function ReviewsSection() {
             {row.map((t, idx) => (
               <div
                 key={idx}
-                className="flex w-[300px] flex-col justify-between rounded-2xl bg-white p-6 shadow-sm sm:w-[350px] shrink-0"
+                className="hover-lift flex w-[300px] flex-col justify-between rounded-2xl bg-white p-6 shadow-sm sm:w-[350px] shrink-0"
               >
                 <div>
                   <div className="flex text-yellow-400">
