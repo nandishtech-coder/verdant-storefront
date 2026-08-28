@@ -17,7 +17,7 @@ export function ProductCard({ product }: { product: Product }) {
   const qty = cartLine ? cartLine.qty : 0;
 
   return (
-    <article className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-[var(--shadow-soft)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[var(--shadow-lift)]">
+    <article className="group flex min-w-0 flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-[var(--shadow-soft)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[var(--shadow-lift)]">
       <div className="relative aspect-square overflow-hidden bg-secondary">
         <Link to="/product/$id" params={{ id: product.id }} className="block size-full">
           <img
@@ -76,11 +76,11 @@ export function ProductCard({ product }: { product: Product }) {
           </div>
         </div>
 
-        <div className="mt-auto flex items-end justify-between gap-2 pt-1">
+<div className="mt-auto flex flex-wrap items-end justify-between gap-2 pt-1">
 
-          <div>
-            <div className="flex items-baseline gap-2">
-              <span className="font-display text-lg font-semibold text-forest">
+          <div className="min-w-0">
+            <div className="flex flex-wrap items-baseline gap-x-2">
+              <span className="font-display text-base font-semibold text-forest sm:text-lg">
                 {inr(product.price)}
               </span>
               <span className="text-xs text-muted-foreground line-through">{inr(product.mrp)}</span>
