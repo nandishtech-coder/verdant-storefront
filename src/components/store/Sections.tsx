@@ -212,7 +212,7 @@ export function Promos() {
             key={p.title}
             href="#products"
             className={cn(
-              "group flex flex-col gap-2 rounded-2xl p-6 transition-transform duration-300 hover:-translate-y-1",
+              "group hover-lift hover-sheen flex flex-col gap-2 rounded-2xl p-6",
               p.tone,
             )}
           >
@@ -442,7 +442,7 @@ export function Blogs() {
           {BLOGS.map((b) => (
             <article
               key={b.title}
-              className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-[var(--shadow-soft)] transition-shadow hover:shadow-[var(--shadow-lift)]"
+              className="group hover-lift flex flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-[var(--shadow-soft)]"
             >
               <div className="aspect-[16/10] overflow-hidden">
                 <img

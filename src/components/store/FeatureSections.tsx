@@ -185,7 +185,7 @@ export function LatestBlogs() {
 
         <div className="mt-10 grid gap-8 md:grid-cols-3">
           {LATEST_POSTS.map((post) => (
-            <article key={post.title} className="group bg-card shadow-[var(--shadow-soft)] flex flex-col">
+            <article key={post.title} className="group hover-lift bg-card shadow-[var(--shadow-soft)] flex flex-col rounded-2xl overflow-hidden">
               <div className="relative aspect-[16/10] overflow-hidden bg-sand">
                 <img
                   src={post.image}
