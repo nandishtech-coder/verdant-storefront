@@ -26,6 +26,7 @@ import {
   Flower2,
   Sprout,
   Trees,
+  Star,
   Scissors,
   Sun,
 } from "lucide-react";
@@ -49,10 +50,11 @@ import gifting from "@/assets/gifting.jpg";
 import plants from "@/assets/p-plants.jpg";
 import ceramic from "@/assets/p-ceramic.jpg";
 import servicesPeaceLily from "@/assets/services-peace-lily.jpg";
+import villageFarm from "@/assets/village-farm.png";
 
 const SLIDES = [
   {
-    image: hero,
+    image: villageFarm,
     eyebrow: "New season · Monsoon ready",
     title: "GreenRoots Gardening Made Effortless",
     copy: "Seeds, bio-fertilisers and designer planters curated for balconies, terraces and tiny windowsills.",
@@ -71,6 +73,94 @@ const SLIDES = [
   },
 ];
 
+function ScrollableRow({ children, className }: any) {
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [scrollLeftState, setScrollLeftState] = useState(0);
+
+  const rafRef = useRef<number>(0);
+  const [scrollDir, setScrollDir] = useState<number>(0);
+
+  useEffect(() => {
+    if (scrollDir === 0) {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      return;
+    }
+
+    const scrollStep = () => {
+      if (scrollRef.current) {
+        scrollRef.current.scrollLeft += scrollDir * 4; // Adjust speed here
+      }
+      rafRef.current = requestAnimationFrame(scrollStep);
+    };
+
+    rafRef.current = requestAnimationFrame(scrollStep);
+
+    return () => {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    };
+  }, [scrollDir]);
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+    setIsDragging(true);
+    setStartX(e.pageX - (scrollRef.current?.offsetLeft || 0));
+    setScrollLeftState(scrollRef.current?.scrollLeft || 0);
+  };
+
+  const handleMouseLeave = () => {
+    setIsDragging(false);
+    setScrollDir(0);
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (isDragging && scrollRef.current) {
+      e.preventDefault();
+      const x = e.pageX - (scrollRef.current.offsetLeft || 0);
+      const walk = (x - startX) * 1.5;
+      scrollRef.current.scrollLeft = scrollLeftState - walk;
+      setScrollDir(0);
+      return;
+    }
+
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const edgeSize = 100;
+
+    if (x < edgeSize) {
+      setScrollDir(-1);
+    } else if (rect.width - x < edgeSize) {
+      setScrollDir(1);
+    } else {
+      setScrollDir(0);
+    }
+  };
+
+  return (
+    <>
+      <style>{`.hide-scroll::-webkit-scrollbar { display: none; }`}</style>
+      <div
+        ref={scrollRef}
+        className={cn(
+          "flex overflow-x-auto hide-scroll gap-4 sm:gap-6 cursor-grab active:cursor-grabbing select-none",
+          className
+        )}
+        style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+        onMouseDown={handleMouseDown}
+        onMouseLeave={handleMouseLeave}
+        onMouseUp={handleMouseUp}
+        onMouseMove={handleMouseMove}
+      >
+        {children}
+      </div>
+    </>
+  );
+}
+
 export function Hero() {
   const [api, setApi] = useState<CarouselApi | null>(null);
 
@@ -82,7 +172,40 @@ export function Hero() {
 
   return (
     <section id="top" className="bg-cream px-4 pt-6 pb-2 lg:px-8">
-      <div className="mx-auto w-full">
+      <style>{`
+        @keyframes float {
+          0% { transform: translateY(0px); }
+          50% { transform: translateY(-15px); }
+          100% { transform: translateY(0px); }
+        }
+        .animate-float {
+          animation: float 6s ease-in-out infinite;
+        }
+        .animate-float-delayed {
+          animation: float 6s ease-in-out 3s infinite;
+        }
+      `}</style>
+      <div className="mx-auto w-full relative">
+        <div className="absolute top-10 right-10 md:top-16 md:right-32 z-20 hidden md:flex items-center gap-4 rounded-2xl bg-white/95 backdrop-blur-sm p-4 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.3)] animate-float">
+          <div className="flex size-12 shrink-0 items-center justify-center rounded-xl bg-orange-100 text-orange-500">
+            <Star className="size-6 fill-current" />
+          </div>
+          <div>
+            <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider">Customer Rating</p>
+            <p className="text-lg font-bold text-forest">4.9 / 5.0</p>
+          </div>
+        </div>
+
+        <div className="absolute bottom-10 right-16 md:bottom-24 md:right-56 z-20 hidden md:flex items-center gap-4 rounded-2xl bg-white/95 backdrop-blur-sm p-4 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.3)] animate-float-delayed pointer-events-none">
+          <div className="flex size-12 shrink-0 items-center justify-center rounded-xl bg-green-100 text-green-600">
+            <Sprout className="size-6" />
+          </div>
+          <div>
+            <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider">Today's Harvest</p>
+            <p className="text-lg font-bold text-forest">Fresh Picked Today</p>
+          </div>
+        </div>
+
         <Carousel setApi={setApi} opts={{ loop: true }} className="overflow-hidden rounded-3xl">
           <CarouselContent className="ml-0">
             {SLIDES.map((s, i) => (
@@ -97,6 +220,7 @@ export function Hero() {
                     className="absolute inset-0 size-full object-cover"
                   />
                   <div className="absolute inset-0 bg-gradient-to-r from-forest/90 via-forest/70 to-forest/10" />
+
                   <div className="relative flex min-h-[440px] max-w-2xl flex-col justify-center gap-5 p-8 lg:min-h-[560px] lg:p-16">
                     <Badge
                       variant="secondary"
@@ -292,15 +416,19 @@ export function FeaturedProducts() {
           </Tabs>
         </div>
 
-        <div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4 lg:gap-6">
+        <ScrollableRow className="mt-10 w-full py-2">
           {list.length > 0 ? (
-            list.map((p) => <ProductCard key={p.id} product={p} />)
+            list.map((p) => (
+              <div key={p.id} className="min-w-[280px] sm:min-w-[320px] max-w-[280px] sm:max-w-[320px] shrink-0">
+                <ProductCard product={p} />
+              </div>
+            ))
           ) : (
-            <div className="col-span-full py-12 text-center text-muted-foreground">
+            <div className="w-full py-12 text-center text-muted-foreground">
               No products found matching "{searchQuery}"
             </div>
           )}
-        </div>
+        </ScrollableRow>
 
       </div>
     </section>
@@ -315,15 +443,19 @@ export function ProductRow({ title, filterTag }: { title: string, filterTag?: st
         <h2 className="text-center font-display text-3xl font-semibold text-forest lg:text-4xl mb-8">
           {title}
         </h2>
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4 lg:gap-6">
+        <ScrollableRow className="w-full py-2">
           {list.length > 0 ? (
-            list.map((p) => <ProductCard key={p.id} product={p} />)
+            list.map((p) => (
+              <div key={p.id} className="min-w-[280px] sm:min-w-[320px] max-w-[280px] sm:max-w-[320px] shrink-0">
+                <ProductCard product={p} />
+              </div>
+            ))
           ) : (
-            <div className="col-span-full py-12 text-center text-muted-foreground">
+            <div className="w-full py-12 text-center text-muted-foreground">
               No products found
             </div>
           )}
-        </div>
+        </ScrollableRow>
 
       </div>
     </section>
@@ -847,6 +979,12 @@ export function OurServices() {
   );
 }
 
+const WhatsappIcon = ({ className }: { className?: string }) => (
+  <svg className={className} fill="currentColor" viewBox="0 0 24 24">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" />
+  </svg>
+);
+
 export function Footer() {
   return (
     <footer className="mt-12 md:mt-20">
@@ -883,22 +1021,27 @@ export function Footer() {
               quality.
             </p>
             <div className="mt-6 flex gap-3">
-              {[Instagram, Facebook, MessageCircle, Youtube].map((Icon, i) => (
+              {[
+                { Icon: Instagram, color: "text-pink-500 border-pink-500/40 hover:bg-pink-500 hover:text-white" },
+                { Icon: Facebook, color: "text-blue-500 border-blue-500/40 hover:bg-blue-600 hover:text-white" },
+                { Icon: WhatsappIcon, color: "text-green-500 border-green-500/40 hover:bg-green-500 hover:text-white" },
+                { Icon: Youtube, color: "text-red-500 border-red-500/40 hover:bg-red-600 hover:text-white" }
+              ].map(({ Icon, color }, i) => (
                 <a
                   key={i}
                   href="#top"
                   aria-label="Social link"
-                  className="grid size-9 place-items-center rounded-full bg-cream/5 transition-colors hover:bg-primary hover:text-primary-foreground"
+                  className={`grid size-9 place-items-center rounded-full border bg-transparent transition-colors ${color}`}
                 >
                   <Icon className="size-4" />
                 </a>
               ))}
             </div>
-            <div className="mt-8 flex flex-wrap gap-2">
-              {["NPCP Certified", "FSSAI Licensed", "ISO 22000"].map((badge) => (
+            <div className="mt-8 flex flex-wrap gap-3">
+              {["NPOP Certified", "FSSAI Licensed", "ISO 22000"].map((badge) => (
                 <span
                   key={badge}
-                  className="rounded-full border border-primary/50 text-primary px-3 py-1 text-xs font-medium"
+                  className="rounded-full border border-yellow-500/40 text-yellow-500 px-4 py-1.5 text-xs font-medium"
                 >
                   {badge}
                 </span>
@@ -906,9 +1049,9 @@ export function Footer() {
             </div>
           </div>
 
-          {/* Column 2: Company */}
+          {/* Column 2: Quick Links */}
           <div>
-            <h3 className="font-display text-lg font-semibold">Company</h3>
+            <h3 className="font-display text-lg font-semibold">Quick Links</h3>
             <ul className="mt-6 space-y-3.5 text-sm text-cream/80">
               {["About Us", "Contact Us", "Our Services"].map((link) => (
                 <li key={link}>
@@ -951,11 +1094,11 @@ export function Footer() {
             <ul className="mt-6 space-y-4 text-sm text-cream/80">
               <li>
                 <a
-                  href="tel:+919481107324"
+                  href="tel:+916360988785"
                   className="flex items-center gap-3 transition-colors hover:text-primary"
                 >
                   <Phone className="size-4 shrink-0" />
-                  +91 94811 07324
+                  +91 63609 88785
                 </a>
               </li>
               <li>
@@ -999,7 +1142,15 @@ export function Footer() {
               reserved. Made with <span className="text-[#FF0000]">❤️</span> in Karnataka, India.
             </p>
             <p>
-              Developed By <span className="text-primary font-medium">Nandish-Tech</span>
+              Developed By{" "}
+              <a
+                href="https://nandish-tech.online"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-primary font-medium transition-colors hover:text-white hover:underline"
+              >
+                Nandish-Tech
+              </a>
             </p>
           </div>
 

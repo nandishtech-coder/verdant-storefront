@@ -1,3 +1,4 @@
+import { useEffect, useState, useRef } from "react";
 import {
   Star,
   Lock,
@@ -10,11 +11,19 @@ import {
   Facebook,
   MessageCircle,
   Youtube,
-  Phone
+  Phone,
+  Clock
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const TESTIMONIALS = [
   {
@@ -165,8 +174,8 @@ export function ContactSection() {
               <div className="flex items-center gap-4 rounded-2xl bg-white p-6 shadow-sm">
                 <Phone className="size-6 text-forest" />
                 <div>
-                  <p className="text-xs font-semibold text-gray-400 uppercase">PHONE / WHATSAPP</p>
-                  <p className="font-bold text-gray-900">+91 98765 43210</p>
+                  <p className="text-[10px] font-bold tracking-wider text-gray-400 uppercase mb-1">Phone / Whatsapp</p>
+                  <a href="tel:+916360988785" className="font-bold text-gray-900 hover:text-primary transition-colors">+91 63609 88785</a>
                 </div>
               </div>
               <div className="flex items-center gap-4 rounded-2xl bg-white p-6 shadow-sm">
@@ -183,6 +192,13 @@ export function ContactSection() {
                   <p className="font-bold text-gray-900">Shettihalli, Karnataka 563125</p>
                 </div>
               </div>
+              <div className="flex items-center gap-4 rounded-2xl bg-white p-6 shadow-sm">
+                <Clock className="size-6 text-forest" />
+                <div>
+                  <p className="text-xs font-semibold text-gray-400 uppercase">WORKING HOURS</p>
+                  <p className="font-bold text-gray-900">Mon–Sat: 6AM – 6PM</p>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -194,46 +210,49 @@ export function ContactSection() {
 
             <form className="mt-8 space-y-6">
               <div className="grid gap-6 sm:grid-cols-2">
-                <div className="space-y-2">
-                  <label className="text-sm font-semibold text-gray-900">
+                <div className="space-y-2 group">
+                  <label className="text-sm font-semibold text-gray-900 group-hover:text-primary transition-colors">
                     Full Name <span className="text-red-500">*</span>
                   </label>
-                  <Input placeholder="Your Name" className="bg-gray-50/50" />
+                  <Input placeholder="Your Name" className="bg-gray-50/50 border-gray-200 hover:-translate-y-1 hover:shadow-md hover:shadow-primary/10 hover:border-primary/40 focus:border-primary transition-all duration-300" />
                 </div>
-                <div className="space-y-2">
-                  <label className="text-sm font-semibold text-gray-900">
+                <div className="space-y-2 group">
+                  <label className="text-sm font-semibold text-gray-900 group-hover:text-primary transition-colors">
                     Phone / WhatsApp <span className="text-red-500">*</span>
                   </label>
-                  <Input placeholder="+91 XXXXX XXXXX" className="bg-gray-50/50" />
+                  <Input placeholder="+91 XXXXX XXXXX" className="bg-gray-50/50 border-gray-200 hover:-translate-y-1 hover:shadow-md hover:shadow-primary/10 hover:border-primary/40 focus:border-primary transition-all duration-300" />
                 </div>
               </div>
-              <div className="space-y-2">
-                <label className="text-sm font-semibold text-gray-900">Email Address</label>
-                <Input placeholder="your@email.com" className="bg-gray-50/50" />
+              <div className="space-y-2 group">
+                <label className="text-sm font-semibold text-gray-900 group-hover:text-primary transition-colors">Email Address</label>
+                <Input placeholder="your@email.com" className="bg-gray-50/50 border-gray-200 hover:-translate-y-1 hover:shadow-md hover:shadow-primary/10 hover:border-primary/40 focus:border-primary transition-all duration-300" />
               </div>
-              <div className="space-y-2">
-                <label className="text-sm font-semibold text-gray-900">
+              <div className="space-y-2 group">
+                <label className="text-sm font-semibold text-gray-900 group-hover:text-primary transition-colors">
                   I am interested in <span className="text-red-500">*</span>
                 </label>
-                <select className="flex h-10 w-full rounded-md border border-input bg-gray-50/50 px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50">
-                  <option value="" disabled selected>
-                    Select an option
-                  </option>
-                  <option value="bulk">Bulk Order / Gifting</option>
-                  <option value="landscaping">Landscaping Service</option>
-                  <option value="support">Plant Care Support</option>
-                </select>
+                <Select>
+                  <SelectTrigger className="flex h-10 w-full rounded-md border border-gray-200 bg-gray-50/50 px-3 py-2 text-sm hover:-translate-y-1 hover:shadow-md hover:shadow-primary/10 hover:border-primary/40 focus:border-primary focus:ring-1 focus:ring-primary transition-all duration-300">
+                    <SelectValue placeholder="Select an option" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="bulk" className="cursor-pointer hover:bg-primary/10 focus:bg-primary/10 focus:text-primary transition-colors">Bulk Order / Gifting</SelectItem>
+                    <SelectItem value="landscaping" className="cursor-pointer hover:bg-primary/10 focus:bg-primary/10 focus:text-primary transition-colors">Landscaping Service</SelectItem>
+                    <SelectItem value="support" className="cursor-pointer hover:bg-primary/10 focus:bg-primary/10 focus:text-primary transition-colors">Plant Care Support</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
-              <div className="space-y-2">
-                <label className="text-sm font-semibold text-gray-900">Message</label>
+              <div className="space-y-2 group">
+                <label className="text-sm font-semibold text-gray-900 group-hover:text-primary transition-colors">Message</label>
                 <Textarea
                   placeholder="Tell us what plants or planters you're looking for..."
-                  className="min-h-[120px] bg-gray-50/50"
+                  className="min-h-[120px] bg-gray-50/50 border-gray-200 hover:-translate-y-1 hover:shadow-md hover:shadow-primary/10 hover:border-primary/40 focus:border-primary transition-all duration-300"
                 />
               </div>
-              <Button className="w-full bg-forest text-white hover:bg-forest-deep" size="lg">
-                <Send className="mr-2 size-4" />
-                Send My Enquiry
+              <Button className="w-full relative overflow-hidden group/btn bg-forest text-white transition-all duration-500 hover:scale-[1.02] hover:shadow-lg hover:shadow-green-500/30 border-none" size="lg">
+                <div className="absolute inset-0 bg-gradient-to-r from-cyan-500 via-green-400 to-yellow-400 opacity-0 group-hover/btn:opacity-100 transition-opacity duration-500 group-hover/btn:animate-gradient"></div>
+                <Send className="mr-2 size-4 relative z-10" />
+                <span className="relative z-10">Send My Enquiry</span>
               </Button>
             </form>
           </div>
@@ -243,6 +262,12 @@ export function ContactSection() {
   );
 }
 
+const WhatsappIcon = ({ className }: { className?: string }) => (
+  <svg className={className} fill="currentColor" viewBox="0 0 24 24">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+  </svg>
+);
+
 export function MapSection() {
   return (
     <section className="bg-forest/5">
@@ -251,25 +276,29 @@ export function MapSection() {
         <div className="flex gap-4">
           <a
             href="#"
-            className="flex size-10 items-center justify-center rounded-full border border-pink-200 bg-white text-pink-500 transition-colors hover:bg-pink-50"
+            className="flex size-10 items-center justify-center rounded-full border border-pink-200 bg-white text-pink-500 transition-all duration-300 hover:-translate-y-1 hover:bg-gradient-to-tr hover:from-yellow-400 hover:via-pink-500 hover:to-purple-500 hover:text-white hover:border-transparent hover:shadow-lg hover:shadow-pink-500/20"
+            aria-label="Instagram"
           >
             <Instagram className="size-4" />
           </a>
           <a
             href="#"
-            className="flex size-10 items-center justify-center rounded-full border border-blue-200 bg-white text-blue-600 transition-colors hover:bg-blue-50"
+            className="flex size-10 items-center justify-center rounded-full border border-blue-200 bg-white text-blue-600 transition-all duration-300 hover:-translate-y-1 hover:bg-blue-600 hover:text-white hover:border-blue-600 hover:shadow-lg hover:shadow-blue-600/20"
+            aria-label="Facebook"
           >
             <Facebook className="size-4" />
           </a>
           <a
             href="#"
-            className="flex size-10 items-center justify-center rounded-full border border-green-200 bg-white text-green-500 transition-colors hover:bg-green-50"
+            className="flex size-10 items-center justify-center rounded-full border border-green-200 bg-white text-green-500 transition-all duration-300 hover:-translate-y-1 hover:bg-green-500 hover:text-white hover:border-green-500 hover:shadow-lg hover:shadow-green-500/20"
+            aria-label="WhatsApp"
           >
-            <MessageCircle className="size-4" />
+            <WhatsappIcon className="size-4" />
           </a>
           <a
             href="#"
-            className="flex size-10 items-center justify-center rounded-full border border-red-200 bg-white text-red-500 transition-colors hover:bg-red-50"
+            className="flex size-10 items-center justify-center rounded-full border border-red-200 bg-white text-red-500 transition-all duration-300 hover:-translate-y-1 hover:bg-red-500 hover:text-white hover:border-red-500 hover:shadow-lg hover:shadow-red-500/20"
+            aria-label="YouTube"
           >
             <Youtube className="size-4" />
           </a>
@@ -290,6 +319,59 @@ export function MapSection() {
   );
 }
 
+function AnimatedCounter({ end, suffix = "", duration = 1 }: { end: number, suffix?: string, duration?: number }) {
+  const [count, setCount] = useState(0);
+  const ref = useRef<HTMLSpanElement>(null);
+  const [isInView, setIsInView] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry?.isIntersecting) {
+          setIsInView(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.5 }
+    );
+
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!isInView) return;
+
+    let startTime: number;
+    let animationFrame: number;
+
+    const step = (timestamp: number) => {
+      if (!startTime) startTime = timestamp;
+      const progress = Math.min((timestamp - startTime) / (duration * 1000), 1);
+      const easeProgress = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+      
+      setCount(Math.floor(easeProgress * end));
+
+      if (progress < 1) {
+        animationFrame = requestAnimationFrame(step);
+      }
+    };
+
+    animationFrame = requestAnimationFrame(step);
+    
+    return () => cancelAnimationFrame(animationFrame);
+  }, [isInView, end, duration]);
+
+  return (
+    <span ref={ref}>
+      {count}{suffix}
+    </span>
+  );
+}
+
 export function StatsSection() {
   return (
     <section className="bg-[#FAF7F2] pt-16 lg:pt-24 pb-[88px] md:pb-[160px] -mb-[88px] md:-mb-[160px]">
@@ -300,27 +382,27 @@ export function StatsSection() {
         <div className="grid grid-cols-2 gap-y-12 lg:grid-cols-4 lg:gap-y-0 lg:divide-x lg:divide-forest/10">
           <div className="flex flex-col items-center px-4 text-center">
             <span className="mb-4 text-4xl">🌾</span>
-            <h3 className="font-display text-5xl font-bold text-forest">10+</h3>
-            <p className="mt-2 text-sm font-bold text-gray-900">Years of Greening</p>
-            <p className="mt-1 text-xs text-gray-500">Est. 2014 in Bengaluru</p>
+            <h3 className="font-display text-5xl font-bold text-[#858635]"><AnimatedCounter end={38} suffix="+" /></h3>
+            <p className="mt-2 text-sm font-bold text-gray-900">Years of Farming</p>
+            <p className="mt-1 text-xs text-gray-500">Est. 1985 in Karnataka</p>
           </div>
           <div className="flex flex-col items-center px-4 text-center">
-            <span className="mb-4 text-4xl">🪴</span>
-            <h3 className="font-display text-5xl font-bold text-forest">200+</h3>
-            <p className="mt-2 text-sm font-bold text-gray-900">Studio Planters</p>
-            <p className="mt-1 text-xs text-gray-500">Handcrafted by artisans</p>
+            <span className="mb-4 text-4xl">👨‍🌾</span>
+            <h3 className="font-display text-5xl font-bold text-[#858635]"><AnimatedCounter end={500} suffix="+" /></h3>
+            <p className="mt-2 text-sm font-bold text-gray-900">Partner Farmers</p>
+            <p className="mt-1 text-xs text-gray-500">Across 12 districts</p>
           </div>
           <div className="flex flex-col items-center px-4 text-center">
-            <span className="mb-4 text-4xl">🌱</span>
-            <h3 className="font-display text-5xl font-bold text-forest">140+</h3>
-            <p className="mt-2 text-sm font-bold text-gray-900">Plant Varieties</p>
-            <p className="mt-1 text-xs text-gray-500">Curated for home spaces</p>
+            <span className="mb-4 text-4xl">🥦</span>
+            <h3 className="font-display text-5xl font-bold text-[#858635]"><AnimatedCounter end={120} suffix="+" /></h3>
+            <p className="mt-2 text-sm font-bold text-gray-900">Fresh Products</p>
+            <p className="mt-1 text-xs text-gray-500">Rotates every season</p>
           </div>
           <div className="flex flex-col items-center px-4 text-center">
-            <span className="mb-4 text-4xl">🏡</span>
-            <h3 className="font-display text-5xl font-bold text-forest">20K+</h3>
-            <p className="mt-2 text-sm font-bold text-gray-900">Happy Homes</p>
-            <p className="mt-1 text-xs text-gray-500">Across 100+ Pin codes</p>
+            <span className="mb-4 text-4xl">🏠</span>
+            <h3 className="font-display text-5xl font-bold text-[#858635]"><AnimatedCounter end={50} suffix="K+" /></h3>
+            <p className="mt-2 text-sm font-bold text-gray-900">Happy Customers</p>
+            <p className="mt-1 text-xs text-gray-500">Across 8 cities</p>
           </div>
         </div>
       </div>

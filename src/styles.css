@@ -275,6 +275,20 @@
   }
 }
 
+@utility animate-gradient {
+  background-size: 300% 300%;
+  animation: bg-gradient 4s ease infinite;
+}
+
+@keyframes bg-gradient {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
 @layer base {
   * {
     border-color: var(--color-border);

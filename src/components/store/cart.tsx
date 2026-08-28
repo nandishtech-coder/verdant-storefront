@@ -22,6 +22,7 @@ type CartApi = {
   add: (p: Product, variant: string, openCart?: boolean) => void;
   setQty: (key: string, qty: number) => void;
   remove: (key: string) => void;
+  clear: () => void;
   wishlist: string[];
   toggleWishlist: (id: string) => void;
 };
@@ -73,6 +74,10 @@ export function CartProvider({ children }: { children: ReactNode }) {
     setWishlist((prev) => (prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]));
   }, []);
 
+  const clear = useCallback(() => {
+    setLines([]);
+  }, []);
+
   const value = useMemo<CartApi>(() => {
     const count = lines.reduce((s, l) => s + l.qty, 0);
     const subtotal = lines.reduce((s, l) => s + l.qty * l.price, 0);
@@ -87,10 +92,11 @@ export function CartProvider({ children }: { children: ReactNode }) {
       add,
       setQty,
       remove,
+      clear,
       wishlist,
       toggleWishlist,
     };
-  }, [lines, open, add, setQty, remove, wishlist, toggleWishlist]);
+  }, [lines, open, add, setQty, remove, clear, wishlist, toggleWishlist]);
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 }

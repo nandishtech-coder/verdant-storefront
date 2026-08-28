@@ -76,7 +76,7 @@ export function ProductCard({ product }: { product: Product }) {
           </div>
         </div>
 
-<div className="mt-auto flex flex-wrap items-end justify-between gap-2 pt-1">
+        <div className="mt-auto flex flex-wrap items-end justify-between gap-2 pt-1">
 
           <div className="min-w-0">
             <div className="flex flex-wrap items-baseline gap-x-2">

@@ -196,7 +196,7 @@ export function LatestBlogs() {
                   className="size-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
                 {post.tag && (
-                  <span className="absolute top-6 left-6 bg-clay px-5 py-3 text-xs font-semibold tracking-[0.12em] text-forest-foreground uppercase">
+                  <span className="absolute top-6 left-6 bg-forest px-5 py-3 text-xs font-semibold tracking-[0.12em] text-white uppercase">
                     {post.tag}
                   </span>
                 )}
@@ -211,10 +211,10 @@ export function LatestBlogs() {
                 <p className="mt-4 leading-relaxed text-forest/75 flex-grow">{post.excerpt}</p>
                 <a
                   href="#top"
-                  className="mt-6 inline-flex items-center gap-2 text-sm font-semibold tracking-[0.14em] text-clay uppercase"
+                  className="mt-6 inline-flex items-center gap-2 text-sm font-semibold tracking-[0.14em] uppercase"
                 >
-                  READ ARTICLE
-                  <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
+                  <span className="text-red-600">READ ARTICLE</span>
+                  <ArrowRight className="size-4 text-forest transition-transform group-hover:translate-x-1" />
                 </a>
               </div>
             </article>
