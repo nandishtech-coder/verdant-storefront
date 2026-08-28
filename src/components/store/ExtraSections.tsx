@@ -249,10 +249,12 @@ export function ContactSection() {
                   className="min-h-[120px] bg-gray-50/50 border-gray-200 hover:-translate-y-1 hover:shadow-md hover:shadow-primary/10 hover:border-primary/40 focus:border-primary transition-all duration-300"
                 />
               </div>
-              <Button className="w-full relative overflow-hidden group/btn bg-forest text-white transition-all duration-500 hover:scale-[1.02] hover:shadow-lg hover:shadow-green-500/30 border-none" size="lg">
-                <div className="absolute inset-0 bg-gradient-to-r from-cyan-500 via-green-400 to-yellow-400 opacity-0 group-hover/btn:opacity-100 transition-opacity duration-500 group-hover/btn:animate-gradient"></div>
-                <Send className="mr-2 size-4 relative z-10" />
-                <span className="relative z-10">Send My Enquiry</span>
+              <Button 
+                className="w-full bg-forest text-white transition-all duration-500 hover:scale-[1.02] active:scale-[0.98] hover:shadow-[0_10px_40px_-10px_rgba(34,197,94,0.5)] border-none hover:bg-gradient-to-r hover:from-cyan-500 hover:via-green-500 hover:to-yellow-500 hover:animate-gradient active:bg-gradient-to-r active:from-cyan-500 active:via-green-500 active:to-yellow-500 active:animate-gradient" 
+                size="lg"
+              >
+                <Send className="mr-2 size-4" />
+                <span>Send My Enquiry</span>
               </Button>
             </form>
           </div>
