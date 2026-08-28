@@ -88,23 +88,23 @@ export function ProductCard({ product }: { product: Product }) {
             <span className="text-xs font-medium text-primary">{off}% off</span>
           </div>
           {qty > 0 ? (
-            <div className="flex flex-col gap-2 items-end">
-              <div className="flex h-9 items-center rounded-xl border border-border bg-card">
+            <div className="flex shrink-0 flex-col gap-2 items-end">
+              <div className="flex h-8 items-center rounded-xl border border-border bg-card sm:h-9">
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="size-9 rounded-none rounded-l-xl text-muted-foreground hover:text-forest"
+                  className="size-8 rounded-none rounded-l-xl text-muted-foreground hover:text-forest sm:size-9"
                   onClick={() => setQty(`${product.id}::${variant}`, qty - 1)}
                 >
                   <Minus className="size-3.5" />
                 </Button>
-                <span className="flex min-w-[2rem] items-center justify-center text-sm font-semibold text-forest">
+                <span className="flex min-w-[1.5rem] items-center justify-center text-sm font-semibold text-forest sm:min-w-[2rem]">
                   {qty}
                 </span>
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="size-9 rounded-none rounded-r-xl text-muted-foreground hover:text-forest"
+                  className="size-8 rounded-none rounded-r-xl text-muted-foreground hover:text-forest sm:size-9"
                   onClick={() => add(product, variant, false)}
                 >
                   <Plus className="size-3.5" />
