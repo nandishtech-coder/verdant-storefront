@@ -92,9 +92,7 @@ function Index() {
               <Reveal variant="up">
                 <MainServices />
               </Reveal>
-              <Reveal variant="up">
-                <HorticultureWorkforce />
-              </Reveal>
+              <HorticultureWorkforce />
               <Reveal variant="up">
                 <FeaturedProducts />
               </Reveal>
