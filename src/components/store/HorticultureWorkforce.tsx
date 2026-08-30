@@ -288,7 +288,7 @@ export function HorticultureWorkforce() {
                 <ArrowRight className="ml-2 size-5" />
               </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[600px] bg-[#fcfbf9]">
+            <DialogContent className="w-[95vw] sm:max-w-[600px] max-h-[90vh] overflow-y-auto rounded-2xl p-4 sm:p-6 bg-[#fcfbf9]">
               <DialogHeader>
                 <DialogTitle className="font-display text-2xl text-forest">Partner With Green Roots</DialogTitle>
                 <p className="text-sm text-muted-foreground mt-2">
