@@ -158,73 +158,75 @@ export function Header() {
     <header className="sticky top-0 z-50">
       <AnnouncementBar />
       <div className="bg-cream/95 backdrop-blur-md pb-3 lg:pb-0">
-        <div className="mx-auto flex w-full flex-wrap items-center gap-y-3 gap-x-2 sm:gap-x-4 px-3 sm:px-4 py-3 lg:px-8">
-          {/* Mobile nav */}
-          <Sheet>
-            <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="lg:hidden" aria-label="Menu">
-                <Menu className="size-5" />
-              </Button>
-            </SheetTrigger>
-            <SheetContent side="left" className="bg-cream">
-              <SheetHeader>
-                <SheetTitle className="font-display text-forest">Shop by category</SheetTitle>
-              </SheetHeader>
-              <Accordion type="single" collapsible className="px-4">
-                {NAV.map((n) => (
-                  <AccordionItem key={n.label} value={n.label}>
-                    <AccordionTrigger className="text-forest">{n.label}</AccordionTrigger>
-                    <AccordionContent>
-                      <ul className="space-y-2">
-                        {n.items.map((i, idx) => {
-                          const href = (n as any).hrefs ? (n as any).hrefs[idx] : "#products";
-                          const isInternalRoute = href.startsWith("/");
-                          return (
-                            <li key={i}>
-                              {isInternalRoute ? (
-                                <Link to={href} className="text-sm text-muted-foreground block w-full">
-                                  {i}
-                                </Link>
-                              ) : (
-                                <a href={href} className="text-sm text-muted-foreground">
-                                  {i}
-                                </a>
-                              )}
-                            </li>
-                          );
-                        })}
-                      </ul>
-                    </AccordionContent>
-                  </AccordionItem>
-                ))}
-              </Accordion>
-            </SheetContent>
-          </Sheet>
+        <div className="mx-auto flex w-full flex-wrap items-center justify-between gap-y-3 gap-x-2 sm:gap-x-4 px-3 sm:px-4 py-3 lg:px-8">
+          {/* Mobile nav & Logo */}
+          <div className="flex items-center gap-2">
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button variant="ghost" size="icon" className="lg:hidden" aria-label="Menu">
+                  <Menu className="size-5" />
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="left" className="bg-cream">
+                <SheetHeader>
+                  <SheetTitle className="font-display text-forest">Our Menu</SheetTitle>
+                </SheetHeader>
+                <Accordion type="single" collapsible className="px-4">
+                  {NAV.map((n) => (
+                    <AccordionItem key={n.label} value={n.label}>
+                      <AccordionTrigger className="text-forest">{n.label}</AccordionTrigger>
+                      <AccordionContent>
+                        <ul className="space-y-2">
+                          {n.items.map((i, idx) => {
+                            const href = (n as any).hrefs ? (n as any).hrefs[idx] : "#products";
+                            const isInternalRoute = href.startsWith("/");
+                            return (
+                              <li key={i}>
+                                {isInternalRoute ? (
+                                  <Link to={href} className="text-sm text-muted-foreground block w-full">
+                                    {i}
+                                  </Link>
+                                ) : (
+                                  <a href={href} className="text-sm text-muted-foreground">
+                                    {i}
+                                  </a>
+                                )}
+                              </li>
+                            );
+                          })}
+                        </ul>
+                      </AccordionContent>
+                    </AccordionItem>
+                  ))}
+                </Accordion>
+              </SheetContent>
+            </Sheet>
 
-          <a href="#top" className="flex items-center gap-2">
-            <span className="logo-glow grid size-14 shrink-0 place-items-center overflow-hidden rounded-2xl bg-card lg:size-16">
-              <img
-                src="/logo.png"
-                alt="GreenRoots"
-                className="size-full scale-[1.02] object-cover"
-              />
-            </span>
-            <div className="hidden sm:flex flex-col">
-              <span className="font-display text-xl font-bold tracking-[0.1em] text-forest uppercase lg:text-2xl drop-shadow-sm" style={{ color: '#2C5A2E' }}>
-                GREENROOTS
+            <a href="#top" className="flex items-center gap-2">
+              <span className="logo-glow grid size-14 shrink-0 place-items-center overflow-hidden rounded-2xl bg-card lg:size-16">
+                <img
+                  src="/logo.png"
+                  alt="GreenRoots"
+                  className="size-full scale-[1.02] object-cover"
+                />
               </span>
-              <span className="text-[0.6rem] font-bold tracking-widest text-forest uppercase mt-[-2px]" style={{ color: '#2C5A2E' }}>
-                Learn. Grow. Harvest.
-              </span>
-            </div>
-          </a>
+              <div className="hidden sm:flex flex-col">
+                <span className="font-display text-xl font-bold tracking-[0.1em] text-forest uppercase lg:text-2xl drop-shadow-sm" style={{ color: '#2C5A2E' }}>
+                  GREENROOTS
+                </span>
+                <span className="text-[0.6rem] font-bold tracking-widest text-forest uppercase mt-[-2px]" style={{ color: '#2C5A2E' }}>
+                  Learn. Grow. Harvest.
+                </span>
+              </div>
+            </a>
+          </div>
 
           {/* Spacer for mobile so icons push right */}
           <div className="flex-1 lg:hidden" />
 
-          {/* Big search bar */}
-          <div ref={searchRef} className="relative order-last w-full lg:order-none lg:w-auto lg:flex-1 z-50">
-            <Search className="absolute left-4 top-1/2 size-5 -translate-y-1/2 text-primary pointer-events-none" />
+          {/* Big search bar (Top middle on Desktop, below on mobile) */}
+          <div ref={searchRef} className="relative order-last w-full lg:order-none lg:w-auto lg:flex-1 lg:max-w-2xl lg:px-6 z-50">
+            <Search className="absolute left-4 top-1/2 lg:left-10 size-5 -translate-y-1/2 text-primary pointer-events-none" />
             <Input
               type="search"
               placeholder={placeholderText}
@@ -234,10 +236,10 @@ export function Header() {
                 setShowResults(true);
               }}
               onFocus={() => setShowResults(true)}
-              className="h-12 w-full rounded-2xl border-border bg-card pl-12 pr-4 shadow-[var(--shadow-soft)] transition-all hover:border-primary focus-visible:ring-1 focus-visible:ring-primary lg:h-14 lg:text-base"
+              className="h-12 w-full rounded-2xl border-border bg-card pl-12 lg:pl-12 pr-4 shadow-[var(--shadow-soft)] transition-all hover:border-primary focus-visible:ring-1 focus-visible:ring-primary lg:h-12 lg:text-base"
             />
             {showResults && searchQuery.trim() !== "" && (
-              <div className="absolute top-full left-0 mt-2 w-full rounded-2xl border border-border bg-cream p-2 shadow-lg max-h-80 overflow-hidden">
+              <div className="absolute top-full left-0 lg:left-6 mt-2 w-full lg:w-[calc(100%-3rem)] rounded-2xl border border-border bg-cream p-2 shadow-lg max-h-80 overflow-hidden">
                 <ul className="max-h-72 overflow-y-auto space-y-1 pr-1">
                   {results.length === 0 ? (
                     <li className="px-3 py-4 text-center text-sm text-muted-foreground">
@@ -270,34 +272,8 @@ export function Header() {
             )}
           </div>
 
-          <nav className="hidden items-center xl:flex">
-            {NAV.map((n) => (
-              <div key={n.label} className="group relative">
-                <button className="flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-medium text-forest transition-colors hover:bg-secondary">
-                  {n.label}
-                  <ChevronDown className="size-3.5 transition-transform group-hover:rotate-180" />
-                </button>
-                <div className="invisible absolute top-full left-0 w-56 translate-y-1 rounded-xl border border-border bg-card p-2 opacity-0 shadow-[var(--shadow-lift)] transition-all duration-200 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100">
-                  {n.items.map((i, idx) => {
-                    const href = (n as any).hrefs ? (n as any).hrefs[idx] : "#products";
-                    const isInternalRoute = href.startsWith("/");
-                    const className = "block rounded-lg px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-secondary hover:text-forest";
-                    return isInternalRoute ? (
-                      <Link key={i} to={href} className={className}>
-                        {i}
-                      </Link>
-                    ) : (
-                      <a key={i} href={href} className={className}>
-                        {i}
-                      </a>
-                    );
-                  })}
-                </div>
-              </div>
-            ))}
-          </nav>
-
-          <div className="flex items-center gap-0.5 sm:gap-1 lg:ml-auto">
+          {/* Icons (Desktop: Right, Mobile: Top Right) */}
+          <div className="flex items-center gap-0.5 sm:gap-1">
             <Button variant="ghost" size="icon" aria-label="Wishlist" className="relative size-9 sm:size-10">
               <Heart className="size-4 sm:size-5" />
               {wishlist.length > 0 && (
@@ -326,6 +302,36 @@ export function Header() {
               </span>
             </Button>
           </div>
+        </div>
+
+        {/* Desktop Navigation (Bottom Row) */}
+        <div className="hidden xl:block w-full border-t border-border/40 bg-white/40">
+          <nav className="mx-auto flex w-full max-w-6xl items-center justify-center gap-x-8 py-2 px-8">
+            {NAV.map((n) => (
+              <div key={n.label} className="group relative">
+                <button className="flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-medium text-forest transition-colors hover:bg-secondary">
+                  {n.label}
+                  <ChevronDown className="size-3.5 transition-transform group-hover:rotate-180" />
+                </button>
+                <div className="invisible absolute top-full left-0 w-56 translate-y-1 rounded-xl border border-border bg-card p-2 opacity-0 shadow-[var(--shadow-lift)] transition-all duration-200 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 z-50">
+                  {n.items.map((i, idx) => {
+                    const href = (n as any).hrefs ? (n as any).hrefs[idx] : "#products";
+                    const isInternalRoute = href.startsWith("/");
+                    const className = "block rounded-lg px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-secondary hover:text-forest";
+                    return isInternalRoute ? (
+                      <Link key={i} to={href} className={className}>
+                        {i}
+                      </Link>
+                    ) : (
+                      <a key={i} href={href} className={className}>
+                        {i}
+                      </a>
+                    );
+                  })}
+                </div>
+              </div>
+            ))}
+          </nav>
         </div>
       </div>
     </header>
