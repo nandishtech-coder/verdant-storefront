@@ -35,6 +35,23 @@ export function CartDrawer() {
     }
   }, [open]);
 
+  useEffect(() => {
+    if (open) {
+      window.history.pushState({ cartOpen: true }, "");
+      
+      const handlePopState = (e: PopStateEvent) => {
+        // If the user presses the back button, close the cart
+        setOpen(false);
+      };
+
+      window.addEventListener("popstate", handlePopState);
+      return () => {
+        window.removeEventListener("popstate", handlePopState);
+      };
+    }
+    return undefined;
+  }, [open, setOpen]);
+
   const remaining = Math.max(0, FREE_SHIPPING_THRESHOLD - subtotal);
   const pct = Math.min(100, (subtotal / FREE_SHIPPING_THRESHOLD) * 100);
 
@@ -83,6 +100,9 @@ export function CartDrawer() {
   };
 
   const handleClose = (v: boolean) => {
+    if (!v && open && window.history.state?.cartOpen) {
+      window.history.back();
+    }
     setOpen(v);
     if (!v) {
       setTimeout(() => setIsSuccess(false), 300); // reset after transition
