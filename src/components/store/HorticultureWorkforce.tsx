@@ -288,59 +288,59 @@ export function HorticultureWorkforce() {
                 <ArrowRight className="ml-2 size-5" />
               </Button>
             </DialogTrigger>
-            <DialogContent className="w-[95vw] sm:max-w-[600px] max-h-[90vh] overflow-y-auto rounded-2xl p-4 sm:p-6 bg-[#fcfbf9]">
+            <DialogContent className="w-[95vw] sm:max-w-[600px] max-h-[85vh] overflow-y-auto rounded-2xl p-4 sm:p-6 bg-[#fcfbf9]">
               <DialogHeader>
-                <DialogTitle className="font-display text-2xl text-forest">Partner With Green Roots</DialogTitle>
-                <p className="text-sm text-muted-foreground mt-2">
+                <DialogTitle className="font-display text-xl sm:text-2xl text-forest">Partner With Green Roots</DialogTitle>
+                <p className="text-xs sm:text-sm text-muted-foreground mt-1 sm:mt-2">
                   Tell us about your workforce requirements and we'll get back to you with a customized solution.
                 </p>
               </DialogHeader>
-              <form className="mt-4 space-y-4">
-                <div className="grid sm:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <label className="text-sm font-semibold text-gray-900">Company Name <span className="text-red-500">*</span></label>
-                    <Input placeholder="Your Company" className="bg-white" />
+              <form className="mt-2 sm:mt-4 space-y-3 sm:space-y-4">
+                <div className="grid sm:grid-cols-2 gap-3 sm:gap-4">
+                  <div className="space-y-1 sm:space-y-2">
+                    <label className="text-xs sm:text-sm font-semibold text-gray-900">Company Name <span className="text-red-500">*</span></label>
+                    <Input placeholder="Your Company" className="bg-white h-8 sm:h-10 text-xs sm:text-sm" />
                   </div>
-                  <div className="space-y-2">
-                    <label className="text-sm font-semibold text-gray-900">Contact Person <span className="text-red-500">*</span></label>
-                    <Input placeholder="Full Name" className="bg-white" />
-                  </div>
-                </div>
-                <div className="grid sm:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <label className="text-sm font-semibold text-gray-900">Phone / WhatsApp <span className="text-red-500">*</span></label>
-                    <Input placeholder="+91 XXXXX XXXXX" className="bg-white" />
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-sm font-semibold text-gray-900">Email Address <span className="text-red-500">*</span></label>
-                    <Input placeholder="your@email.com" className="bg-white" />
+                  <div className="space-y-1 sm:space-y-2">
+                    <label className="text-xs sm:text-sm font-semibold text-gray-900">Contact Person <span className="text-red-500">*</span></label>
+                    <Input placeholder="Full Name" className="bg-white h-8 sm:h-10 text-xs sm:text-sm" />
                   </div>
                 </div>
-                <div className="grid sm:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <label className="text-sm font-semibold text-gray-900">Location Type <span className="text-red-500">*</span></label>
+                <div className="grid sm:grid-cols-2 gap-3 sm:gap-4">
+                  <div className="space-y-1 sm:space-y-2">
+                    <label className="text-xs sm:text-sm font-semibold text-gray-900">Phone / WhatsApp <span className="text-red-500">*</span></label>
+                    <Input placeholder="+91 XXXXX XXXXX" className="bg-white h-8 sm:h-10 text-xs sm:text-sm" />
+                  </div>
+                  <div className="space-y-1 sm:space-y-2">
+                    <label className="text-xs sm:text-sm font-semibold text-gray-900">Email Address <span className="text-red-500">*</span></label>
+                    <Input placeholder="your@email.com" className="bg-white h-8 sm:h-10 text-xs sm:text-sm" />
+                  </div>
+                </div>
+                <div className="grid sm:grid-cols-2 gap-3 sm:gap-4">
+                  <div className="space-y-1 sm:space-y-2">
+                    <label className="text-xs sm:text-sm font-semibold text-gray-900">Location Type <span className="text-red-500">*</span></label>
                     <Select>
-                      <SelectTrigger className="bg-white">
+                      <SelectTrigger className="bg-white h-8 sm:h-10 text-xs sm:text-sm">
                         <SelectValue placeholder="Select location type" />
                       </SelectTrigger>
                       <SelectContent>
                         {DEPLOYMENT_AREAS.map(area => (
-                          <SelectItem key={area} value={area.toLowerCase().replace(/\s+/g, '-')}>{area}</SelectItem>
+                          <SelectItem key={area} value={area.toLowerCase().replace(/\s+/g, '-')} className="text-xs sm:text-sm">{area}</SelectItem>
                         ))}
-                        <SelectItem value="other">Other</SelectItem>
+                        <SelectItem value="other" className="text-xs sm:text-sm">Other</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
-                  <div className="space-y-2">
-                    <label className="text-sm font-semibold text-gray-900">Gardeners Required</label>
-                    <Input type="number" placeholder="e.g. 5" className="bg-white" />
+                  <div className="space-y-1 sm:space-y-2">
+                    <label className="text-xs sm:text-sm font-semibold text-gray-900">Gardeners Required</label>
+                    <Input type="number" placeholder="e.g. 5" className="bg-white h-8 sm:h-10 text-xs sm:text-sm" />
                   </div>
                 </div>
-                <div className="space-y-2">
-                  <label className="text-sm font-semibold text-gray-900">Additional Details</label>
-                  <Textarea placeholder="Tell us more about your specific requirements..." className="bg-white min-h-[100px]" />
+                <div className="space-y-1 sm:space-y-2">
+                  <label className="text-xs sm:text-sm font-semibold text-gray-900">Additional Details</label>
+                  <Textarea placeholder="Tell us more about your specific requirements..." className="bg-white min-h-[60px] sm:min-h-[100px] text-xs sm:text-sm" />
                 </div>
-                <Button className="w-full h-12 text-base font-semibold bg-forest text-white hover:bg-forest/90 mt-2">
+                <Button className="w-full h-10 sm:h-12 text-sm sm:text-base font-semibold bg-forest text-white hover:bg-forest/90 mt-2">
                   Submit Partnership Request
                 </Button>
               </form>
