@@ -31,6 +31,9 @@ import {
   Scissors,
   Sun,
   Users,
+  GraduationCap,
+  BookOpen,
+  Award,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -933,34 +936,59 @@ export function InstagramReels() {
 
 const SERVICES = [
   {
-    icon: Flower2,
-    title: "Verticle Gardening",
-    copy: "Living walls for compact spaces",
+    icon: Search,
+    title: "Garden Consultancy",
+    copy: "Expert advice for your green spaces",
   },
   {
     icon: Sun,
-    title: "Terrace Gardening",
-    copy: "Green spaces made for city living",
+    title: "Terrace & Rooftop Gardening",
+    copy: "Transform your elevated spaces",
+  },
+  {
+    icon: Home,
+    title: "Backyard Garden Setup",
+    copy: "Beautiful and lush backyards",
   },
   {
     icon: Sprout,
-    title: "Repotting",
+    title: "Organic Kitchen Garden",
+    copy: "Grow your own fresh produce",
+  },
+  {
+    icon: Building2,
+    title: "School Kitchen Garden",
+    copy: "Educational green spaces for kids",
+  },
+  {
+    icon: GraduationCap,
+    title: "Gardening Training for Children",
+    copy: "Interactive learning for young minds",
+  },
+  {
+    icon: Users,
+    title: "Group Gardening Training",
+    copy: "Collaborative learning sessions",
+  },
+  {
+    icon: Flower2,
+    title: "Garden Setup & Repotting",
     copy: "Fresh soil and healthier roots",
   },
   {
-    icon: Trees,
-    title: "Landscaping",
-    copy: "Beautiful outdoor transformations",
-  },
-  {
     icon: Scissors,
-    title: "Maintenance",
+    title: "Garden Maintenance",
     copy: "Expert care for your green assets",
   },
   {
+    icon: Truck,
+    title: "Doorstep Gardening Training",
+    copy: "Learn gardening at your home",
+  },
+  {
     icon: Trees,
-    title: "Lawn Care",
-    copy: "Seasonal upkeep & restoration",
+    title: "Organic Gardening Training & Setup",
+    copy: "Complete organic solutions",
   },
 ];
 
