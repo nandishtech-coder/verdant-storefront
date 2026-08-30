@@ -285,7 +285,6 @@ export const PRODUCTS: Product[] = [
 ];
 
 export const NAV = [
-  { label: "Seeds", items: ["Vegetable Seeds", "Herb Seeds", "Flower Seeds"] },
   {
     label: "Our Services",
     items: [
@@ -300,8 +299,37 @@ export const NAV = [
       "Garden Maintenance",
       "Doorstep Gardening Training",
       "Organic Gardening Training & Setup"
+    ],
+    hrefs: [
+      "/service/garden-consultancy",
+      "/service/terrace-rooftop-gardening",
+      "/service/backyard-garden-setup",
+      "/service/organic-kitchen-garden",
+      "/service/school-kitchen-garden",
+      "/service/gardening-training-for-children",
+      "/service/group-gardening-training",
+      "/service/garden-setup-repotting",
+      "/service/garden-maintenance",
+      "/service/doorstep-gardening-training",
+      "/service/organic-gardening-training-setup"
     ]
   },
+  {
+    label: "Professional Horticulture Workforce",
+    items: [
+      "Our Professional Training",
+      "Training & Certification",
+      "Professional Deployment",
+      "Quality Audits & Supervision"
+    ],
+    hrefs: [
+      "#our-professional-training",
+      "#training-certification",
+      "#professional-deployment",
+      "#quality-audits"
+    ]
+  },
+  { label: "Seeds", items: ["Vegetable Seeds", "Herb Seeds", "Flower Seeds"] },
   {
     label: "Plant Care",
     items: ["Potting Mix", "Biostimulants", "Organic Pest Control"],
