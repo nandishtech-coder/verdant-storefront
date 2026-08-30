@@ -18,7 +18,7 @@ export function ProductCard({ product }: { product: Product }) {
 
   return (
     <article className="group flex min-w-0 flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-[var(--shadow-soft)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[var(--shadow-lift)]">
-      <div className="relative aspect-square overflow-hidden bg-secondary">
+      <div className="relative aspect-[4/3] sm:aspect-square overflow-hidden bg-secondary">
         <Link to="/product/$id" params={{ id: product.id }} className="block size-full">
           <img
             src={product.image}
@@ -41,30 +41,30 @@ export function ProductCard({ product }: { product: Product }) {
         </button>
       </div>
 
-      <div className="flex flex-1 flex-col gap-2.5 p-3 sm:gap-3 sm:p-4">
+      <div className="flex flex-1 flex-col gap-1.5 p-2 sm:gap-3 sm:p-4">
         <div className="flex h-4 items-center gap-1.5 text-xs text-muted-foreground">
           <Star className="size-3.5 fill-clay text-clay" />
           <span className="font-medium text-forest">{product.rating}</span>
           <span>({product.reviews.toLocaleString("en-IN")})</span>
         </div>
 
-        <h3 className="line-clamp-2 h-10 text-sm leading-snug font-medium text-forest hover:underline sm:h-11 sm:text-[15px]">
+        <h3 className="line-clamp-2 h-9 text-xs leading-snug font-medium text-forest hover:underline sm:h-11 sm:text-[15px]">
           <Link to="/product/$id" params={{ id: product.id }}>
             {product.title}
           </Link>
         </h3>
 
         <div className="flex flex-1 flex-col">
-          <p className="mb-1.5 text-[10px] tracking-wide text-muted-foreground uppercase sm:text-[11px]">
+          <p className="mb-1 text-[9px] tracking-wide text-muted-foreground uppercase sm:text-[11px] sm:mb-1.5">
             {product.variantLabel}
           </p>
-          <div className="flex flex-wrap content-start gap-1.5">
+          <div className="flex flex-wrap content-start gap-1 sm:gap-1.5">
             {product.variants.slice(0, 4).map((v) => (
               <button
                 key={v}
                 onClick={() => setVariant(v)}
                 className={cn(
-                  "rounded-full border px-2 py-0.5 text-[10px] transition-colors sm:px-2.5 sm:py-1 sm:text-xs",
+                  "rounded-full border px-1.5 py-0.5 text-[9px] transition-colors sm:px-2.5 sm:py-1 sm:text-xs",
                   variant === v
                     ? "border-primary bg-primary text-primary-foreground"
                     : "border-border bg-card text-muted-foreground hover:border-primary hover:text-forest",

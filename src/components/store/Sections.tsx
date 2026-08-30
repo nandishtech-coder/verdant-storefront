@@ -487,7 +487,7 @@ export function FeaturedProducts() {
         <ScrollableRow className="mt-10 w-full py-2">
           {list.length > 0 ? (
             list.map((p) => (
-              <div key={p.id} className="min-w-[280px] sm:min-w-[320px] max-w-[280px] sm:max-w-[320px] shrink-0">
+              <div key={p.id} className="min-w-[160px] max-w-[160px] sm:min-w-[280px] sm:max-w-[280px] shrink-0">
                 <ProductCard product={p} />
               </div>
             ))
@@ -514,7 +514,7 @@ export function ProductRow({ title, filterTag }: { title: string, filterTag?: st
         <ScrollableRow className="w-full py-2">
           {list.length > 0 ? (
             list.map((p) => (
-              <div key={p.id} className="min-w-[280px] sm:min-w-[320px] max-w-[280px] sm:max-w-[320px] shrink-0">
+              <div key={p.id} className="min-w-[160px] max-w-[160px] sm:min-w-[280px] sm:max-w-[280px] shrink-0">
                 <ProductCard product={p} />
               </div>
             ))
