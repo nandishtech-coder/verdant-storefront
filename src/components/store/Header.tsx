@@ -187,6 +187,17 @@ export function Header() {
                     </AccordionContent>
                   </AccordionItem>
                 ))}
+                  <AccordionItem value="Workforce">
+                    <AccordionTrigger className="text-forest border-t border-border/50 pt-3">Professional Horticulture Workforce</AccordionTrigger>
+                    <AccordionContent>
+                      <ul className="space-y-2">
+                        <li><a href="#our-professional-training" className="text-sm text-muted-foreground">Our Professional Training</a></li>
+                        <li><a href="#training-certification" className="text-sm text-muted-foreground">Training & Certification</a></li>
+                        <li><a href="#professional-deployment" className="text-sm text-muted-foreground">Professional Deployment</a></li>
+                        <li><a href="#quality-audits" className="text-sm text-muted-foreground">Quality Audits & Supervision</a></li>
+                      </ul>
+                    </AccordionContent>
+                  </AccordionItem>
               </Accordion>
             </SheetContent>
           </Sheet>
@@ -275,6 +286,18 @@ export function Header() {
                 </div>
               </div>
             ))}
+            <div className="group relative ml-2">
+              <button className="flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-medium text-forest transition-colors hover:bg-secondary">
+                Professional Horticulture Workforce
+                <ChevronDown className="size-3.5 transition-transform group-hover:rotate-180" />
+              </button>
+              <div className="invisible absolute top-full left-0 w-64 translate-y-1 rounded-xl border border-border bg-card p-2 opacity-0 shadow-[var(--shadow-lift)] transition-all duration-200 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100">
+                <a href="#our-professional-training" className="block rounded-lg px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-secondary hover:text-forest">Our Professional Training</a>
+                <a href="#training-certification" className="block rounded-lg px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-secondary hover:text-forest">Training & Certification</a>
+                <a href="#professional-deployment" className="block rounded-lg px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-secondary hover:text-forest">Professional Deployment</a>
+                <a href="#quality-audits" className="block rounded-lg px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-secondary hover:text-forest">Quality Audits & Supervision</a>
+              </div>
+            </div>
           </nav>
 
           <div className="flex items-center gap-0.5 sm:gap-1 lg:ml-auto">

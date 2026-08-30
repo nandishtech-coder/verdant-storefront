@@ -18,7 +18,7 @@ import blogKitchen from "@/assets/blog-kitchen.png";
 /* 1. Gifting story — side-by-side layout with overlapping images */
 export function GiftsGrowWithTime() {
   return (
-    <section aria-labelledby="gifts-grow-heading" className="bg-sand py-16 lg:py-24">
+    <section aria-labelledby="gifts-grow-heading" className="py-16 lg:py-24">
       <div className="mx-auto w-full px-4 lg:px-8">
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-16 lg:items-center">
           
@@ -89,7 +89,7 @@ const DIAMONDS = [
 
 export function FanFavorites() {
   return (
-    <section aria-labelledby="fan-favorites-heading" className="bg-sand py-16 lg:py-24">
+    <section aria-labelledby="fan-favorites-heading" className="py-16 lg:py-24">
       <div className="mx-auto w-full px-4 lg:px-8">
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-16 lg:items-center">
           
@@ -169,7 +169,7 @@ const LATEST_POSTS = [
 
 export function LatestBlogs() {
   return (
-    <section aria-labelledby="latest-blogs-heading" className="bg-sand px-4 py-16 lg:px-8 lg:py-24">
+    <section aria-labelledby="latest-blogs-heading" className="px-4 py-16 lg:px-8 lg:py-24">
       <div className="mx-auto w-full">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6">
           <div>

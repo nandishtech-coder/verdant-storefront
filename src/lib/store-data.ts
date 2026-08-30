@@ -286,10 +286,21 @@ export const PRODUCTS: Product[] = [
 
 export const NAV = [
   { label: "Seeds", items: ["Vegetable Seeds", "Herb Seeds", "Flower Seeds"] },
-  { label: "Plants", items: ["Indoor Plants", "Succulents", "Bonsai"] },
   {
-    label: "Pots & Planters",
-    items: ["Ceramic", "Clay", "FRP", "Metal", "Hanging"],
+    label: "Our Services",
+    items: [
+      "Garden Consultancy",
+      "Terrace & Rooftop Gardening",
+      "Backyard Garden Setup",
+      "Organic Kitchen Garden",
+      "School Kitchen Garden",
+      "Gardening Training for Children",
+      "Group Gardening Training",
+      "Garden Setup & Repotting",
+      "Garden Maintenance",
+      "Doorstep Gardening Training",
+      "Organic Gardening Training & Setup"
+    ]
   },
   {
     label: "Plant Care",

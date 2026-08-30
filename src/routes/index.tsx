@@ -18,10 +18,10 @@ import {
   Footer,
   GiftingBanner,
   Hero,
-  Promos,
-  QuickNav,
+  MainServices,
   TrustRibbon,
 } from "@/components/store/Sections";
+import { HorticultureWorkforce } from "@/components/store/HorticultureWorkforce";
 import {
   ReviewsSection,
   ContactSection,
@@ -47,12 +47,17 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
+let hasInitiallyLoaded = false;
+
 function Index() {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(!hasInitiallyLoaded);
 
   useEffect(() => {
+    if (hasInitiallyLoaded) return;
+    
     const timer = setTimeout(() => {
       setIsLoading(false);
+      hasInitiallyLoaded = true;
     }, 2500);
     return () => clearTimeout(timer);
   }, []);
@@ -85,10 +90,10 @@ function Index() {
               <Hero />
 
               <Reveal variant="up">
-                <QuickNav />
+                <MainServices />
               </Reveal>
-              <Reveal variant="zoom">
-                <Promos />
+              <Reveal variant="up">
+                <HorticultureWorkforce />
               </Reveal>
               <Reveal variant="up">
                 <FeaturedProducts />

@@ -24,6 +24,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { NAV } from "@/lib/store-data";
 
 const TESTIMONIALS = [
   {
@@ -64,7 +65,7 @@ export function ReviewsSection() {
   const row = [...TESTIMONIALS, ...TESTIMONIALS];
 
   return (
-    <section className="bg-sand px-4 py-16 lg:px-8">
+    <section className="px-4 py-16 lg:px-8">
       <div className="mx-auto w-full">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-10">
           <div>
@@ -153,7 +154,7 @@ export function ReviewsSection() {
 
 export function ContactSection() {
   return (
-    <section className="bg-forest/5 px-4 py-16 lg:px-8">
+    <section className="px-4 py-16 lg:px-8">
       <div className="mx-auto w-full">
         <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
           <div>
@@ -236,9 +237,11 @@ export function ContactSection() {
                     <SelectValue placeholder="Select an option" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="bulk" className="cursor-pointer hover:bg-primary/10 focus:bg-primary/10 focus:text-primary transition-colors">Bulk Order / Gifting</SelectItem>
-                    <SelectItem value="landscaping" className="cursor-pointer hover:bg-primary/10 focus:bg-primary/10 focus:text-primary transition-colors">Landscaping Service</SelectItem>
-                    <SelectItem value="support" className="cursor-pointer hover:bg-primary/10 focus:bg-primary/10 focus:text-primary transition-colors">Plant Care Support</SelectItem>
+                    {NAV.find(n => n.label === "Our Services")?.items.map((service) => (
+                      <SelectItem key={service} value={service.toLowerCase().replace(/\s+/g, '-')} className="cursor-pointer hover:bg-primary/10 focus:bg-primary/10 focus:text-primary transition-colors">
+                        {service}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </div>
@@ -272,7 +275,7 @@ const WhatsappIcon = ({ className }: { className?: string }) => (
 
 export function MapSection() {
   return (
-    <section className="bg-forest/5">
+    <section>
       <div className="mx-auto w-full px-4 pb-8 lg:px-8">
         <h4 className="mb-4 text-sm font-semibold text-gray-500">Follow us on social media</h4>
         <div className="flex gap-4">
@@ -376,7 +379,7 @@ function AnimatedCounter({ end, suffix = "", duration = 1 }: { end: number, suff
 
 export function StatsSection() {
   return (
-    <section className="bg-[#FAF7F2] pt-16 lg:pt-24 pb-[88px] md:pb-[160px] -mb-[88px] md:-mb-[160px]">
+    <section className="pt-16 lg:pt-24 pb-[88px] md:pb-[160px] -mb-[88px] md:-mb-[160px]">
       <div className="mx-auto w-full px-4 lg:px-8">
         <p className="mb-12 text-center text-xs font-bold tracking-[0.2em] text-forest/50 uppercase">
           GreenRoots by the numbers

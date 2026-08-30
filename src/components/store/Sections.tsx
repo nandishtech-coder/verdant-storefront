@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from "react";
+import { Link } from "@tanstack/react-router";
 import {
   ArrowRight,
   Gift,
@@ -29,10 +30,20 @@ import {
   Star,
   Scissors,
   Sun,
+  Users,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogClose,
+} from "@/components/ui/dialog";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Carousel,
@@ -43,7 +54,7 @@ import {
   type CarouselApi,
 } from "@/components/ui/carousel";
 import { cn } from "@/lib/utils";
-import { BLOGS, CATEGORY_TABS, PRODUCTS, QUICK_CATEGORIES } from "@/lib/store-data";
+import { BLOGS, CATEGORY_TABS, PRODUCTS } from "@/lib/store-data";
 import { ProductCard } from "./ProductCard";
 import hero from "@/assets/hero-balcony.jpg";
 import gifting from "@/assets/gifting.jpg";
@@ -51,6 +62,17 @@ import plants from "@/assets/p-plants.jpg";
 import ceramic from "@/assets/p-ceramic.jpg";
 import servicesPeaceLily from "@/assets/services-peace-lily.jpg";
 import villageFarm from "@/assets/village-farm.png";
+import imgGardenConsultancy from "@/assets/services/garden_consultancy_1788056389914.png";
+import imgTerraceRooftopGardening from "@/assets/services/terrace_rooftop_gardening_1788056478087.png";
+import imgBackyardGardenSetup from "@/assets/services/backyard_garden_setup_1788056493296.png";
+import imgOrganicKitchenGarden from "@/assets/services/organic_kitchen_garden_1788056503330.png";
+import imgSchoolKitchenGarden from "@/assets/services/school_kitchen_garden_1788056516142.png";
+import imgGardeningTrainingChildren from "@/assets/services/gardening_training_children_1788056542496.png";
+import imgGroupGardeningTraining from "@/assets/services/group_gardening_training_1788056558620.png";
+import imgGardenSetupRepotting from "@/assets/services/garden_setup_repotting_1788056571821.png";
+import imgGardenMaintenance from "@/assets/services/garden_maintenance_1788056584035.png";
+import imgDoorstepGardeningTraining from "@/assets/services/doorstep_gardening_training_1788056600320.png";
+import imgOrganicGardeningTrainingSetup from "@/assets/services/organic_gardening_training_setup_1788056613252.png";
 
 const SLIDES = [
   {
@@ -171,7 +193,7 @@ export function Hero() {
   }, [api]);
 
   return (
-    <section id="top" className="bg-cream px-4 pt-6 pb-2 lg:px-8">
+    <section id="top" className="px-4 pt-6 pb-2 lg:px-8">
       <style>{`
         @keyframes float {
           0% { transform: translateY(0px); }
@@ -262,96 +284,139 @@ export function Hero() {
   );
 }
 
-export function QuickNav() {
-  const row = [...QUICK_CATEGORIES, ...QUICK_CATEGORIES];
-  return (
-    <section className="overflow-hidden px-0 py-10 lg:py-14">
-      <div className="group flex w-max marquee-track gap-6 pb-2 hover:[animation-play-state:paused]">
-        {row.map((c, i) => (
-          <a
-            key={`${c.label}-${i}`}
-            href="#products"
-            className="group/item flex w-28 shrink-0 flex-col items-center gap-3 text-center lg:w-32"
-          >
-            <span className="relative size-24 overflow-hidden rounded-full border-2 border-border p-1 transition-colors group-hover/item:border-primary lg:size-28">
-              <img
-                src={c.image}
-                alt={c.label}
-                loading="lazy"
-                width={200}
-                height={200}
-                className="size-full rounded-full object-cover transition-transform duration-500 group-hover/item:scale-110"
-              />
-            </span>
-            <span className="text-sm font-medium text-forest">
-              <span aria-hidden className="mr-1">
-                {c.emoji}
-              </span>
-              {c.label}
-            </span>
-          </a>
-        ))}
-      </div>
-    </section>
-  );
-}
-
-const PROMOS = [
+export const MAIN_SERVICES_DATA = [
   {
-    badge: "Value pack",
-    title: "Seed Packs",
-    highlight: "4 for ₹499",
-    copy: "Mix & match vegetables, herbs and blooms.",
-    tone: "bg-forest text-cream",
+    id: "garden-consultancy",
+    icon: MessageCircle,
+    image: imgGardenConsultancy,
+    title: "Garden Consultancy",
+    copy: "Expert guidance for planning and setting up gardens based on your space, needs, and lifestyle.",
   },
   {
-    badge: "Limited time",
-    title: "Plant Care",
-    highlight: "Flat 15% OFF",
-    copy: "Biostimulants, neem sprays & potting mixes.",
-    tone: "bg-secondary text-forest",
+    id: "terrace-rooftop-gardening",
+    icon: Sun,
+    image: imgTerraceRooftopGardening,
+    title: "Terrace & Rooftop Gardening",
+    copy: "Transform your terrace or rooftop into a productive green space with customized garden planning, setup, and guidance.",
   },
   {
-    badge: "Studio made",
-    title: "Designer Planters",
-    highlight: "From ₹199",
-    copy: "Ceramic, clay, FRP and hanging planters.",
-    tone: "bg-sand text-forest",
+    id: "backyard-garden-setup",
+    icon: Trees,
+    image: imgBackyardGardenSetup,
+    title: "Backyard Garden Setup",
+    copy: "Design and establish beautiful, functional backyard gardens for growing vegetables, herbs, fruits, and other plants.",
   },
   {
-    badge: "Gifting",
-    title: "Green Hampers",
-    highlight: "Under ₹999",
-    copy: "Ready-to-gift kits with a handwritten note.",
-    tone: "bg-primary text-primary-foreground",
+    id: "organic-kitchen-garden",
+    icon: Leaf,
+    image: imgOrganicKitchenGarden,
+    title: "Organic Kitchen Garden",
+    copy: "Create your own organic kitchen garden and enjoy fresh, chemical-free vegetables and herbs right at your doorstep.",
+  },
+  {
+    id: "school-kitchen-garden",
+    icon: Building2,
+    image: imgSchoolKitchenGarden,
+    title: "School Kitchen Garden",
+    copy: "We help schools set up educational kitchen gardens where children can learn about plants, food, soil, sustainability, and healthy eating through hands-on activities.",
+  },
+  {
+    id: "gardening-training-for-children",
+    icon: Sprout,
+    image: imgGardeningTrainingChildren,
+    title: "Gardening Training for Children",
+    copy: "Interactive gardening sessions specially designed for playgroup, preschool, and school children, helping them discover the joy of growing plants.",
+  },
+  {
+    id: "group-gardening-training",
+    icon: Users,
+    image: imgGroupGardeningTraining,
+    title: "Group Gardening Training",
+    copy: "Practical organic gardening training for groups, communities, institutions, schools, and organizations.",
+  },
+  {
+    id: "garden-setup-repotting",
+    icon: Flower2,
+    image: imgGardenSetupRepotting,
+    title: "Garden Setup & Repotting",
+    copy: "From selecting the right plants and containers to soil preparation, planting, and repotting—we provide complete support for your garden.",
+  },
+  {
+    id: "garden-maintenance",
+    icon: Scissors,
+    image: imgGardenMaintenance,
+    title: "Garden Maintenance",
+    copy: "Regular care and maintenance to keep your garden healthy, productive, and beautiful, including plant care, pruning, soil management, and general garden upkeep.",
+  },
+  {
+    id: "doorstep-gardening-training",
+    icon: Home,
+    image: imgDoorstepGardeningTraining,
+    title: "Doorstep Gardening Training",
+    copy: "Practical gardening training conducted at your doorstep, making it easy for individuals and families to learn how to grow and maintain their own organic kitchen gardens.",
+  },
+  {
+    id: "organic-gardening-training-setup",
+    icon: FlaskConical,
+    image: imgOrganicGardeningTrainingSetup,
+    title: "Organic Gardening Training & Setup",
+    copy: "Complete solutions combining training, garden planning, setup, and ongoing guidance to help you successfully grow organically.",
   },
 ];
 
-export function Promos() {
+export function MainServices() {
   return (
-    <section className="px-4 pb-10 lg:px-8 lg:pb-16">
-      <div className="mx-auto grid w-full gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {PROMOS.map((p) => (
-          <a
-            key={p.title}
-            href="#products"
-            className={cn(
-              "group hover-lift hover-sheen flex flex-col gap-2 rounded-2xl p-6",
-              p.tone,
-            )}
-          >
-            <span className="w-fit rounded-full border border-current/25 px-2.5 py-1 text-[11px] tracking-wide uppercase opacity-80">
-              {p.badge}
-            </span>
-            <h3 className="mt-2 text-sm font-medium opacity-80">{p.title}</h3>
-            <p className="font-display text-2xl font-semibold">{p.highlight}</p>
-            <p className="text-sm opacity-75">{p.copy}</p>
-            <span className="mt-2 flex items-center gap-1 text-sm font-medium">
-              Shop now
-              <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
-            </span>
-          </a>
-        ))}
+    <section className="px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
+      <div className="mx-auto w-full">
+        <div className="text-center max-w-3xl mx-auto mb-16">
+          <Badge variant="secondary" className="mb-4 bg-primary/10 text-primary hover:bg-primary/20">
+            <Leaf className="size-3.5 mr-1.5" />
+            Our Services
+          </Badge>
+          <h2 className="font-display text-4xl md:text-5xl font-semibold text-forest mb-6">
+            Grow Green. Grow Healthy. Grow at Home.
+          </h2>
+          <p className="text-lg text-muted-foreground leading-relaxed">
+            At Green Roots, we help individuals, schools, communities, and organizations create and maintain healthy, sustainable, and organic gardens.
+          </p>
+        </div>
+
+        <div className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
+          {MAIN_SERVICES_DATA.map((service, i) => (
+            <Link 
+              key={service.title} 
+              to={`/service/${service.id}`}
+              className="group flex flex-col overflow-hidden rounded-3xl bg-white shadow-[0_8px_30px_rgb(0,0,0,0.04)] transition-all hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] hover:-translate-y-1 cursor-pointer"
+            >
+              <div className="relative aspect-[4/3] w-full overflow-hidden">
+                <img 
+                  src={service.image} 
+                  alt={service.title} 
+                  className="absolute inset-0 size-full object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+                <span className="absolute bottom-4 left-4 grid size-10 place-items-center rounded-xl bg-white/90 text-primary backdrop-blur-sm shadow-sm transition-colors group-hover:bg-primary group-hover:text-white">
+                  <service.icon className="size-5" />
+                </span>
+              </div>
+              <div className="flex flex-1 flex-col p-6 pt-5 text-left">
+                <h3 className="font-display text-xl font-semibold text-forest mb-3 leading-tight">
+                  {service.title}
+                </h3>
+                <p className="text-sm text-muted-foreground leading-relaxed line-clamp-3">
+                  {service.copy}
+                </p>
+              </div>
+            </Link>
+          ))}
+        </div>
+
+        <div className="mt-16 text-center">
+          <div className="inline-flex items-center justify-center gap-3 rounded-full bg-forest px-6 py-3 text-sm font-medium text-cream shadow-lg text-center max-w-full">
+            <Sprout className="size-4 shrink-0" />
+            <span className="truncate whitespace-normal">Green Roots — Growing Gardens, Growing Knowledge, Growing a Greener Future.</span>
+          </div>
+        </div>
       </div>
     </section>
   );
@@ -383,7 +448,7 @@ export function FeaturedProducts() {
   });
 
   return (
-    <section id="products" className="bg-card px-4 py-14 lg:px-8 lg:py-20">
+    <section id="products" className="px-4 py-14 lg:px-8 lg:py-20">
       <div className="mx-auto w-full">
         <div className="flex flex-col gap-6">
           <div>
@@ -438,7 +503,7 @@ export function FeaturedProducts() {
 export function ProductRow({ title, filterTag }: { title: string, filterTag?: string }) {
   const list = filterTag ? PRODUCTS.filter(p => p.tags.includes(filterTag)) : PRODUCTS;
   return (
-    <section className="bg-card px-4 py-10 lg:px-8 lg:py-14">
+    <section className="px-4 py-10 lg:px-8 lg:py-14">
       <div className="mx-auto w-full">
         <h2 className="text-center font-display text-3xl font-semibold text-forest lg:text-4xl mb-8">
           {title}
@@ -534,7 +599,7 @@ const TRUST = [
 
 export function TrustRibbon() {
   return (
-    <section className="bg-secondary px-4 py-12 lg:px-8">
+    <section className="px-4 py-12 lg:px-8">
       <div className="mx-auto grid w-full gap-8 sm:grid-cols-2 lg:grid-cols-4">
         {TRUST.map((t) => (
           <div key={t.title} className="flex gap-4">
@@ -772,7 +837,7 @@ export function InstagramReels() {
   ];
 
   return (
-    <section className="bg-[#FAF7F2] py-20 overflow-hidden">
+    <section className="py-20 overflow-hidden">
       <div className="text-center mb-12">
         <h2 className="text-3xl font-display font-semibold text-forest">Follow us on Instagram</h2>
         <p className="text-muted-foreground mt-4">
