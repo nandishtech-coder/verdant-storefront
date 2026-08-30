@@ -152,9 +152,9 @@ export function HorticultureWorkforce() {
             </div>
           </div>
           
-          <div className="relative h-full">
+          <div className="relative lg:h-full">
             <div className="absolute inset-0 bg-gradient-to-tr from-forest/5 to-transparent rounded-3xl transform rotate-3 scale-105" />
-            <div className="relative h-full flex flex-col bg-white p-8 sm:p-12 rounded-3xl shadow-[0_20px_60px_-15px_rgba(0,0,0,0.05)] border border-border/50">
+            <div className="relative lg:h-full flex flex-col bg-white p-8 sm:p-12 rounded-3xl shadow-[0_20px_60px_-15px_rgba(0,0,0,0.05)] border border-border/50">
               <div className="flex items-center gap-5 mb-8">
                 <div className="size-14 rounded-full bg-forest/10 flex items-center justify-center text-forest shrink-0">
                   <Award className="size-7" />
