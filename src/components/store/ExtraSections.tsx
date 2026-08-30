@@ -209,30 +209,48 @@ export function ContactSection() {
               Fill in the details below and we'll get back to you within 2 hours.
             </p>
 
-            <form className="mt-8 space-y-6">
+            <form 
+              className="mt-8 space-y-6"
+              onSubmit={(e) => {
+                e.preventDefault();
+                const formData = new FormData(e.currentTarget);
+                const data = Object.fromEntries(formData.entries());
+
+                let msg = `*New Enquiry from GreenRoots!*\n\n`;
+                msg += `*Name:* ${data['fullName']}\n`;
+                msg += `*Phone:* ${data['phone']}\n`;
+                if (data['email']) msg += `*Email:* ${data['email']}\n`;
+                if (data['interest']) msg += `*Interested In:* ${data['interest']}\n`;
+                if (data['message']) msg += `*Message:* ${data['message']}\n`;
+
+                const encodedMessage = encodeURIComponent(msg);
+                window.open(`https://wa.me/916360988785?text=${encodedMessage}`, '_blank');
+                (e.target as HTMLFormElement).reset();
+              }}
+            >
               <div className="grid gap-6 sm:grid-cols-2">
                 <div className="space-y-2 group">
                   <label className="text-sm font-semibold text-gray-900 group-hover:text-primary transition-colors">
                     Full Name <span className="text-red-500">*</span>
                   </label>
-                  <Input placeholder="Your Name" className="bg-gray-50/50 border-gray-200 hover:-translate-y-1 hover:shadow-md hover:shadow-primary/10 hover:border-primary/40 focus:border-primary transition-all duration-300" />
+                  <Input name="fullName" required placeholder="Your Name" className="bg-gray-50/50 border-gray-200 hover:-translate-y-1 hover:shadow-md hover:shadow-primary/10 hover:border-primary/40 focus:border-primary transition-all duration-300" />
                 </div>
                 <div className="space-y-2 group">
                   <label className="text-sm font-semibold text-gray-900 group-hover:text-primary transition-colors">
                     Phone / WhatsApp <span className="text-red-500">*</span>
                   </label>
-                  <Input placeholder="+91 XXXXX XXXXX" className="bg-gray-50/50 border-gray-200 hover:-translate-y-1 hover:shadow-md hover:shadow-primary/10 hover:border-primary/40 focus:border-primary transition-all duration-300" />
+                  <Input name="phone" required placeholder="+91 XXXXX XXXXX" className="bg-gray-50/50 border-gray-200 hover:-translate-y-1 hover:shadow-md hover:shadow-primary/10 hover:border-primary/40 focus:border-primary transition-all duration-300" />
                 </div>
               </div>
               <div className="space-y-2 group">
                 <label className="text-sm font-semibold text-gray-900 group-hover:text-primary transition-colors">Email Address</label>
-                <Input placeholder="your@email.com" className="bg-gray-50/50 border-gray-200 hover:-translate-y-1 hover:shadow-md hover:shadow-primary/10 hover:border-primary/40 focus:border-primary transition-all duration-300" />
+                <Input name="email" type="email" placeholder="your@email.com" className="bg-gray-50/50 border-gray-200 hover:-translate-y-1 hover:shadow-md hover:shadow-primary/10 hover:border-primary/40 focus:border-primary transition-all duration-300" />
               </div>
               <div className="space-y-2 group">
                 <label className="text-sm font-semibold text-gray-900 group-hover:text-primary transition-colors">
                   I am interested in <span className="text-red-500">*</span>
                 </label>
-                <Select>
+                <Select name="interest" required>
                   <SelectTrigger className="flex h-10 w-full rounded-md border border-gray-200 bg-gray-50/50 px-3 py-2 text-sm hover:-translate-y-1 hover:shadow-md hover:shadow-primary/10 hover:border-primary/40 focus:border-primary focus:ring-1 focus:ring-primary transition-all duration-300">
                     <SelectValue placeholder="Select an option" />
                   </SelectTrigger>
@@ -248,11 +266,14 @@ export function ContactSection() {
               <div className="space-y-2 group">
                 <label className="text-sm font-semibold text-gray-900 group-hover:text-primary transition-colors">Message</label>
                 <Textarea
+                  name="message"
+                  required
                   placeholder="Tell us what plants or planters you're looking for..."
                   className="min-h-[120px] bg-gray-50/50 border-gray-200 hover:-translate-y-1 hover:shadow-md hover:shadow-primary/10 hover:border-primary/40 focus:border-primary transition-all duration-300"
                 />
               </div>
               <Button 
+                type="submit"
                 className="w-full bg-forest text-white transition-all duration-500 hover:scale-[1.02] active:scale-[0.98] hover:shadow-[0_10px_40px_-10px_rgba(34,197,94,0.5)] border-none hover:bg-gradient-to-r hover:from-cyan-500 hover:via-green-500 hover:to-yellow-500 hover:animate-gradient active:bg-gradient-to-r active:from-cyan-500 active:via-green-500 active:to-yellow-500 active:animate-gradient" 
                 size="lg"
               >

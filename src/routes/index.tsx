@@ -87,57 +87,59 @@ function Index() {
             </div>
           ) : (
             <>
-              <Hero />
-
-              <Reveal variant="up">
+              <Reveal variant="left">
+                <Hero />
+              </Reveal>
+              <Reveal variant="left">
                 <MainServices />
               </Reveal>
-              <HorticultureWorkforce />
-              <Reveal variant="up">
+              <Reveal variant="left">
+                <HorticultureWorkforce />
+              </Reveal>
+              <Reveal variant="left">
                 <FeaturedProducts />
               </Reveal>
               <Reveal variant="left">
                 <ProductRow title="Premium Ceramic Pots" filterTag="Ceramic Planters" />
               </Reveal>
-              <Reveal variant="right">
+              <Reveal variant="left">
                 <ProductRow title="Bio Organic Cleaning Essentials" filterTag="Plant Care" />
               </Reveal>
-              <Reveal variant="zoom">
+              <Reveal variant="left">
                 <GiftingBanner />
               </Reveal>
-
-              <Reveal variant="blur">
+              <Reveal variant="left">
                 <InstagramReels />
               </Reveal>
-              <Reveal variant="up">
+              <Reveal variant="left">
                 <OurServices />
               </Reveal>
               <Reveal variant="left">
                 <GiftsGrowWithTime />
               </Reveal>
-              <Reveal variant="zoom">
+              <Reveal variant="left">
                 <FanFavorites />
               </Reveal>
-              <Reveal variant="up">
+              <Reveal variant="left">
                 <LatestBlogs />
               </Reveal>
-              <Reveal variant="up">
+              <Reveal variant="left">
                 <ReviewsSection />
               </Reveal>
               <Reveal variant="left">
                 <ContactSection />
               </Reveal>
-              <Reveal variant="blur">
+              <Reveal variant="left">
                 <MapSection />
               </Reveal>
-              <Reveal variant="zoom">
+              <Reveal variant="left">
                 <StatsSection />
               </Reveal>
             </>
           )}
         </main>
 
-        <Reveal variant="up">
+        <Reveal variant="left">
           <Footer />
         </Reveal>
         <CartDrawer />

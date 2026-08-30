@@ -145,18 +145,23 @@
 .reveal-up {
   transform: translate3d(0, 40px, 0);
 }
+
 .reveal-down {
   transform: translate3d(0, -40px, 0);
 }
+
 .reveal-left {
   transform: translate3d(-48px, 0, 0);
 }
+
 .reveal-right {
   transform: translate3d(48px, 0, 0);
 }
+
 .reveal-zoom {
   transform: scale(0.94);
 }
+
 .reveal-blur {
   filter: blur(10px);
   transform: translate3d(0, 24px, 0);
@@ -174,6 +179,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+
   .reveal-up,
   .reveal-down,
   .reveal-left,
@@ -192,6 +198,7 @@
   transition:
     transform 350ms cubic-bezier(0.22, 1, 0.36, 1),
     box-shadow 350ms cubic-bezier(0.22, 1, 0.36, 1);
+
   &:hover {
     transform: translateY(-6px);
     box-shadow: var(--shadow-lift);
@@ -199,10 +206,12 @@
 }
 
 @utility hover-zoom-media {
+
   & img,
   & video {
     transition: transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
   }
+
   &:hover img,
   &:hover video {
     transform: scale(1.07);
@@ -212,20 +221,20 @@
 @utility hover-sheen {
   position: relative;
   overflow: hidden;
+
   &::after {
     content: "";
     position: absolute;
     inset: 0;
     transform: translateX(-120%) skewX(-18deg);
-    background: linear-gradient(
-      90deg,
-      transparent,
-      color-mix(in oklab, var(--cream) 55%, transparent),
-      transparent
-    );
+    background: linear-gradient(90deg,
+        transparent,
+        color-mix(in oklab, var(--cream) 55%, transparent),
+        transparent);
     transition: transform 800ms ease;
     pointer-events: none;
   }
+
   &:hover::after {
     transform: translateX(120%) skewX(-18deg);
   }
@@ -233,17 +242,16 @@
 
 
 @utility logo-glow {
-  background: radial-gradient(
-    circle at 50% 40%,
-    oklch(1 0 0) 0%,
-    var(--cream) 55%,
-    color-mix(in oklab, var(--leaf) 18%, var(--cream)) 100%
-  );
+  background: radial-gradient(circle at 50% 40%,
+      oklch(1 0 0) 0%,
+      var(--cream) 55%,
+      color-mix(in oklab, var(--leaf) 18%, var(--cream)) 100%);
   box-shadow:
     0 0 0 1px color-mix(in oklab, var(--leaf) 25%, transparent),
     0 8px 24px -10px color-mix(in oklab, var(--forest) 45%, transparent);
   transition: transform 400ms ease, box-shadow 400ms ease;
   animation: logo-breathe 4.5s ease-in-out infinite;
+
   &:hover {
     transform: translateY(-2px) scale(1.04);
     box-shadow:
@@ -253,12 +261,14 @@
 }
 
 @keyframes logo-breathe {
+
   0%,
   100% {
     box-shadow:
       0 0 0 1px color-mix(in oklab, var(--leaf) 25%, transparent),
       0 8px 24px -10px color-mix(in oklab, var(--forest) 40%, transparent);
   }
+
   50% {
     box-shadow:
       0 0 0 3px color-mix(in oklab, var(--leaf) 30%, transparent),
@@ -270,6 +280,7 @@
   from {
     transform: translateX(0);
   }
+
   to {
     transform: translateX(-50%);
   }
@@ -281,9 +292,12 @@
 }
 
 @keyframes bg-gradient {
-  0%, 100% {
+
+  0%,
+  100% {
     background-position: 0% 50%;
   }
+
   50% {
     background-position: 100% 50%;
   }

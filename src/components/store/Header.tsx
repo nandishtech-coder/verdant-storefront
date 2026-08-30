@@ -124,6 +124,7 @@ export function Header() {
   const [searchQuery, setSearchQuery] = useState("");
   const [showResults, setShowResults] = useState(false);
   const [placeholderText, setPlaceholderText] = useState("");
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const searchRef = useRef<HTMLDivElement>(null);
 
   const fullText = "Search for seeds, plants, planters & more...";
@@ -150,6 +151,29 @@ export function Header() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      window.history.pushState({ mobileMenuOpen: true }, "");
+      
+      const handlePopState = (e: PopStateEvent) => {
+        setMobileMenuOpen(false);
+      };
+
+      window.addEventListener("popstate", handlePopState);
+      return () => {
+        window.removeEventListener("popstate", handlePopState);
+      };
+    }
+    return undefined;
+  }, [mobileMenuOpen]);
+
+  const handleMobileMenuClose = (v: boolean) => {
+    if (!v && mobileMenuOpen && window.history.state?.mobileMenuOpen) {
+      window.history.back();
+    }
+    setMobileMenuOpen(v);
+  };
+
   const results = searchQuery.trim()
     ? PRODUCTS.filter((p) => p.title.toLowerCase().includes(searchQuery.toLowerCase())).slice(0, 6)
     : [];
@@ -161,7 +185,7 @@ export function Header() {
         <div className="mx-auto flex w-full flex-wrap items-center justify-between gap-y-3 gap-x-2 sm:gap-x-4 px-3 sm:px-4 py-3 lg:px-8">
           {/* Mobile nav & Logo */}
           <div className="flex items-center gap-2">
-            <Sheet>
+            <Sheet open={mobileMenuOpen} onOpenChange={handleMobileMenuClose}>
               <SheetTrigger asChild>
                 <Button variant="ghost" size="icon" className="lg:hidden" aria-label="Menu">
                   <Menu className="size-5" />

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { 
   Building2, 
   GraduationCap, 
@@ -281,74 +282,104 @@ export function HorticultureWorkforce() {
           <p className="text-xl text-muted-foreground mb-10 max-w-2xl mx-auto leading-relaxed">
             Partner with Green Roots for Professional Horticulture Workforce & Garden Management to deliver greener, healthier spaces.
           </p>
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button size="lg" className="rounded-full text-lg h-14 px-8 shadow-xl">
-                Partner With Us Today
-                <ArrowRight className="ml-2 size-5" />
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="w-[95vw] sm:max-w-[600px] max-h-[85vh] overflow-y-auto rounded-2xl p-4 sm:p-6 bg-[#fcfbf9]">
-              <DialogHeader>
-                <DialogTitle className="font-display text-xl sm:text-2xl text-forest">Partner With Green Roots</DialogTitle>
-                <p className="text-xs sm:text-sm text-muted-foreground mt-1 sm:mt-2">
-                  Tell us about your workforce requirements and we'll get back to you with a customized solution.
-                </p>
-              </DialogHeader>
-              <form className="mt-2 sm:mt-4 space-y-3 sm:space-y-4">
-                <div className="grid sm:grid-cols-2 gap-3 sm:gap-4">
-                  <div className="space-y-1 sm:space-y-2">
-                    <label className="text-xs sm:text-sm font-semibold text-gray-900">Company Name <span className="text-red-500">*</span></label>
-                    <Input placeholder="Your Company" className="bg-white h-8 sm:h-10 text-xs sm:text-sm" />
-                  </div>
-                  <div className="space-y-1 sm:space-y-2">
-                    <label className="text-xs sm:text-sm font-semibold text-gray-900">Contact Person <span className="text-red-500">*</span></label>
-                    <Input placeholder="Full Name" className="bg-white h-8 sm:h-10 text-xs sm:text-sm" />
-                  </div>
-                </div>
-                <div className="grid sm:grid-cols-2 gap-3 sm:gap-4">
-                  <div className="space-y-1 sm:space-y-2">
-                    <label className="text-xs sm:text-sm font-semibold text-gray-900">Phone / WhatsApp <span className="text-red-500">*</span></label>
-                    <Input placeholder="+91 XXXXX XXXXX" className="bg-white h-8 sm:h-10 text-xs sm:text-sm" />
-                  </div>
-                  <div className="space-y-1 sm:space-y-2">
-                    <label className="text-xs sm:text-sm font-semibold text-gray-900">Email Address <span className="text-red-500">*</span></label>
-                    <Input placeholder="your@email.com" className="bg-white h-8 sm:h-10 text-xs sm:text-sm" />
-                  </div>
-                </div>
-                <div className="grid sm:grid-cols-2 gap-3 sm:gap-4">
-                  <div className="space-y-1 sm:space-y-2">
-                    <label className="text-xs sm:text-sm font-semibold text-gray-900">Location Type <span className="text-red-500">*</span></label>
-                    <Select>
-                      <SelectTrigger className="bg-white h-8 sm:h-10 text-xs sm:text-sm">
-                        <SelectValue placeholder="Select location type" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {DEPLOYMENT_AREAS.map(area => (
-                          <SelectItem key={area} value={area.toLowerCase().replace(/\s+/g, '-')} className="text-xs sm:text-sm">{area}</SelectItem>
-                        ))}
-                        <SelectItem value="other" className="text-xs sm:text-sm">Other</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div className="space-y-1 sm:space-y-2">
-                    <label className="text-xs sm:text-sm font-semibold text-gray-900">Gardeners Required</label>
-                    <Input type="number" placeholder="e.g. 5" className="bg-white h-8 sm:h-10 text-xs sm:text-sm" />
-                  </div>
-                </div>
-                <div className="space-y-1 sm:space-y-2">
-                  <label className="text-xs sm:text-sm font-semibold text-gray-900">Additional Details</label>
-                  <Textarea placeholder="Tell us more about your specific requirements..." className="bg-white min-h-[60px] sm:min-h-[100px] text-xs sm:text-sm" />
-                </div>
-                <Button className="w-full h-10 sm:h-12 text-sm sm:text-base font-semibold bg-forest text-white hover:bg-forest/90 mt-2">
-                  Submit Partnership Request
-                </Button>
-              </form>
-            </DialogContent>
-          </Dialog>
+          <PartnershipDialog />
         </div>
 
       </div>
     </section>
   );
 }
+
+function PartnershipDialog() {
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitted(true);
+  };
+
+  return (
+    <Dialog onOpenChange={(open) => {
+      if (!open) setTimeout(() => setIsSubmitted(false), 300);
+    }}>
+      <DialogTrigger asChild>
+        <Button size="lg" className="rounded-full text-lg h-14 px-8 shadow-xl">
+          Partner With Us Today
+          <ArrowRight className="ml-2 size-5" />
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="w-[95vw] sm:max-w-[600px] max-h-[85vh] overflow-y-auto rounded-2xl p-4 sm:p-6 bg-[#fcfbf9]">
+        {isSubmitted ? (
+          <div className="flex flex-col items-center justify-center gap-4 py-8 text-center">
+            <div className="flex size-20 items-center justify-center rounded-full bg-green-100 mb-2">
+              <CheckCircle2 className="size-10 text-forest" />
+            </div>
+            <h2 className="font-display text-2xl font-bold text-forest">Request Submitted!</h2>
+            <p className="text-muted-foreground text-lg">
+              Within 24 to 48 hours our team will connect with you.
+            </p>
+          </div>
+        ) : (
+          <>
+            <DialogHeader>
+              <DialogTitle className="font-display text-xl sm:text-2xl text-forest">Partner With Green Roots</DialogTitle>
+              <p className="text-xs sm:text-sm text-muted-foreground mt-1 sm:mt-2">
+                Tell us about your workforce requirements and we'll get back to you with a customized solution.
+              </p>
+            </DialogHeader>
+            <form onSubmit={handleSubmit} className="mt-2 sm:mt-4 space-y-3 sm:space-y-4">
+              <div className="grid sm:grid-cols-2 gap-3 sm:gap-4">
+                <div className="space-y-1 sm:space-y-2">
+                  <label className="text-xs sm:text-sm font-semibold text-gray-900">Company Name <span className="text-red-500">*</span></label>
+                  <Input required placeholder="Your Company" className="bg-white h-8 sm:h-10 text-xs sm:text-sm" />
+                </div>
+                <div className="space-y-1 sm:space-y-2">
+                  <label className="text-xs sm:text-sm font-semibold text-gray-900">Contact Person <span className="text-red-500">*</span></label>
+                  <Input required placeholder="Full Name" className="bg-white h-8 sm:h-10 text-xs sm:text-sm" />
+                </div>
+              </div>
+              <div className="grid sm:grid-cols-2 gap-3 sm:gap-4">
+                <div className="space-y-1 sm:space-y-2">
+                  <label className="text-xs sm:text-sm font-semibold text-gray-900">Phone / WhatsApp <span className="text-red-500">*</span></label>
+                  <Input required placeholder="+91 XXXXX XXXXX" className="bg-white h-8 sm:h-10 text-xs sm:text-sm" />
+                </div>
+                <div className="space-y-1 sm:space-y-2">
+                  <label className="text-xs sm:text-sm font-semibold text-gray-900">Email Address <span className="text-red-500">*</span></label>
+                  <Input required type="email" placeholder="your@email.com" className="bg-white h-8 sm:h-10 text-xs sm:text-sm" />
+                </div>
+              </div>
+              <div className="grid sm:grid-cols-2 gap-3 sm:gap-4">
+                <div className="space-y-1 sm:space-y-2">
+                  <label className="text-xs sm:text-sm font-semibold text-gray-900">Location Type <span className="text-red-500">*</span></label>
+                  <Select required>
+                    <SelectTrigger className="bg-white h-8 sm:h-10 text-xs sm:text-sm">
+                      <SelectValue placeholder="Select location type" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {DEPLOYMENT_AREAS.map(area => (
+                        <SelectItem key={area} value={area.toLowerCase().replace(/\s+/g, '-')} className="text-xs sm:text-sm">{area}</SelectItem>
+                      ))}
+                      <SelectItem value="other" className="text-xs sm:text-sm">Other</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-1 sm:space-y-2">
+                  <label className="text-xs sm:text-sm font-semibold text-gray-900">Gardeners Required</label>
+                  <Input type="number" placeholder="e.g. 5" className="bg-white h-8 sm:h-10 text-xs sm:text-sm" />
+                </div>
+              </div>
+              <div className="space-y-1 sm:space-y-2">
+                <label className="text-xs sm:text-sm font-semibold text-gray-900">Additional Details</label>
+                <Textarea placeholder="Tell us more about your specific requirements..." className="bg-white min-h-[60px] sm:min-h-[100px] text-xs sm:text-sm" />
+              </div>
+              <Button type="submit" className="w-full h-10 sm:h-12 text-sm sm:text-base font-semibold bg-forest text-white hover:bg-forest/90 mt-2">
+                Submit Partnership Request
+              </Button>
+            </form>
+          </>
+        )}
+      </DialogContent>
+    </Dialog>
+  );
+}
+
