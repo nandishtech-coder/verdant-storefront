@@ -287,85 +287,8 @@ export function Hero() {
   );
 }
 
-export const MAIN_SERVICES_DATA = [
-  {
-    id: "garden-consultancy",
-    icon: MessageCircle,
-    image: imgGardenConsultancy,
-    title: "Garden Consultancy",
-    copy: "Expert guidance for planning and setting up gardens based on your space, needs, and lifestyle.",
-  },
-  {
-    id: "terrace-rooftop-gardening",
-    icon: Sun,
-    image: imgTerraceRooftopGardening,
-    title: "Terrace & Rooftop Gardening",
-    copy: "Transform your terrace or rooftop into a productive green space with customized garden planning, setup, and guidance.",
-  },
-  {
-    id: "backyard-garden-setup",
-    icon: Trees,
-    image: imgBackyardGardenSetup,
-    title: "Backyard Garden Setup",
-    copy: "Design and establish beautiful, functional backyard gardens for growing vegetables, herbs, fruits, and other plants.",
-  },
-  {
-    id: "organic-kitchen-garden",
-    icon: Leaf,
-    image: imgOrganicKitchenGarden,
-    title: "Organic Kitchen Garden",
-    copy: "Create your own organic kitchen garden and enjoy fresh, chemical-free vegetables and herbs right at your doorstep.",
-  },
-  {
-    id: "school-kitchen-garden",
-    icon: Building2,
-    image: imgSchoolKitchenGarden,
-    title: "School Kitchen Garden",
-    copy: "We help schools set up educational kitchen gardens where children can learn about plants, food, soil, sustainability, and healthy eating through hands-on activities.",
-  },
-  {
-    id: "gardening-training-for-children",
-    icon: Sprout,
-    image: imgGardeningTrainingChildren,
-    title: "Gardening Training for Children",
-    copy: "Interactive gardening sessions specially designed for playgroup, preschool, and school children, helping them discover the joy of growing plants.",
-  },
-  {
-    id: "group-gardening-training",
-    icon: Users,
-    image: imgGroupGardeningTraining,
-    title: "Group Gardening Training",
-    copy: "Practical organic gardening training for groups, communities, institutions, schools, and organizations.",
-  },
-  {
-    id: "garden-setup-repotting",
-    icon: Flower2,
-    image: imgGardenSetupRepotting,
-    title: "Garden Setup & Repotting",
-    copy: "From selecting the right plants and containers to soil preparation, planting, and repotting—we provide complete support for your garden.",
-  },
-  {
-    id: "garden-maintenance",
-    icon: Scissors,
-    image: imgGardenMaintenance,
-    title: "Garden Maintenance",
-    copy: "Regular care and maintenance to keep your garden healthy, productive, and beautiful, including plant care, pruning, soil management, and general garden upkeep.",
-  },
-  {
-    id: "doorstep-gardening-training",
-    icon: Home,
-    image: imgDoorstepGardeningTraining,
-    title: "Doorstep Gardening Training",
-    copy: "Practical gardening training conducted at your doorstep, making it easy for individuals and families to learn how to grow and maintain their own organic kitchen gardens.",
-  },
-  {
-    id: "organic-gardening-training-setup",
-    icon: FlaskConical,
-    image: imgOrganicGardeningTrainingSetup,
-    title: "Organic Gardening Training & Setup",
-    copy: "Complete solutions combining training, garden planning, setup, and ongoing guidance to help you successfully grow organically.",
-  },
-];
+/** Services now come from the backend (see src/lib/services.functions.ts). */
+
 
 export function MainServices() {
   return (
