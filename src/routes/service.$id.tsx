@@ -1,11 +1,14 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowLeft, CheckCircle2, CalendarDays, Phone, Mail } from "lucide-react";
+import { ArrowLeft, CheckCircle2, CalendarDays, Phone, Mail, Loader2 } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { useServerFn } from "@tanstack/react-start";
 import { Header } from "@/components/store/Header";
-import { Footer, MAIN_SERVICES_DATA } from "@/components/store/Sections";
+import { Footer } from "@/components/store/Sections";
 import { CartDrawer } from "@/components/store/CartDrawer";
 import { CartProvider } from "@/components/store/cart";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+import { listServices } from "@/lib/services.functions";
+import { serviceIcon } from "@/lib/service-icons";
 
 export const Route = createFileRoute("/service/$id")({
   component: ServicePageWrapper,
@@ -28,7 +31,20 @@ function ServicePageWrapper() {
 
 function ServicePage() {
   const { id } = Route.useParams();
-  const service = MAIN_SERVICES_DATA.find((s) => s.id === id);
+  const fetchServices = useServerFn(listServices);
+  const { data: services = [], isPending } = useQuery({
+    queryKey: ["services", "public"],
+    queryFn: () => fetchServices(),
+  });
+  const service = services.find((s) => s.slug === id);
+
+  if (isPending) {
+    return (
+      <div className="grid min-h-[60vh] place-items-center">
+        <Loader2 className="size-7 animate-spin text-primary" aria-label="Loading service" />
+      </div>
+    );
+  }
 
   if (!service) {
     return (
@@ -40,6 +56,9 @@ function ServicePage() {
       </div>
     );
   }
+
+  const Icon = serviceIcon(service.icon);
+
 
   return (
     <div className="animate-in fade-in duration-700">
