@@ -388,7 +388,8 @@ export function MainServices() {
           {MAIN_SERVICES_DATA.map((service, i) => (
             <Link 
               key={service.title} 
-              to={`/service/${service.id}`}
+              to="/service/$id"
+              params={{ id: service.id }}
               className="group flex flex-col overflow-hidden rounded-3xl bg-white shadow-[0_8px_30px_rgb(0,0,0,0.04)] transition-all hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] hover:-translate-y-1 cursor-pointer"
             >
               <div className="relative aspect-[4/3] w-full overflow-hidden">
