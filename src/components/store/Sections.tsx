@@ -291,6 +291,12 @@ export function Hero() {
 
 
 export function MainServices() {
+  const fetchServices = useServerFn(listServices);
+  const { data: services = [], isPending } = useQuery({
+    queryKey: ["services", "public"],
+    queryFn: () => fetchServices(),
+  });
+
   return (
     <section className="px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
       <div className="mx-auto w-full">
@@ -307,23 +313,35 @@ export function MainServices() {
           </p>
         </div>
 
+        {isPending ? (
+          <div className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
+            {Array.from({ length: 8 }).map((_, i) => (
+              <div key={i} className="h-72 animate-pulse rounded-3xl bg-muted" />
+            ))}
+          </div>
+        ) : services.length === 0 ? (
+          <p className="text-center text-muted-foreground">No services published yet.</p>
+        ) : (
         <div className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
-          {MAIN_SERVICES_DATA.map((service, i) => (
+          {services.map((service) => {
+            const Icon = serviceIcon(service.icon);
+            return (
             <Link 
-              key={service.title} 
+              key={service.id} 
               to="/service/$id"
-              params={{ id: service.id }}
+              params={{ id: service.slug }}
               className="group flex flex-col overflow-hidden rounded-3xl bg-white shadow-[0_8px_30px_rgb(0,0,0,0.04)] transition-all hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] hover:-translate-y-1 cursor-pointer"
             >
               <div className="relative aspect-[4/3] w-full overflow-hidden">
                 <img 
-                  src={service.image} 
+                  src={service.image_url} 
                   alt={service.title} 
+                  loading="lazy"
                   className="absolute inset-0 size-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
                 <span className="absolute bottom-4 left-4 grid size-10 place-items-center rounded-xl bg-white/90 text-primary backdrop-blur-sm shadow-sm transition-colors group-hover:bg-primary group-hover:text-white">
-                  <service.icon className="size-5" />
+                  <Icon className="size-5" />
                 </span>
               </div>
               <div className="flex flex-1 flex-col p-6 pt-5 text-left">
@@ -331,12 +349,15 @@ export function MainServices() {
                   {service.title}
                 </h3>
                 <p className="text-sm text-muted-foreground leading-relaxed line-clamp-3">
-                  {service.copy}
+                  {service.description}
                 </p>
               </div>
             </Link>
-          ))}
+            );
+          })}
         </div>
+        )}
+
 
         <div className="mt-16 text-center">
           <div className="inline-flex items-center justify-center gap-3 rounded-full bg-forest px-6 py-3 text-sm font-medium text-cream shadow-lg text-center max-w-full">
