@@ -57,7 +57,12 @@ import {
   type CarouselApi,
 } from "@/components/ui/carousel";
 import { cn } from "@/lib/utils";
+import { useQuery } from "@tanstack/react-query";
+import { useServerFn } from "@tanstack/react-start";
+import { listServices } from "@/lib/services.functions";
+import { serviceIcon } from "@/lib/service-icons";
 import { BLOGS, CATEGORY_TABS, PRODUCTS } from "@/lib/store-data";
+
 import { ProductCard } from "./ProductCard";
 import hero from "@/assets/hero-balcony.jpg";
 import gifting from "@/assets/gifting.jpg";
