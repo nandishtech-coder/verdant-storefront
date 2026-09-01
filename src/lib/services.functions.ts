@@ -1,0 +1,96 @@
+import { createServerFn } from "@tanstack/react-start";
+import { createClient } from "@supabase/supabase-js";
+import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+import type { Database } from "@/integrations/supabase/types";
+
+export type ServiceRow = {
+  id: string;
+  slug: string;
+  title: string;
+  description: string;
+  image_url: string;
+  icon: string;
+  sort_order: number;
+  is_active: boolean;
+};
+
+function publicClient() {
+  const key = process.env["SUPABASE_PUBLISHABLE_KEY"]!;
+  return createClient<Database>(process.env["SUPABASE_URL"]!, key, {
+    auth: { persistSession: false, autoRefreshToken: false },
+    global: {
+      fetch: (input, init) => {
+        const h = new Headers(init?.headers);
+        if (key.startsWith("sb_") && h.get("Authorization") === `Bearer ${key}`) h.delete("Authorization");
+        h.set("apikey", key);
+        return fetch(input, { ...init, headers: h });
+      },
+    },
+  });
+}
+
+/** Public: active services for the storefront. */
+export const listServices = createServerFn({ method: "GET" }).handler(async () => {
+  const { data, error } = await publicClient()
+    .from("services")
+    .select("id, slug, title, description, image_url, icon, sort_order, is_active")
+    .eq("is_active", true)
+    .order("sort_order", { ascending: true });
+  if (error) return [] as ServiceRow[];
+  return (data ?? []) as ServiceRow[];
+});
+
+/** Admin: every service, including hidden ones. */
+export const listAllServices = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    const { data, error } = await context.supabase
+      .from("services")
+      .select("id, slug, title, description, image_url, icon, sort_order, is_active")
+      .order("sort_order", { ascending: true });
+    if (error) throw error;
+    return (data ?? []) as ServiceRow[];
+  });
+
+export type ServiceInput = {
+  id?: string;
+  slug: string;
+  title: string;
+  description: string;
+  image_url: string;
+  icon: string;
+  sort_order: number;
+  is_active: boolean;
+};
+
+export const saveService = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((data: ServiceInput) => data)
+  .handler(async ({ data, context }) => {
+    const payload = {
+      slug: data.slug.trim(),
+      title: data.title.trim(),
+      description: data.description.trim(),
+      image_url: data.image_url.trim(),
+      icon: data.icon.trim() || "Leaf",
+      sort_order: data.sort_order,
+      is_active: data.is_active,
+    };
+    if (data.id) {
+      const { error } = await context.supabase.from("services").update(payload).eq("id", data.id);
+      if (error) throw error;
+    } else {
+      const { error } = await context.supabase.from("services").insert(payload);
+      if (error) throw error;
+    }
+    return { ok: true as const };
+  });
+
+export const deleteService = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((data: { id: string }) => data)
+  .handler(async ({ data, context }) => {
+    const { error } = await context.supabase.from("services").delete().eq("id", data.id);
+    if (error) throw error;
+    return { ok: true as const };
+  });

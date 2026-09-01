@@ -1,11 +1,14 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowLeft, CheckCircle2, CalendarDays, Phone, Mail } from "lucide-react";
+import { ArrowLeft, CheckCircle2, CalendarDays, Phone, Mail, Loader2 } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { useServerFn } from "@tanstack/react-start";
 import { Header } from "@/components/store/Header";
-import { Footer, MAIN_SERVICES_DATA } from "@/components/store/Sections";
+import { Footer } from "@/components/store/Sections";
 import { CartDrawer } from "@/components/store/CartDrawer";
 import { CartProvider } from "@/components/store/cart";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+import { listServices } from "@/lib/services.functions";
+import { serviceIcon } from "@/lib/service-icons";
 
 export const Route = createFileRoute("/service/$id")({
   component: ServicePageWrapper,
@@ -28,7 +31,20 @@ function ServicePageWrapper() {
 
 function ServicePage() {
   const { id } = Route.useParams();
-  const service = MAIN_SERVICES_DATA.find((s) => s.id === id);
+  const fetchServices = useServerFn(listServices);
+  const { data: services = [], isPending } = useQuery({
+    queryKey: ["services", "public"],
+    queryFn: () => fetchServices(),
+  });
+  const service = services.find((s) => s.slug === id);
+
+  if (isPending) {
+    return (
+      <div className="grid min-h-[60vh] place-items-center">
+        <Loader2 className="size-7 animate-spin text-primary" aria-label="Loading service" />
+      </div>
+    );
+  }
 
   if (!service) {
     return (
@@ -41,12 +57,15 @@ function ServicePage() {
     );
   }
 
+  const Icon = serviceIcon(service.icon);
+
+
   return (
     <div className="animate-in fade-in duration-700">
       {/* Hero Section */}
       <section className="relative h-[50vh] min-h-[400px] w-full overflow-hidden">
         <img
-          src={service.image}
+          src={service.image_url}
           alt={service.title}
           className="absolute inset-0 size-full object-cover"
         />
@@ -63,14 +82,14 @@ function ServicePage() {
           
           <div className="flex items-end gap-6">
             <span className="grid size-16 shrink-0 place-items-center rounded-2xl bg-white/20 text-white backdrop-blur-md shadow-sm border border-white/10 hidden md:grid">
-              <service.icon className="size-8" />
+              <Icon className="size-8" />
             </span>
             <div>
               <h1 className="font-display text-4xl font-bold text-white md:text-5xl lg:text-6xl mb-4 leading-tight">
                 {service.title}
               </h1>
               <p className="max-w-2xl text-lg text-white/90 leading-relaxed">
-                {service.copy}
+                {service.description}
               </p>
             </div>
           </div>
