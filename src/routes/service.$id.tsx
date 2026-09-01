@@ -65,7 +65,7 @@ function ServicePage() {
       {/* Hero Section */}
       <section className="relative h-[50vh] min-h-[400px] w-full overflow-hidden">
         <img
-          src={service.image}
+          src={service.image_url}
           alt={service.title}
           className="absolute inset-0 size-full object-cover"
         />
@@ -82,14 +82,14 @@ function ServicePage() {
           
           <div className="flex items-end gap-6">
             <span className="grid size-16 shrink-0 place-items-center rounded-2xl bg-white/20 text-white backdrop-blur-md shadow-sm border border-white/10 hidden md:grid">
-              <service.icon className="size-8" />
+              <Icon className="size-8" />
             </span>
             <div>
               <h1 className="font-display text-4xl font-bold text-white md:text-5xl lg:text-6xl mb-4 leading-tight">
                 {service.title}
               </h1>
               <p className="max-w-2xl text-lg text-white/90 leading-relaxed">
-                {service.copy}
+                {service.description}
               </p>
             </div>
           </div>
