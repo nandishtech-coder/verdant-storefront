@@ -20,6 +20,7 @@ import {
   Hero,
   MainServices,
   TrustRibbon,
+  DynamicCategoryRows,
 } from "@/components/store/Sections";
 import { HorticultureWorkforce } from "@/components/store/HorticultureWorkforce";
 import {
@@ -99,12 +100,7 @@ function Index() {
               <Reveal variant="left">
                 <FeaturedProducts />
               </Reveal>
-              <Reveal variant="left">
-                <ProductRow title="Premium Ceramic Pots" filterTag="Ceramic Planters" />
-              </Reveal>
-              <Reveal variant="left">
-                <ProductRow title="Bio Organic Cleaning Essentials" filterTag="Plant Care" />
-              </Reveal>
+              <DynamicCategoryRows />
               <Reveal variant="left">
                 <GiftingBanner />
               </Reveal>

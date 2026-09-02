@@ -4,12 +4,15 @@ import { Header } from "@/components/store/Header";
 import { Footer } from "@/components/store/Sections";
 import { CartDrawer } from "@/components/store/CartDrawer";
 import { CartProvider, useCart } from "@/components/store/cart";
-import { PRODUCTS, inr } from "@/lib/store-data";
+import { useQuery } from "@tanstack/react-query";
+import { useServerFn } from "@tanstack/react-start";
+import { listProducts } from "@/lib/products.functions";
+import { inr } from "@/lib/store-data";
 import { ProductCard } from "@/components/store/ProductCard";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Minus, Plus, CheckCircle2 } from "lucide-react";
+import { Minus, Plus, CheckCircle2, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Reveal } from "@/components/store/Reveal";
 
@@ -34,7 +37,13 @@ function ProductPageWrapper() {
 
 function ProductPage() {
   const { id } = Route.useParams();
-  const product = PRODUCTS.find((p) => p.id === id);
+  const fetchProducts = useServerFn(listProducts);
+  const { data: products = [], isPending } = useQuery({
+    queryKey: ["products", "public"],
+    queryFn: () => fetchProducts(),
+  });
+
+  const product = products.find((p) => p.id === id);
   const { add, setQty, setOpen, lines } = useCart();
 
   const [variant, setVariant] = useState(product?.variants[0] ?? "Default");
@@ -42,6 +51,14 @@ function ProductPage() {
   const [deliveryStatus, setDeliveryStatus] = useState<
     "idle" | "checking" | "available" | "unavailable"
   >("idle");
+
+  if (isPending) {
+    return (
+      <div className="py-20 text-center flex justify-center">
+        <Loader2 className="animate-spin text-forest size-8" />
+      </div>
+    );
+  }
 
   if (!product) {
     return (
@@ -55,12 +72,12 @@ function ProductPage() {
   const qty = cartLine ? cartLine.qty : 0;
   const off = Math.round(((product.mrp - product.price) / product.mrp) * 100);
 
-  const similarProducts = PRODUCTS.filter(
+  const similarProducts = products.filter(
     (p) => p.id !== product.id && p.tags.some((t) => product.tags.includes(t)),
   ).slice(0, 4);
   if (similarProducts.length < 4) {
     similarProducts.push(
-      ...PRODUCTS.filter((p) => p.id !== product.id && !similarProducts.includes(p)).slice(
+      ...products.filter((p) => p.id !== product.id && !similarProducts.includes(p)).slice(
         0,
         4 - similarProducts.length,
       ),

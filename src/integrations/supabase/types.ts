@@ -14,6 +14,51 @@ export type Database = {
   }
   public: {
     Tables: {
+      blogs: {
+        Row: {
+          content: string
+          created_at: string
+          excerpt: string
+          id: string
+          image_url: string
+          is_active: boolean
+          slug: string
+          published_date: string
+          sort_order: number
+          tag: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          content?: string
+          created_at?: string
+          excerpt: string
+          id?: string
+          image_url: string
+          is_active?: boolean
+          slug: string
+          published_date: string
+          sort_order?: number
+          tag?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          excerpt?: string
+          id?: string
+          image_url?: string
+          is_active?: boolean
+          slug?: string
+          published_date?: string
+          sort_order?: number
+          tag?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       enquiries: {
         Row: {
           created_at: string
@@ -38,6 +83,111 @@ export type Database = {
           message?: string
           name?: string
           status?: string
+        }
+        Relationships: []
+      }
+      categories: {
+        Row: {
+          created_at: string
+          id: string
+          is_active: boolean
+          name: string
+          sort_order: number
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          name: string
+          sort_order?: number
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          name?: string
+          sort_order?: number
+        }
+        Relationships: []
+      }
+      products: {
+        Row: {
+          badge: string | null
+          created_at: string
+          id: string
+          image: string
+          is_active: boolean
+          mrp: number
+          price: number
+          rating: number
+          reviews: number
+          tags: string[]
+          title: string
+          updated_at: string
+          variant_label: string | null
+          variants: string[]
+        }
+        Insert: {
+          badge?: string | null
+          created_at?: string
+          id?: string
+          image: string
+          is_active?: boolean
+          mrp: number
+          price: number
+          rating?: number
+          reviews?: number
+          tags?: string[]
+          title: string
+          updated_at?: string
+          variant_label?: string | null
+          variants?: string[]
+        }
+        Update: {
+          badge?: string | null
+          created_at?: string
+          id?: string
+          image?: string
+          is_active?: boolean
+          mrp?: number
+          price?: number
+          rating?: number
+          reviews?: number
+          tags?: string[]
+          title?: string
+          updated_at?: string
+          variant_label?: string | null
+          variants?: string[]
+        }
+        Relationships: []
+      }
+      feedback: {
+        Row: {
+          created_at: string
+          id: string
+          location: string
+          message: string
+          name: string
+          product_bought: string
+          rating: number
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          location: string
+          message: string
+          name: string
+          product_bought: string
+          rating: number
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          location?: string
+          message?: string
+          name?: string
+          product_bought?: string
+          rating?: number
         }
         Relationships: []
       }
@@ -113,6 +263,39 @@ export type Database = {
           id?: string
           role?: Database["public"]["Enums"]["app_role"]
           user_id?: string
+        }
+        Relationships: []
+      }
+      reels: {
+        Row: {
+          created_at: string
+          id: string
+          is_active: boolean
+          poster: string
+          sort_order: number
+          src: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          poster: string
+          sort_order?: number
+          src: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          poster?: string
+          sort_order?: number
+          src?: string
+          title?: string
+          updated_at?: string
         }
         Relationships: []
       }

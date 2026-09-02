@@ -11,6 +11,7 @@ import {
   Facebook,
   Youtube,
   ShieldCheck,
+  Loader2,
   Home,
   Truck,
   FlaskConical,
@@ -60,10 +61,13 @@ import { cn } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { listServices } from "@/lib/services.functions";
+import { listProducts, listCategories } from "@/lib/products.functions";
+import { listReels } from "@/lib/reels.functions";
 import { serviceIcon } from "@/lib/service-icons";
-import { BLOGS, CATEGORY_TABS, PRODUCTS } from "@/lib/store-data";
+import { BLOGS, PRODUCTS } from "@/lib/store-data";
 
 import { ProductCard } from "./ProductCard";
+import { Reveal } from "./Reveal";
 import hero from "@/assets/hero-balcony.jpg";
 import gifting from "@/assets/gifting.jpg";
 import plants from "@/assets/p-plants.jpg";
@@ -376,6 +380,19 @@ export function MainServices() {
 }
 
 export function FeaturedProducts() {
+  const fetchProducts = useServerFn(listProducts);
+  const fetchCategories = useServerFn(listCategories);
+  
+  const { data: products = [], isPending: isProductsPending } = useQuery({
+    queryKey: ["products", "public"],
+    queryFn: () => fetchProducts(),
+  });
+
+  const { data: categories = [], isPending: isCategoriesPending } = useQuery({
+    queryKey: ["categories", "public"],
+    queryFn: () => fetchCategories(),
+  });
+
   const [tab, setTab] = useState<string>("All");
   const [searchQuery, setSearchQuery] = useState("");
   const [placeholderText, setPlaceholderText] = useState("");
@@ -394,7 +411,7 @@ export function FeaturedProducts() {
     return () => clearInterval(interval);
   }, []);
 
-  const list = PRODUCTS.filter((p) => {
+  const list = products.filter((p) => {
     const matchesTab = tab === "All" || p.tags.includes(tab);
     const matchesSearch = p.title.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesTab && matchesSearch;
@@ -425,9 +442,12 @@ export function FeaturedProducts() {
 
           <Tabs value={tab} onValueChange={setTab} className="w-full">
             <TabsList className="flex-wrap justify-start h-auto rounded-xl bg-secondary p-1">
-              {CATEGORY_TABS.map((t) => (
-                <TabsTrigger key={t} value={t} className="rounded-lg text-xs sm:text-sm">
-                  {t}
+              <TabsTrigger value="All" className="rounded-lg text-xs sm:text-sm">
+                All
+              </TabsTrigger>
+              {categories.map((c) => (
+                <TabsTrigger key={c.id} value={c.name} className="rounded-lg text-xs sm:text-sm">
+                  {c.name}
                 </TabsTrigger>
               ))}
             </TabsList>
@@ -435,7 +455,11 @@ export function FeaturedProducts() {
         </div>
 
         <ScrollableRow className="mt-10 w-full py-2">
-          {list.length > 0 ? (
+          {isProductsPending ? (
+            <div className="w-full py-12 text-center text-muted-foreground flex justify-center">
+              <Loader2 className="animate-spin text-forest size-6" />
+            </div>
+          ) : list.length > 0 ? (
             list.map((p) => (
               <div key={p.id} className="min-w-[160px] max-w-[160px] sm:min-w-[280px] sm:max-w-[280px] shrink-0">
                 <ProductCard product={p} />
@@ -453,8 +477,34 @@ export function FeaturedProducts() {
   );
 }
 
+export function DynamicCategoryRows() {
+  const fetchCategories = useServerFn(listCategories);
+  const { data: categories = [], isPending } = useQuery({
+    queryKey: ["categories", "public"],
+    queryFn: () => fetchCategories(),
+  });
+
+  if (isPending) return null;
+
+  return (
+    <div className="flex flex-col gap-12 lg:gap-20">
+      {categories.map((c) => (
+        <Reveal key={c.id} variant="left">
+          <ProductRow title={c.name} filterTag={c.name} />
+        </Reveal>
+      ))}
+    </div>
+  );
+}
+
 export function ProductRow({ title, filterTag }: { title: string, filterTag?: string }) {
-  const list = filterTag ? PRODUCTS.filter(p => p.tags.includes(filterTag)) : PRODUCTS;
+  const fetchProducts = useServerFn(listProducts);
+  const { data: products = [], isPending } = useQuery({
+    queryKey: ["products", "public"],
+    queryFn: () => fetchProducts(),
+  });
+
+  const list = filterTag ? products.filter(p => p.tags.includes(filterTag)) : products;
   return (
     <section className="px-4 py-10 lg:px-8 lg:py-14">
       <div className="mx-auto w-full">
@@ -462,7 +512,11 @@ export function ProductRow({ title, filterTag }: { title: string, filterTag?: st
           {title}
         </h2>
         <ScrollableRow className="w-full py-2">
-          {list.length > 0 ? (
+          {isPending ? (
+            <div className="w-full py-12 text-center text-muted-foreground flex justify-center">
+              <Loader2 className="animate-spin text-forest size-6" />
+            </div>
+          ) : list.length > 0 ? (
             list.map((p) => (
               <div key={p.id} className="min-w-[160px] max-w-[160px] sm:min-w-[280px] sm:max-w-[280px] shrink-0">
                 <ProductCard product={p} />
@@ -647,33 +701,50 @@ function ReelVideo({
 }) {
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  useEffect(() => {
-    if (videoRef.current) {
-      videoRef.current.load();
-    }
-  }, [src]);
+  const getYouTubeVideoId = (url: string) => {
+    const match = url.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=|shorts\/))((\w|-){11})/);
+    return match ? match[1] : null;
+  };
+
+  const ytId = getYouTubeVideoId(src);
 
   useEffect(() => {
-    if (videoRef.current) {
+    if (videoRef.current && !ytId) {
+      videoRef.current.load();
+    }
+  }, [src, ytId]);
+
+  useEffect(() => {
+    if (videoRef.current && !ytId) {
       if (isPlaying) {
         videoRef.current.play().catch(() => { });
       } else {
         videoRef.current.pause();
       }
     }
-  }, [isPlaying]);
+  }, [isPlaying, ytId]);
 
   return (
-    <div className="relative w-full h-full cursor-pointer group" onClick={onClick}>
-      <video
-        ref={videoRef}
-        src={src}
-        poster={poster}
-        loop
-        muted
-        playsInline
-        className="w-full h-full object-cover transition-opacity duration-300"
-      />
+    <div className="relative w-full h-full cursor-pointer group bg-black" onClick={onClick}>
+      {ytId ? (
+        <iframe
+          src={`https://www.youtube.com/embed/${ytId}?autoplay=${isPlaying ? 1 : 0}&mute=1&loop=1&playlist=${ytId}&controls=0&modestbranding=1&rel=0`}
+          className={`w-full h-full object-cover transition-opacity duration-300 pointer-events-none scale-150 sm:scale-125 ${isPlaying ? 'opacity-100' : 'opacity-70'}`}
+          allow="autoplay; encrypted-media"
+          frameBorder="0"
+          title="YouTube video player"
+        />
+      ) : (
+        <video
+          ref={videoRef}
+          src={src}
+          poster={poster}
+          loop
+          muted
+          playsInline
+          className="w-full h-full object-cover transition-opacity duration-300"
+        />
+      )}
       <div className="absolute top-4 right-4 bg-black/40 backdrop-blur-md rounded-full p-2 pointer-events-none">
         <Video className="size-4 text-white" />
       </div>
@@ -716,55 +787,17 @@ function ReelVideo({
 }
 
 export function InstagramReels() {
-  const REELS = [
-    {
-      src: "https://mdn.github.io/shared-assets/videos/flower.mp4",
-      poster:
-        "https://images.unsplash.com/photo-1490682143684-14369e18dce8?q=80&w=600&auto=format&fit=crop",
-    },
-    {
-      src: "https://mdn.github.io/shared-assets/videos/friday.mp4",
-      poster:
-        "https://images.unsplash.com/photo-1592150621744-aca64f48394a?q=80&w=600&auto=format&fit=crop",
-    },
-    {
-      src: "https://mdn.github.io/shared-assets/videos/flower.mp4",
-      poster:
-        "https://images.unsplash.com/photo-1416879598555-2591eeb00d81?q=80&w=600&auto=format&fit=crop",
-    },
-    {
-      src: "https://mdn.github.io/shared-assets/videos/friday.mp4",
-      poster:
-        "https://images.unsplash.com/photo-1463320898484-cdefe81a04ad?q=80&w=600&auto=format&fit=crop",
-    },
-    {
-      src: "https://mdn.github.io/shared-assets/videos/flower.mp4",
-      poster:
-        "https://images.unsplash.com/photo-1591857177580-dc82b9ac4e1e?q=80&w=600&auto=format&fit=crop",
-    },
-    {
-      src: "https://mdn.github.io/shared-assets/videos/friday.mp4",
-      poster:
-        "https://images.unsplash.com/photo-1622383563227-04401ab4e5ea?q=80&w=600&auto=format&fit=crop",
-    },
-    {
-      src: "https://mdn.github.io/shared-assets/videos/flower.mp4",
-      poster:
-        "https://images.unsplash.com/photo-1524397057410-1e775ed476f3?q=80&w=600&auto=format&fit=crop",
-    },
-    {
-      src: "https://mdn.github.io/shared-assets/videos/friday.mp4",
-      poster:
-        "https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?q=80&w=600&auto=format&fit=crop",
-    },
-  ];
-
+  const fetchReels = useServerFn(listReels);
+  const { data: reels = [], isPending } = useQuery({
+    queryKey: ["reels", "public"],
+    queryFn: () => fetchReels(),
+  });
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
-  const handleNext = () => setCurrentIndex((prev) => (prev + 1) % REELS.length);
-  const handlePrev = () => setCurrentIndex((prev) => (prev - 1 + REELS.length) % REELS.length);
+  const handleNext = () => setCurrentIndex((prev) => (prev + 1) % (reels.length || 1));
+  const handlePrev = () => setCurrentIndex((prev) => (prev - 1 + reels.length) % (reels.length || 1));
 
   useEffect(() => {
     if (openIndex === null) return;
@@ -814,41 +847,49 @@ export function InstagramReels() {
         </button>
 
         {/* Fixed Cards */}
-        {[-2, -1, 0, 1, 2].map((offset, i) => {
-          const pos = positions[i]!;
-          const isCenter = offset === 0;
+        {isPending ? (
+          <div className="flex h-full items-center justify-center">
+            <Loader2 className="animate-spin text-forest size-8" />
+          </div>
+        ) : reels.length === 0 ? (
+          <div className="flex h-full items-center justify-center text-muted-foreground">
+            No reels available.
+          </div>
+        ) : (
+          [-2, -1, 0, 1, 2].map((offset, i) => {
+            const pos = positions[i]!;
+            const isCenter = offset === 0;
 
-          let videoIndex = (currentIndex + offset) % REELS.length;
-          if (videoIndex < 0) videoIndex += REELS.length;
+            let videoIndex = (currentIndex + offset + reels.length) % reels.length;
+            const item = reels[videoIndex]!;
 
-          const item = REELS[videoIndex]!;
-
-          return (
-            <div
-              key={offset}
-              className={`absolute top-1/2 transition-all duration-300 ease-in-out ${pos.brightness} rounded-2xl md:rounded-3xl overflow-hidden aspect-[4/5] md:aspect-[9/16] w-[200px] sm:w-[240px] md:w-[320px] bg-black group`}
-              style={{
-                left: pos.left,
-                transform: `translate(-50%, -50%) scale(${pos.scale})`,
-                zIndex: pos.zIndex,
-                opacity: pos.opacity,
-              }}
-            >
-              <ReelVideo
-                src={item.src}
-                poster={item.poster}
-                isPlaying={isCenter && openIndex === null}
-                onClick={() => {
-                  if (isCenter) setOpenIndex(videoIndex);
-                  else setCurrentIndex(videoIndex);
+            return (
+              <div
+                key={offset}
+                className={`absolute top-1/2 transition-all duration-300 ease-in-out ${pos.brightness} rounded-2xl md:rounded-3xl overflow-hidden aspect-[4/5] md:aspect-[9/16] w-[200px] sm:w-[240px] md:w-[320px] bg-black group`}
+                style={{
+                  left: pos.left,
+                  transform: `translate(-50%, -50%) scale(${pos.scale})`,
+                  zIndex: pos.zIndex,
+                  opacity: pos.opacity,
                 }}
-              />
-            </div>
-          );
-        })}
+              >
+                <ReelVideo
+                  src={item.src}
+                  poster={item.poster}
+                  isPlaying={isCenter && openIndex === null}
+                  onClick={() => {
+                    if (isCenter) setOpenIndex(videoIndex);
+                    else setCurrentIndex(videoIndex);
+                  }}
+                />
+              </div>
+            );
+          })
+        )}
 
         {/* Tapped reel plays here, with this same section still visible behind */}
-        {openIndex !== null && (
+        {openIndex !== null && reels[openIndex] && (
           <div
             className="absolute inset-0 z-[60] flex items-center justify-center bg-forest/60 backdrop-blur-sm"
             onClick={() => setOpenIndex(null)}
@@ -858,8 +899,8 @@ export function InstagramReels() {
               onClick={(e) => e.stopPropagation()}
             >
               <ReelVideo
-                src={REELS[openIndex]!.src}
-                poster={REELS[openIndex]!.poster}
+                src={reels[openIndex].src}
+                poster={reels[openIndex].poster}
                 isPlaying
                 onClick={() => { }}
               />

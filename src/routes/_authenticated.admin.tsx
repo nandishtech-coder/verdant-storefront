@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { Inbox, Leaf, Loader2, LogOut, ShieldCheck } from "lucide-react";
+import { Inbox, Leaf, Loader2, LogOut, ShieldCheck, LayoutDashboard, FolderTree, Package, PlaySquare, FileText } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
@@ -13,6 +13,11 @@ import {
 } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ServicesManager } from "@/components/admin/ServicesManager";
+import { CategoriesManager } from "@/components/admin/CategoriesManager";
+import { ProductsManager } from "@/components/admin/ProductsManager";
+import { ReelsManager } from "@/components/admin/ReelsManager";
+import { BlogsManager } from "@/components/admin/BlogsManager";
+import { AnalyticsDashboard } from "@/components/admin/AnalyticsDashboard";
 import { claimAdminRole, getAdminOverview, setEnquiryStatus } from "@/lib/admin.functions";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -135,15 +140,36 @@ function AdminDashboard() {
       </header>
 
       <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-        <Tabs defaultValue="enquiries">
+        <Tabs defaultValue="dashboard">
           <TabsList>
-            <TabsTrigger value="enquiries">
-              <Inbox className="size-4" /> Enquiries
+            <TabsTrigger value="dashboard">
+              <LayoutDashboard className="size-4" /> Dashboard
             </TabsTrigger>
             <TabsTrigger value="services">
               <Leaf className="size-4" /> Our Services
             </TabsTrigger>
+            <TabsTrigger value="categories">
+              <FolderTree className="size-4" /> Categories
+            </TabsTrigger>
+            <TabsTrigger value="products">
+              <Package className="size-4" /> Products
+            </TabsTrigger>
+            <TabsTrigger value="reels">
+              <PlaySquare className="size-4" /> Reels
+            </TabsTrigger>
+            <TabsTrigger value="blogs">
+              <FileText className="size-4" /> Blogs
+            </TabsTrigger>
+            <TabsTrigger value="enquiries">
+              <Inbox className="size-4" /> Enquiries
+            </TabsTrigger>
           </TabsList>
+
+          <TabsContent value="dashboard" className="mt-8">
+            {overview.data.analytics && (
+              <AnalyticsDashboard data={overview.data.analytics} enquiries={overview.data.enquiries} />
+            )}
+          </TabsContent>
 
           <TabsContent value="enquiries">
             <div className="flex items-end justify-between gap-4">
@@ -171,10 +197,17 @@ function AdminDashboard() {
                       <div className="min-w-0">
                         <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
                           <h2 className="font-display text-xl font-semibold text-forest">{enquiry.name}</h2>
-                          <a className="break-all text-sm text-leaf hover:underline" href={`mailto:${enquiry.email}`}>{enquiry.email}</a>
+                          {enquiry.email && <a className="break-all text-sm text-leaf hover:underline" href={`mailto:${enquiry.email}`}>{enquiry.email}</a>}
+                          {enquiry.phone && <a className="break-all text-sm text-leaf hover:underline" href={`tel:${enquiry.phone}`}>{enquiry.phone}</a>}
                         </div>
-                        <p className="mt-1 text-xs text-muted-foreground">
-                          {new Date(enquiry.created_at).toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short" })}
+                        <p className="mt-1 text-xs text-muted-foreground flex items-center gap-2">
+                          <span>{new Date(enquiry.created_at).toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short" })}</span>
+                          {enquiry.interested_in && (
+                            <>
+                              <span>•</span>
+                              <span className="font-medium text-forest capitalize">{enquiry.interested_in.replace(/-/g, ' ')}</span>
+                            </>
+                          )}
                         </p>
                         <p className="mt-4 whitespace-pre-wrap text-sm leading-6 text-foreground">{enquiry.message}</p>
                       </div>
@@ -201,6 +234,30 @@ function AdminDashboard() {
 
           <TabsContent value="services">
             <ServicesManager />
+          </TabsContent>
+
+          <TabsContent value="categories">
+            <div className="mt-8">
+              <CategoriesManager />
+            </div>
+          </TabsContent>
+
+          <TabsContent value="products">
+            <div className="mt-8">
+              <ProductsManager />
+            </div>
+          </TabsContent>
+
+          <TabsContent value="reels">
+            <div className="mt-8">
+              <ReelsManager />
+            </div>
+          </TabsContent>
+
+          <TabsContent value="blogs">
+            <div className="mt-8">
+              <BlogsManager />
+            </div>
           </TabsContent>
         </Tabs>
       </div>

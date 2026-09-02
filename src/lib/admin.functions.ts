@@ -14,14 +14,41 @@ export const getAdminOverview = createServerFn({ method: "GET" })
       return { isAdmin: false as const, enquiries: [] };
     }
 
-    const { data, error } = await supabase
-      .from("enquiries")
-      .select("id, name, email, message, status, created_at")
-      .order("created_at", { ascending: false })
-      .limit(50);
-    if (error) throw error;
+    const [
+      { data: enquiriesData, error: enquiriesError },
+      { count: servicesCount },
+      { count: categoriesCount },
+      { count: productsCount },
+      { count: reelsCount },
+      { count: blogsCount },
+      { count: totalEnquiriesCount },
+      { count: resolvedEnquiriesCount },
+    ] = await Promise.all([
+      supabase.from("enquiries").select("id, name, email, phone, interested_in, message, status, created_at").order("created_at", { ascending: false }).limit(50),
+      supabase.from("services").select("*", { count: "exact", head: true }),
+      supabase.from("categories").select("*", { count: "exact", head: true }),
+      supabase.from("products").select("*", { count: "exact", head: true }),
+      supabase.from("reels").select("*", { count: "exact", head: true }),
+      supabase.from("blogs").select("*", { count: "exact", head: true }),
+      supabase.from("enquiries").select("*", { count: "exact", head: true }),
+      supabase.from("enquiries").select("*", { count: "exact", head: true }).eq("status", "resolved"),
+    ]);
 
-    return { isAdmin: true as const, enquiries: data ?? [] };
+    if (enquiriesError) throw enquiriesError;
+
+    return { 
+      isAdmin: true as const, 
+      enquiries: enquiriesData ?? [],
+      analytics: {
+        services: servicesCount ?? 0,
+        categories: categoriesCount ?? 0,
+        products: productsCount ?? 0,
+        reels: reelsCount ?? 0,
+        blogs: blogsCount ?? 0,
+        enquiriesTotal: totalEnquiriesCount ?? 0,
+        enquiriesResolved: resolvedEnquiriesCount ?? 0
+      }
+    };
   });
 
 /** Bootstrap: the first signed-in account may claim the admin role while no admin exists. */

@@ -14,7 +14,6 @@ const description =
   "Sign in to the GreenRoots admin console to review customer enquiries and manage the storefront.";
 
 export const Route = createFileRoute("/admin/login")({
-  ssr: false,
   head: () => ({
     meta: [
       { title },

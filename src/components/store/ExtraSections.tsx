@@ -12,11 +12,21 @@ import {
   MessageCircle,
   Youtube,
   Phone,
-  Clock
+  Clock,
+  Loader2
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogDescription,
+} from "@/components/ui/dialog";
 import {
   Select,
   SelectContent,
@@ -25,44 +35,76 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { NAV } from "@/lib/store-data";
-
-const TESTIMONIALS = [
-  {
-    rating: 5,
-    text: "The studio ceramic planters are absolutely phenomenal. They perfectly complement my living room decor. GreenRoots is my go-to for all things plants.",
-    author: "Rajesh Nair",
-    product: "Ceramic Planters",
-    location: "Mysuru",
-    avatar: "👨🏽",
-  },
-  {
-    rating: 5,
-    text: "Switched to their organic potting mix six months ago. My balcony garden has never looked better. The delivery is always on time and packaging is eco-friendly.",
-    author: "Anil Kumar",
-    product: "Organic Potting Mix",
-    location: "Shivamogga",
-    avatar: "👨🏻",
-  },
-  {
-    rating: 5,
-    text: "The heirloom seeds germinated so quickly and the yield has been fantastic! So fulfilling to grow my own herbs. Ordering this for life.",
-    author: "Priya Shankar",
-    product: "Herb Seed Pack",
-    location: "Hassan",
-    avatar: "👩🏽",
-  },
-  {
-    rating: 5,
-    text: "As an interior designer, I am very particular about indoor plants. GreenRoots ticks every box — healthy plants, beautiful pots, delivered fresh. My clients love the results!",
-    author: "Sunita Reddy",
-    product: "Indoor Plants",
-    location: "Hubballi",
-    avatar: "👩🏻",
-  },
-];
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { useServerFn } from "@tanstack/react-start";
+import { submitFeedback, listFeedback } from "@/lib/feedback.functions";
+import { submitEnquiry } from "@/lib/enquiries.functions";
+import { listServices } from "@/lib/services.functions";
+import { toast } from "sonner";
+import confetti from "canvas-confetti";
 
 export function ReviewsSection() {
-  const row = [...TESTIMONIALS, ...TESTIMONIALS];
+  const fetchFeedback = useServerFn(listFeedback);
+  const { data: feedback = [] } = useQuery({
+    queryKey: ["feedback", "public"],
+    queryFn: () => fetchFeedback(),
+  });
+  
+  // Only duplicate if there is actually feedback to show, otherwise fallback to empty
+  const row = feedback.length > 0 ? [...feedback, ...feedback] : [];
+  const [open, setOpen] = useState(false);
+  const [rating, setRating] = useState<number>(5);
+  const [productBought, setProductBought] = useState<string | undefined>(undefined);
+  const [otherProduct, setOtherProduct] = useState<string>("");
+  
+  const fetchServices = useServerFn(listServices);
+  const { data: services = [] } = useQuery({
+    queryKey: ["services", "public"],
+    queryFn: () => fetchServices(),
+  });
+
+  const submitFn = useServerFn(submitFeedback);
+  const mutation = useMutation({
+    mutationFn: submitFn,
+    onSuccess: () => {
+      toast.success("Thank you for your valuable feedback!");
+      setOpen(false);
+      confetti({
+        particleCount: 150,
+        spread: 80,
+        origin: { y: 0.6 },
+        colors: ["#2E7D32", "#4CAF50", "#81C784", "#F44336", "#FFC107"],
+      });
+      // reset form
+      setRating(5);
+      setProductBought(undefined);
+      setOtherProduct("");
+    },
+    onError: (err: Error) => {
+      toast.error(err.message || "Failed to submit feedback");
+    }
+  });
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const finalProduct = productBought === "Other" ? otherProduct : productBought;
+    
+    if (!finalProduct) {
+      toast.error("Please select or enter the product/service.");
+      return;
+    }
+
+    mutation.mutate({
+      data: {
+        name: formData.get("name") as string,
+        location: formData.get("location") as string,
+        product_bought: finalProduct,
+        message: formData.get("message") as string,
+        rating
+      }
+    });
+  };
 
   return (
     <section className="px-4 py-16 lg:px-8">
@@ -91,23 +133,23 @@ export function ReviewsSection() {
                         <Star key={i} className="size-4 fill-current" />
                       ))}
                   </div>
-                  <p className="mt-4 italic text-gray-700">"{t.text}"</p>
+                  <p className="mt-4 italic text-gray-700">"{t.message}"</p>
                 </div>
                 <div className="mt-6 flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <div className="flex size-10 items-center justify-center rounded-full bg-forest/10 text-xl">
-                      {t.avatar}
+                    <div className="flex size-10 items-center justify-center rounded-full bg-forest/10 text-xl font-display text-forest font-bold uppercase">
+                      {t.name.charAt(0)}
                     </div>
                     <div>
-                      <h4 className="text-sm font-bold text-gray-900">{t.author}</h4>
+                      <h4 className="text-sm font-bold text-gray-900">{t.name}</h4>
                       <p className="text-xs text-gray-500 flex items-center gap-1">
                         <MapPin className="size-3 text-red-500" />
                         {t.location}
                       </p>
                     </div>
                   </div>
-                  <span className="rounded-full bg-forest/10 px-3 py-1 text-xs font-medium text-forest">
-                    {t.product}
+                  <span className="rounded-full bg-forest/10 px-3 py-1 text-xs font-medium text-forest truncate max-w-[120px]">
+                    {t.product_bought}
                   </span>
                 </div>
               </div>
@@ -147,12 +189,113 @@ export function ReviewsSection() {
             </div>
           </div>
         </div>
+
+        <div className="mt-12 flex justify-center pb-8">
+          <Dialog open={open} onOpenChange={setOpen}>
+            <DialogTrigger asChild>
+              <Button size="lg" className="rounded-full bg-forest text-white hover:bg-forest-deep shadow-md font-semibold tracking-wide">
+                Share your valuable feedback
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[425px]">
+              <DialogHeader>
+                <DialogTitle className="font-display text-2xl text-forest">Share Feedback</DialogTitle>
+                <DialogDescription>
+                  We value your experience! Tell us how we did.
+                </DialogDescription>
+              </DialogHeader>
+              
+              <form onSubmit={handleSubmit} className="grid gap-4 py-4">
+                <div className="grid gap-2">
+                  <Label htmlFor="name">Name</Label>
+                  <Input id="name" name="name" required placeholder="e.g. Priya Shankar" />
+                </div>
+                
+                <div className="grid gap-2">
+                  <Label htmlFor="location">Location</Label>
+                  <Input id="location" name="location" required placeholder="e.g. Hassan" />
+                </div>
+                
+                <div className="grid gap-2">
+                  <Label htmlFor="product_bought">Product/Service</Label>
+                  <Select 
+                    {...(productBought ? { value: productBought } : {})} 
+                    onValueChange={(val) => setProductBought(val)} 
+                    required
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select what you bought" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {services.map((s) => (
+                        <SelectItem key={s.id} value={s.title}>
+                          {s.title}
+                        </SelectItem>
+                      ))}
+                      <SelectItem value="Other">Other</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  
+                  {productBought === "Other" && (
+                    <div className="mt-2">
+                      <Input 
+                        value={otherProduct} 
+                        onChange={(e) => setOtherProduct(e.target.value)} 
+                        required 
+                        placeholder="Please specify" 
+                      />
+                    </div>
+                  )}
+                </div>
+                
+                <div className="grid gap-2">
+                  <Label>Rating</Label>
+                  <div className="flex gap-2">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <button
+                        key={star}
+                        type="button"
+                        onClick={() => setRating(star)}
+                        className={`transition-transform hover:scale-110 focus:outline-none ${
+                          star <= rating ? "text-yellow-400" : "text-gray-200"
+                        }`}
+                      >
+                        <Star className={`size-8 ${star <= rating ? "fill-current" : ""}`} />
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="grid gap-2">
+                  <Label htmlFor="message">Your Review</Label>
+                  <Textarea id="message" name="message" required placeholder="Tell us about your experience..." rows={4} />
+                </div>
+
+                <Button type="submit" disabled={mutation.isPending} className="mt-4 w-full rounded-full bg-forest text-white hover:bg-forest-deep">
+                  {mutation.isPending && <Loader2 className="mr-2 size-4 animate-spin" />}
+                  Submit Feedback
+                </Button>
+              </form>
+            </DialogContent>
+          </Dialog>
+        </div>
       </div>
     </section>
   );
 }
 
 export function ContactSection() {
+  const submitFn = useServerFn(submitEnquiry);
+  const mutation = useMutation({
+    mutationFn: submitFn,
+    onSuccess: () => {
+      toast.success("Enquiry sent successfully!");
+    },
+    onError: (err: Error) => {
+      toast.error(err.message || "Failed to submit enquiry.");
+    }
+  });
+
   return (
     <section className="px-4 py-16 lg:px-8">
       <div className="mx-auto w-full">
@@ -216,6 +359,16 @@ export function ContactSection() {
                 const formData = new FormData(e.currentTarget);
                 const data = Object.fromEntries(formData.entries());
 
+                mutation.mutate({
+                  data: {
+                    name: data['fullName'] as string,
+                    phone: data['phone'] as string,
+                    email: data['email'] as string,
+                    interested_in: data['interest'] as string,
+                    message: data['message'] as string,
+                  }
+                });
+
                 let msg = `*New Enquiry from GreenRoots!*\n\n`;
                 msg += `*Name:* ${data['fullName']}\n`;
                 msg += `*Phone:* ${data['phone']}\n`;
@@ -274,11 +427,12 @@ export function ContactSection() {
               </div>
               <Button 
                 type="submit"
+                disabled={mutation.isPending}
                 className="w-full bg-forest text-white transition-all duration-500 hover:scale-[1.02] active:scale-[0.98] hover:shadow-[0_10px_40px_-10px_rgba(34,197,94,0.5)] border-none hover:bg-gradient-to-r hover:from-cyan-500 hover:via-green-500 hover:to-yellow-500 hover:animate-gradient active:bg-gradient-to-r active:from-cyan-500 active:via-green-500 active:to-yellow-500 active:animate-gradient" 
                 size="lg"
               >
-                <Send className="mr-2 size-4" />
-                <span>Send My Enquiry</span>
+                {mutation.isPending ? <Loader2 className="mr-2 size-4 animate-spin" /> : <Send className="mr-2 size-4" />}
+                <span>{mutation.isPending ? "Sending..." : "Send My Enquiry"}</span>
               </Button>
             </form>
           </div>

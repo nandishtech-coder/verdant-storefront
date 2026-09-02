@@ -1,4 +1,8 @@
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Loader2 } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { useServerFn } from "@tanstack/react-start";
+import { Link } from "@tanstack/react-router";
+import { listBlogs } from "@/lib/blogs.functions";
 import { Button } from "@/components/ui/button";
 import gifting from "@/assets/gifting.jpg";
 import tools from "@/assets/p-tools.jpg";
@@ -139,35 +143,13 @@ export function FanFavorites() {
   );
 }
 
-/* 3. Latest Blogs — editorial cards */
-const LATEST_POSTS = [
-  {
-    tag: "BEST PLANTS FOR GIFTING",
-    date: "AUG 05, 2026",
-    title: "Best Plants to Gift This Raksha Bandhan",
-    excerpt:
-      "Chocolates get eaten. Cards get put in a drawer. A plant, on the other hand, keeps growing on someone's desk or windo...",
-    image: blogRakhi,
-  },
-  {
-    tag: "",
-    date: "JUL 25, 2026",
-    title: "Home Composting 101: Turn Your Kitchen Scraps into Free Plant Food",
-    excerpt:
-      "Every day, Indian households throw out vegetable peels, tea leaves, eggshells, and fruit scraps that could be feeding...",
-    image: blogCompost,
-  },
-  {
-    tag: "",
-    date: "JUL 18, 2026",
-    title: "Your First Kitchen Garden: 7 Steps to Get Started This Week",
-    excerpt:
-      "Fresh coriander whenever a recipe needs it. Tomatoes you know weren't sprayed with anything. A palak harvest that cos...",
-    image: blogKitchen,
-  },
-];
-
 export function LatestBlogs() {
+  const fetchBlogs = useServerFn(listBlogs);
+  const { data: blogs = [], isPending } = useQuery({
+    queryKey: ["blogs", "public"],
+    queryFn: () => fetchBlogs(),
+  });
+
   return (
     <section aria-labelledby="latest-blogs-heading" className="px-4 py-16 lg:px-8 lg:py-24">
       <div className="mx-auto w-full">
@@ -183,43 +165,52 @@ export function LatestBlogs() {
           </div>
         </div>
 
-        <div className="mt-10 grid gap-8 md:grid-cols-3">
-          {LATEST_POSTS.map((post) => (
-            <article key={post.title} className="group hover-lift bg-card shadow-[var(--shadow-soft)] flex flex-col rounded-2xl overflow-hidden">
-              <div className="relative aspect-[16/10] overflow-hidden bg-sand">
-                <img
-                  src={post.image}
-                  alt={post.title}
-                  loading="lazy"
-                  width={900}
-                  height={560}
-                  className="size-full object-cover transition-transform duration-500 group-hover:scale-105"
-                />
-                {post.tag && (
-                  <span className="absolute top-6 left-6 bg-forest px-5 py-3 text-xs font-semibold tracking-[0.12em] text-white uppercase">
-                    {post.tag}
-                  </span>
-                )}
-              </div>
-              <div className="p-6 lg:p-8 flex flex-col flex-grow">
-                <p className="text-xs font-semibold tracking-[0.14em] text-muted-foreground uppercase">
-                  {post.date} <span className="text-clay">•</span> MUG URBAN GREEN
-                </p>
-                <h3 className="mt-4 font-display text-2xl leading-snug font-semibold text-forest">
-                  {post.title}
-                </h3>
-                <p className="mt-4 leading-relaxed text-forest/75 flex-grow">{post.excerpt}</p>
-                <a
-                  href="#top"
-                  className="mt-6 inline-flex items-center gap-2 text-sm font-semibold tracking-[0.14em] uppercase"
-                >
-                  <span className="text-red-600">READ ARTICLE</span>
-                  <ArrowRight className="size-4 text-forest transition-transform group-hover:translate-x-1" />
-                </a>
-              </div>
-            </article>
-          ))}
-        </div>
+        {isPending ? (
+          <div className="mt-10 flex justify-center w-full py-12">
+            <Loader2 className="animate-spin text-forest size-8" />
+          </div>
+        ) : blogs.length === 0 ? (
+          <p className="mt-10 text-center text-muted-foreground">No blogs published yet.</p>
+        ) : (
+          <div className="mt-10 grid gap-8 md:grid-cols-3">
+            {blogs.map((post) => (
+              <article key={post.id} className="group hover-lift bg-card shadow-[var(--shadow-soft)] flex flex-col rounded-2xl overflow-hidden">
+                <div className="relative aspect-[16/10] overflow-hidden bg-sand">
+                  <img
+                    src={post.image_url}
+                    alt={post.title}
+                    loading="lazy"
+                    width={900}
+                    height={560}
+                    className="size-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                  {post.tag && (
+                    <span className="absolute top-6 left-6 bg-forest px-5 py-3 text-xs font-semibold tracking-[0.12em] text-white uppercase">
+                      {post.tag}
+                    </span>
+                  )}
+                </div>
+                <div className="p-6 lg:p-8 flex flex-col flex-grow">
+                  <p className="text-xs font-semibold tracking-[0.14em] text-muted-foreground uppercase">
+                    {post.published_date} <span className="text-clay">•</span> MUG URBAN GREEN
+                  </p>
+                  <h3 className="mt-4 font-display text-2xl leading-snug font-semibold text-forest">
+                    {post.title}
+                  </h3>
+                  <p className="mt-4 leading-relaxed text-forest/75 flex-grow">{post.excerpt}</p>
+                  <Link
+                    to="/blog/$slug"
+                    params={{ slug: post.slug }}
+                    className="mt-6 inline-flex items-center gap-2 text-sm font-semibold tracking-[0.14em] uppercase group/btn"
+                  >
+                    <span className="text-red-600">READ ARTICLE</span>
+                    <ArrowRight className="size-4 text-forest transition-transform group-hover/btn:translate-x-1" />
+                  </Link>
+                </div>
+              </article>
+            ))}
+          </div>
+        )}
 
         <div className="mt-12 flex justify-center">
           <Button
