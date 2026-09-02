@@ -11,6 +11,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ServicesManager } from "@/components/admin/ServicesManager";
 import { claimAdminRole, getAdminOverview, setEnquiryStatus } from "@/lib/admin.functions";
 import { supabase } from "@/integrations/supabase/client";
 
