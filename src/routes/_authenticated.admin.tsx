@@ -135,57 +135,74 @@ function AdminDashboard() {
       </header>
 
       <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-        <div className="flex items-end justify-between gap-4">
-          <div>
-            <p className="text-sm font-semibold text-leaf">Customer care</p>
-            <h1 className="mt-1 font-display text-4xl font-semibold text-forest">Enquiries</h1>
-          </div>
-          <div className="rounded-lg border border-border bg-card px-4 py-3 text-right shadow-[var(--shadow-soft)]">
-            <p className="text-2xl font-semibold text-forest">{enquiries.length}</p>
-            <p className="text-xs text-muted-foreground">Total received</p>
-          </div>
-        </div>
+        <Tabs defaultValue="enquiries">
+          <TabsList>
+            <TabsTrigger value="enquiries">
+              <Inbox className="size-4" /> Enquiries
+            </TabsTrigger>
+            <TabsTrigger value="services">
+              <Leaf className="size-4" /> Our Services
+            </TabsTrigger>
+          </TabsList>
 
-        {enquiries.length === 0 ? (
-          <section className="mt-8 rounded-xl border border-border bg-card px-6 py-16 text-center shadow-[var(--shadow-soft)]">
-            <Inbox className="mx-auto size-10 text-muted-foreground" />
-            <h2 className="mt-4 font-display text-2xl font-semibold text-forest">No enquiries yet</h2>
-            <p className="mt-2 text-sm text-muted-foreground">New customer messages will appear here.</p>
-          </section>
-        ) : (
-          <div className="mt-8 grid gap-4">
-            {enquiries.map((enquiry: any) => (
-              <article key={enquiry.id} className="rounded-xl border border-border bg-card p-5 shadow-[var(--shadow-soft)] sm:p-6">
-                <div className="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
-                  <div className="min-w-0">
-                    <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                      <h2 className="font-display text-xl font-semibold text-forest">{enquiry.name}</h2>
-                      <a className="break-all text-sm text-leaf hover:underline" href={`mailto:${enquiry.email}`}>{enquiry.email}</a>
+          <TabsContent value="enquiries">
+            <div className="flex items-end justify-between gap-4">
+              <div>
+                <p className="text-sm font-semibold text-leaf">Customer care</p>
+                <h1 className="mt-1 font-display text-4xl font-semibold text-forest">Enquiries</h1>
+              </div>
+              <div className="rounded-lg border border-border bg-card px-4 py-3 text-right shadow-[var(--shadow-soft)]">
+                <p className="text-2xl font-semibold text-forest">{enquiries.length}</p>
+                <p className="text-xs text-muted-foreground">Total received</p>
+              </div>
+            </div>
+
+            {enquiries.length === 0 ? (
+              <section className="mt-8 rounded-xl border border-border bg-card px-6 py-16 text-center shadow-[var(--shadow-soft)]">
+                <Inbox className="mx-auto size-10 text-muted-foreground" />
+                <h2 className="mt-4 font-display text-2xl font-semibold text-forest">No enquiries yet</h2>
+                <p className="mt-2 text-sm text-muted-foreground">New customer messages will appear here.</p>
+              </section>
+            ) : (
+              <div className="mt-8 grid gap-4">
+                {enquiries.map((enquiry: any) => (
+                  <article key={enquiry.id} className="rounded-xl border border-border bg-card p-5 shadow-[var(--shadow-soft)] sm:p-6">
+                    <div className="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
+                      <div className="min-w-0">
+                        <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                          <h2 className="font-display text-xl font-semibold text-forest">{enquiry.name}</h2>
+                          <a className="break-all text-sm text-leaf hover:underline" href={`mailto:${enquiry.email}`}>{enquiry.email}</a>
+                        </div>
+                        <p className="mt-1 text-xs text-muted-foreground">
+                          {new Date(enquiry.created_at).toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short" })}
+                        </p>
+                        <p className="mt-4 whitespace-pre-wrap text-sm leading-6 text-foreground">{enquiry.message}</p>
+                      </div>
+                      <Select
+                        value={enquiry.status}
+                        disabled={status.isPending}
+                        onValueChange={(value) => status.mutate({ id: enquiry.id, status: value })}
+                      >
+                        <SelectTrigger className="w-full sm:w-40" aria-label={`Status for ${enquiry.name}`}>
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="new">New</SelectItem>
+                          <SelectItem value="in_progress">In progress</SelectItem>
+                          <SelectItem value="resolved">Resolved</SelectItem>
+                        </SelectContent>
+                      </Select>
                     </div>
-                    <p className="mt-1 text-xs text-muted-foreground">
-                      {new Date(enquiry.created_at).toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short" })}
-                    </p>
-                    <p className="mt-4 whitespace-pre-wrap text-sm leading-6 text-foreground">{enquiry.message}</p>
-                  </div>
-                  <Select
-                    value={enquiry.status}
-                    disabled={status.isPending}
-                    onValueChange={(value) => status.mutate({ id: enquiry.id, status: value })}
-                  >
-                    <SelectTrigger className="w-full sm:w-40" aria-label={`Status for ${enquiry.name}`}>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="new">New</SelectItem>
-                      <SelectItem value="in_progress">In progress</SelectItem>
-                      <SelectItem value="resolved">Resolved</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-              </article>
-            ))}
-          </div>
-        )}
+                  </article>
+                ))}
+              </div>
+            )}
+          </TabsContent>
+
+          <TabsContent value="services">
+            <ServicesManager />
+          </TabsContent>
+        </Tabs>
       </div>
     </main>
   );
