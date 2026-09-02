@@ -32,6 +32,11 @@ type FormState = {
   icon: string;
   sort_order: number;
   is_active: boolean;
+  about: string;
+  includes: string;
+  cta_heading: string;
+  cta_note: string;
+  footnote: string;
 };
 
 const emptyForm: FormState = {
@@ -42,6 +47,11 @@ const emptyForm: FormState = {
   icon: "Leaf",
   sort_order: 0,
   is_active: true,
+  about: "",
+  includes: "",
+  cta_heading: "Book a Consultation",
+  cta_note: "",
+  footnote: "",
 };
 
 const slugify = (value: string) =>
@@ -66,7 +76,13 @@ export function ServicesManager() {
   };
 
   const saveMutation = useMutation({
-    mutationFn: (data: FormState) => save({ data }),
+    mutationFn: ({ includes, ...rest }: FormState) =>
+      save({
+        data: {
+          ...rest,
+          includes: includes.split("\n").map((i) => i.trim()).filter(Boolean),
+        },
+      }),
     onSuccess: async () => {
       await refresh();
       setForm(null);
@@ -94,6 +110,11 @@ export function ServicesManager() {
       icon: service.icon,
       sort_order: service.sort_order,
       is_active: service.is_active,
+      about: service.about ?? "",
+      includes: (service.includes ?? []).join("\n"),
+      cta_heading: service.cta_heading ?? "Book a Consultation",
+      cta_note: service.cta_note ?? "",
+      footnote: service.footnote ?? "",
     });
 
   if (services.isPending) {
@@ -221,6 +242,57 @@ export function ServicesManager() {
                 </SelectContent>
               </Select>
             </div>
+          </div>
+
+          <div className="grid gap-2">
+            <Label htmlFor="svc-about">About this service (detail page)</Label>
+            <Textarea
+              id="svc-about"
+              rows={6}
+              placeholder="Long description shown on the service detail page. Leave a blank line between paragraphs."
+              value={form.about}
+              onChange={(e) => setForm((f) => (f ? { ...f, about: e.target.value } : f))}
+            />
+          </div>
+
+          <div className="grid gap-2">
+            <Label htmlFor="svc-includes">What's included — one item per line</Label>
+            <Textarea
+              id="svc-includes"
+              rows={6}
+              placeholder={"On-site assessment\nCustom planting plan\nSeasonal maintenance calendar"}
+              value={form.includes}
+              onChange={(e) => setForm((f) => (f ? { ...f, includes: e.target.value } : f))}
+            />
+          </div>
+
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div className="grid gap-2">
+              <Label htmlFor="svc-cta-heading">Booking card heading</Label>
+              <Input
+                id="svc-cta-heading"
+                value={form.cta_heading}
+                onChange={(e) => setForm((f) => (f ? { ...f, cta_heading: e.target.value } : f))}
+              />
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="svc-cta-note">Booking card text</Label>
+              <Input
+                id="svc-cta-note"
+                value={form.cta_note}
+                onChange={(e) => setForm((f) => (f ? { ...f, cta_note: e.target.value } : f))}
+              />
+            </div>
+          </div>
+
+          <div className="grid gap-2">
+            <Label htmlFor="svc-footnote">Footnote</Label>
+            <Input
+              id="svc-footnote"
+              placeholder="Small print shown under the booking buttons"
+              value={form.footnote}
+              onChange={(e) => setForm((f) => (f ? { ...f, footnote: e.target.value } : f))}
+            />
           </div>
 
           <div className="flex flex-wrap items-end gap-6">
