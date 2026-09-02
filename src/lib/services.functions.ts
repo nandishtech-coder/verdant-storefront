@@ -12,7 +12,15 @@ export type ServiceRow = {
   icon: string;
   sort_order: number;
   is_active: boolean;
+  about: string;
+  includes: string[];
+  cta_heading: string;
+  cta_note: string;
+  footnote: string;
 };
+
+const SERVICE_COLUMNS =
+  "id, slug, title, description, image_url, icon, sort_order, is_active, about, includes, cta_heading, cta_note, footnote";
 
 function publicClient() {
   const key = process.env["SUPABASE_PUBLISHABLE_KEY"]!;
@@ -33,7 +41,7 @@ function publicClient() {
 export const listServices = createServerFn({ method: "GET" }).handler(async () => {
   const { data, error } = await publicClient()
     .from("services")
-    .select("id, slug, title, description, image_url, icon, sort_order, is_active")
+    .select(SERVICE_COLUMNS)
     .eq("is_active", true)
     .order("sort_order", { ascending: true });
   if (error) return [] as ServiceRow[];
@@ -46,7 +54,7 @@ export const listAllServices = createServerFn({ method: "GET" })
   .handler(async ({ context }) => {
     const { data, error } = await context.supabase
       .from("services")
-      .select("id, slug, title, description, image_url, icon, sort_order, is_active")
+      .select(SERVICE_COLUMNS)
       .order("sort_order", { ascending: true });
     if (error) throw error;
     return (data ?? []) as ServiceRow[];
@@ -61,6 +69,11 @@ export type ServiceInput = {
   icon: string;
   sort_order: number;
   is_active: boolean;
+  about: string;
+  includes: string[];
+  cta_heading: string;
+  cta_note: string;
+  footnote: string;
 };
 
 export const saveService = createServerFn({ method: "POST" })
@@ -75,6 +88,11 @@ export const saveService = createServerFn({ method: "POST" })
       icon: data.icon.trim() || "Leaf",
       sort_order: data.sort_order,
       is_active: data.is_active,
+      about: data.about.trim(),
+      includes: data.includes.map((i) => i.trim()).filter(Boolean),
+      cta_heading: data.cta_heading.trim() || "Book a Consultation",
+      cta_note: data.cta_note.trim(),
+      footnote: data.footnote.trim(),
     };
     if (data.id) {
       const { error } = await context.supabase.from("services").update(payload).eq("id", data.id);

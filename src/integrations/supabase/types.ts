@@ -43,11 +43,16 @@ export type Database = {
       }
       services: {
         Row: {
+          about: string
           created_at: string
+          cta_heading: string
+          cta_note: string
           description: string
+          footnote: string
           icon: string
           id: string
           image_url: string
+          includes: string[]
           is_active: boolean
           slug: string
           sort_order: number
@@ -55,11 +60,16 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          about?: string
           created_at?: string
+          cta_heading?: string
+          cta_note?: string
           description?: string
+          footnote?: string
           icon?: string
           id?: string
           image_url?: string
+          includes?: string[]
           is_active?: boolean
           slug: string
           sort_order?: number
@@ -67,11 +77,16 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          about?: string
           created_at?: string
+          cta_heading?: string
+          cta_note?: string
           description?: string
+          footnote?: string
           icon?: string
           id?: string
           image_url?: string
+          includes?: string[]
           is_active?: boolean
           slug?: string
           sort_order?: number
