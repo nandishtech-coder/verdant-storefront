@@ -1,5 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import { createClient } from "@supabase/supabase-js";
+import { z } from "zod";
 import type { Database } from "@/integrations/supabase/types";
 
 function publicClient() {
@@ -17,16 +18,18 @@ function publicClient() {
   });
 }
 
-type EnquiryInput = {
-  name: string;
-  phone: string;
-  email?: string;
-  interested_in: string;
-  message: string;
-};
+const enquirySchema = z.object({
+  name: z.string().trim().min(1, "Name is required").max(100, "Name is too long"),
+  phone: z.string().trim().min(7, "A valid phone number is required").max(20, "Phone number is too long").regex(/^[+0-9()\s-]+$/, "Enter a valid phone number"),
+  email: z.string().trim().max(255, "Email is too long").email("Enter a valid email address").optional().or(z.literal("")),
+  interested_in: z.string().trim().min(1, "Please select a service").max(120, "Service name is too long"),
+  message: z.string().trim().min(1, "Message is required").max(1000, "Message is too long"),
+});
+
+type EnquiryInput = z.infer<typeof enquirySchema>;
 
 export const submitEnquiry = createServerFn({ method: "POST" })
-  .validator((data: EnquiryInput) => data)
+  .inputValidator((data) => enquirySchema.parse(data))
   .handler(async ({ data }) => {
     // Note: TypeScript might complain if `phone` or `interested_in` aren't in the Database type yet.
     // They will be added via the SQL migration. For now we use "any" to bypass strict checks 

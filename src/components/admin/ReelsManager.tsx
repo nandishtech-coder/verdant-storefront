@@ -49,8 +49,8 @@ export function ReelsManager() {
     setTitle(reel.title);
     setSrc(reel.src);
     setPoster(reel.poster);
-    setSortOrder(reel.sort_order.toString());
-    setIsActive(reel.is_active);
+    setSortOrder((reel.sort_order ?? 0).toString());
+    setIsActive(reel.is_active ?? true);
     setIsOpen(true);
   };
 

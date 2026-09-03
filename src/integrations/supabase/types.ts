@@ -22,8 +22,8 @@ export type Database = {
           id: string
           image_url: string
           is_active: boolean
-          slug: string
           published_date: string
+          slug: string
           sort_order: number
           tag: string | null
           title: string
@@ -36,8 +36,8 @@ export type Database = {
           id?: string
           image_url: string
           is_active?: boolean
-          slug: string
           published_date: string
+          slug: string
           sort_order?: number
           tag?: string | null
           title: string
@@ -50,12 +50,36 @@ export type Database = {
           id?: string
           image_url?: string
           is_active?: boolean
-          slug?: string
           published_date?: string
+          slug?: string
           sort_order?: number
           tag?: string | null
           title?: string
           updated_at?: string
+        }
+        Relationships: []
+      }
+      categories: {
+        Row: {
+          created_at: string | null
+          id: string
+          is_active: boolean | null
+          name: string
+          sort_order: number | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          name: string
+          sort_order?: number | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          name?: string
+          sort_order?: number | null
         }
         Relationships: []
       }
@@ -64,100 +88,31 @@ export type Database = {
           created_at: string
           email: string
           id: string
+          interested_in: string | null
           message: string
           name: string
+          phone: string | null
           status: string
         }
         Insert: {
           created_at?: string
           email: string
           id?: string
+          interested_in?: string | null
           message: string
           name: string
+          phone?: string | null
           status?: string
         }
         Update: {
           created_at?: string
           email?: string
           id?: string
+          interested_in?: string | null
           message?: string
           name?: string
+          phone?: string | null
           status?: string
-        }
-        Relationships: []
-      }
-      categories: {
-        Row: {
-          created_at: string
-          id: string
-          is_active: boolean
-          name: string
-          sort_order: number
-        }
-        Insert: {
-          created_at?: string
-          id?: string
-          is_active?: boolean
-          name: string
-          sort_order?: number
-        }
-        Update: {
-          created_at?: string
-          id?: string
-          is_active?: boolean
-          name?: string
-          sort_order?: number
-        }
-        Relationships: []
-      }
-      products: {
-        Row: {
-          badge: string | null
-          created_at: string
-          id: string
-          image: string
-          is_active: boolean
-          mrp: number
-          price: number
-          rating: number
-          reviews: number
-          tags: string[]
-          title: string
-          updated_at: string
-          variant_label: string | null
-          variants: string[]
-        }
-        Insert: {
-          badge?: string | null
-          created_at?: string
-          id?: string
-          image: string
-          is_active?: boolean
-          mrp: number
-          price: number
-          rating?: number
-          reviews?: number
-          tags?: string[]
-          title: string
-          updated_at?: string
-          variant_label?: string | null
-          variants?: string[]
-        }
-        Update: {
-          badge?: string | null
-          created_at?: string
-          id?: string
-          image?: string
-          is_active?: boolean
-          mrp?: number
-          price?: number
-          rating?: number
-          reviews?: number
-          tags?: string[]
-          title?: string
-          updated_at?: string
-          variant_label?: string | null
-          variants?: string[]
         }
         Relationships: []
       }
@@ -188,6 +143,90 @@ export type Database = {
           name?: string
           product_bought?: string
           rating?: number
+        }
+        Relationships: []
+      }
+      products: {
+        Row: {
+          badge: string | null
+          created_at: string | null
+          id: string
+          image: string
+          is_active: boolean | null
+          mrp: number
+          price: number
+          rating: number | null
+          reviews: number | null
+          tags: string[] | null
+          title: string
+          updated_at: string | null
+          variant_label: string | null
+          variants: string[] | null
+        }
+        Insert: {
+          badge?: string | null
+          created_at?: string | null
+          id?: string
+          image: string
+          is_active?: boolean | null
+          mrp: number
+          price: number
+          rating?: number | null
+          reviews?: number | null
+          tags?: string[] | null
+          title: string
+          updated_at?: string | null
+          variant_label?: string | null
+          variants?: string[] | null
+        }
+        Update: {
+          badge?: string | null
+          created_at?: string | null
+          id?: string
+          image?: string
+          is_active?: boolean | null
+          mrp?: number
+          price?: number
+          rating?: number | null
+          reviews?: number | null
+          tags?: string[] | null
+          title?: string
+          updated_at?: string | null
+          variant_label?: string | null
+          variants?: string[] | null
+        }
+        Relationships: []
+      }
+      reels: {
+        Row: {
+          created_at: string | null
+          id: string
+          is_active: boolean | null
+          poster: string
+          sort_order: number | null
+          src: string
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          poster: string
+          sort_order?: number | null
+          src: string
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          poster?: string
+          sort_order?: number | null
+          src?: string
+          title?: string
+          updated_at?: string | null
         }
         Relationships: []
       }
@@ -266,39 +305,6 @@ export type Database = {
         }
         Relationships: []
       }
-      reels: {
-        Row: {
-          created_at: string
-          id: string
-          is_active: boolean
-          poster: string
-          sort_order: number
-          src: string
-          title: string
-          updated_at: string
-        }
-        Insert: {
-          created_at?: string
-          id?: string
-          is_active?: boolean
-          poster: string
-          sort_order?: number
-          src: string
-          title: string
-          updated_at?: string
-        }
-        Update: {
-          created_at?: string
-          id?: string
-          is_active?: boolean
-          poster?: string
-          sort_order?: number
-          src?: string
-          title?: string
-          updated_at?: string
-        }
-        Relationships: []
-      }
     }
     Views: {
       [_ in never]: never
@@ -329,12 +335,12 @@ export type Tables<
   DefaultSchemaTableNameOrOptions extends
     | keyof (DefaultSchema["Tables"] & DefaultSchema["Views"])
     | { schema: keyof DatabaseWithoutInternals },
-  TableName extends DefaultSchemaTableNameOrOptions extends {
+  TableName extends (DefaultSchemaTableNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
     ? keyof (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
         DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])
-    : never = never,
+    : never) = never,
 > = DefaultSchemaTableNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
@@ -358,11 +364,11 @@ export type TablesInsert<
   DefaultSchemaTableNameOrOptions extends
     | keyof DefaultSchema["Tables"]
     | { schema: keyof DatabaseWithoutInternals },
-  TableName extends DefaultSchemaTableNameOrOptions extends {
+  TableName extends (DefaultSchemaTableNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
     ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
-    : never = never,
+    : never) = never,
 > = DefaultSchemaTableNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
@@ -383,11 +389,11 @@ export type TablesUpdate<
   DefaultSchemaTableNameOrOptions extends
     | keyof DefaultSchema["Tables"]
     | { schema: keyof DatabaseWithoutInternals },
-  TableName extends DefaultSchemaTableNameOrOptions extends {
+  TableName extends (DefaultSchemaTableNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
     ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
-    : never = never,
+    : never) = never,
 > = DefaultSchemaTableNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
@@ -408,11 +414,11 @@ export type Enums<
   DefaultSchemaEnumNameOrOptions extends
     | keyof DefaultSchema["Enums"]
     | { schema: keyof DatabaseWithoutInternals },
-  EnumName extends DefaultSchemaEnumNameOrOptions extends {
+  EnumName extends (DefaultSchemaEnumNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
     ? keyof DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"]
-    : never = never,
+    : never) = never,
 > = DefaultSchemaEnumNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
@@ -425,11 +431,11 @@ export type CompositeTypes<
   PublicCompositeTypeNameOrOptions extends
     | keyof DefaultSchema["CompositeTypes"]
     | { schema: keyof DatabaseWithoutInternals },
-  CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {
+  CompositeTypeName extends (PublicCompositeTypeNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
     ? keyof DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
-    : never = never,
+    : never) = never,
 > = PublicCompositeTypeNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }

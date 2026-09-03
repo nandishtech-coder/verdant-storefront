@@ -56,7 +56,7 @@ export function ProductCard({ product }: { product: Product }) {
 
         <div className="flex flex-1 flex-col">
           <p className="mb-1 text-[9px] tracking-wide text-muted-foreground uppercase sm:text-[11px] sm:mb-1.5">
-            {product.variantLabel}
+            {product.variantLabel ?? product.variant_label}
           </p>
           <div className="flex flex-wrap content-start gap-1 sm:gap-1.5">
             {product.variants.slice(0, 4).map((v) => (
