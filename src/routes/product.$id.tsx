@@ -128,7 +128,7 @@ function ProductPage() {
 
           <div className="mt-6">
             <h3 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground mb-3">
-              {product.variantLabel || "Brand"}
+              {product.variant_label || "Brand"}
             </h3>
             {product.variants && product.variants.length > 0 ? (
               <div className="flex flex-wrap gap-2">

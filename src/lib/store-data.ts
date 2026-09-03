@@ -14,7 +14,8 @@ export type Product = {
   mrp: number;
   rating: number;
   reviews: number;
-  variantLabel: string;
+  variantLabel?: string;
+  variant_label?: string | null;
   variants: string[];
   tags: string[];
   badge?: string;
