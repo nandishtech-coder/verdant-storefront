@@ -18,7 +18,7 @@ export type Product = {
   variant_label?: string | null;
   variants: string[];
   tags: string[];
-  badge?: string;
+  badge?: string | null;
 };
 
 export const CATEGORY_TABS = [
