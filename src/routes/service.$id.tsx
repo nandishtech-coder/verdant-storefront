@@ -26,6 +26,22 @@ const PHONE = "+916360988785";
 const PHONE_DISPLAY = "+91 63609 88785";
 
 export const Route = createFileRoute("/service/$id")({
+  head: () => ({
+    meta: [
+      { title: "Service Details — GreenRoots" },
+      {
+        name: "description",
+        content: "Explore GreenRoots gardening services, inclusions, and consultation options.",
+      },
+      { property: "og:title", content: "Service Details — GreenRoots" },
+      {
+        property: "og:description",
+        content: "Explore GreenRoots gardening services, inclusions, and consultation options.",
+      },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
   component: ServicePageWrapper,
 });
 
