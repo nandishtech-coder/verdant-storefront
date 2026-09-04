@@ -1012,7 +1012,7 @@ export function OurServices() {
   };
 
   return (
-    <section aria-labelledby="services-heading" className="bg-forest text-forest-foreground">
+    <section id="services" aria-labelledby="services-heading" className="bg-forest text-forest-foreground">
       <div className="overflow-hidden leading-[0] text-background">
         <svg
           viewBox="0 0 1200 90"
