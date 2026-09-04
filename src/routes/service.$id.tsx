@@ -72,9 +72,21 @@ function EnquiryDialog({
   const submitFn = useServerFn(submitEnquiry);
   const mutation = useMutation({
     mutationFn: submitFn,
-    onSuccess: () => {
-      toast.success("Enquiry sent successfully! We'll get back to you shortly.");
+    onSuccess: (_res, vars: any) => {
+      const d = vars?.data ?? {};
+      const lines = [
+        "*New Service Enquiry — GreenRoots*",
+        "",
+        `*Service:* ${d.interested_in ?? serviceTitle}`,
+        `*Name:* ${d.name ?? ""}`,
+        `*Phone:* ${d.phone ?? ""}`,
+        ...(d.email ? [`*Email:* ${d.email}`] : []),
+        `*Message:* ${d.message ?? ""}`,
+      ];
+      const url = `https://wa.me/${PHONE.replace(/\D/g, "")}?text=${encodeURIComponent(lines.join("\n"))}`;
+      toast.success("Enquiry sent successfully! Opening WhatsApp to confirm with our team.");
       onOpenChange(false);
+      window.open(url, "_blank", "noopener,noreferrer");
     },
     onError: (err: Error) => toast.error(err.message || "Failed to submit enquiry."),
   });
