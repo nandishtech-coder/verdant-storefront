@@ -260,7 +260,8 @@ export function Header() {
                                 <li key={i}>
                                   {isInternalRoute ? (
                                     <Link
-                                      to={href as "/service/$id"}
+                                      to="/service/$id"
+                                      params={{ id: href.replace("/service/", "") }}
                                       onClick={() => handleMobileMenuClose(false)}
                                       className={cls}
                                     >
