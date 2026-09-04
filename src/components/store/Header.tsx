@@ -260,20 +260,22 @@ export function Header() {
                                 <li key={i}>
                                   {isInternalRoute ? (
                                     <Link
-                                      to={href}
+                                      to="/service/$id"
+                                      params={{ id: href.replace("/service/", "") }}
                                       onClick={() => handleMobileMenuClose(false)}
                                       className={cls}
                                     >
                                       {inner}
                                     </Link>
                                   ) : (
-                                    <a
-                                      href={href}
+                                    <Link
+                                      to="/"
+                                      hash={href.slice(1)}
                                       onClick={() => handleMobileMenuClose(false)}
                                       className={cls}
                                     >
                                       {inner}
-                                    </a>
+                                    </Link>
                                   )}
                                 </li>
                               );
@@ -414,13 +416,18 @@ export function Header() {
                     const isInternalRoute = href.startsWith("/");
                     const className = "block rounded-lg px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-secondary hover:text-forest";
                     return isInternalRoute ? (
-                      <Link key={i} to={href} className={className}>
+                      <Link
+                        key={i}
+                        to="/service/$id"
+                        params={{ id: href.replace("/service/", "") }}
+                        className={className}
+                      >
                         {i}
                       </Link>
                     ) : (
-                      <a key={i} href={href} className={className}>
+                      <Link key={i} to="/" hash={href.slice(1)} className={className}>
                         {i}
-                      </a>
+                      </Link>
                     );
                   })}
                 </div>
