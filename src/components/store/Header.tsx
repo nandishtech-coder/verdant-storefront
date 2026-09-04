@@ -2,16 +2,31 @@ import { useState, useEffect, useRef } from "react";
 import { Link } from "@tanstack/react-router";
 import {
   ChevronDown,
+  ChevronRight,
+  Flower2,
+  GraduationCap,
   Heart,
   Leaf,
   Menu,
+  Phone,
   Search,
   ShoppingBag,
+  Sparkles,
   User,
+  Users,
   Zap,
   Truck,
   Sprout,
 } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
+
+const MENU_ICONS: Record<string, LucideIcon> = {
+  "Our Services": Flower2,
+  "Professional Horticulture Workforce": Users,
+  Training: GraduationCap,
+  Shop: ShoppingBag,
+  Products: Sparkles,
+};
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
