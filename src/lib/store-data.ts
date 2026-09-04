@@ -324,19 +324,32 @@ export const NAV = [
       "Quality Audits & Supervision"
     ],
     hrefs: [
-      "#our-professional-training",
-      "#training-certification",
-      "#professional-deployment",
-      "#quality-audits"
+      "#services",
+      "#services",
+      "#services",
+      "#services"
     ]
   },
-  { label: "Seeds", items: ["Vegetable Seeds", "Herb Seeds", "Flower Seeds"] },
+  {
+    label: "Seeds",
+    items: ["Vegetable Seeds", "Herb Seeds", "Flower Seeds"],
+    hrefs: ["#products", "#products", "#products"],
+  },
   {
     label: "Plant Care",
     items: ["Potting Mix", "Biostimulants", "Organic Pest Control"],
+    hrefs: ["#products", "#products", "#products"],
   },
-  { label: "Garden Tools", items: ["Hand Tools", "Watering", "Accessories"] },
-  { label: "Green Gifts", items: ["Gift Hampers", "Corporate Gifting", "Gift Cards"] },
+  {
+    label: "Garden Tools",
+    items: ["Hand Tools", "Watering", "Accessories"],
+    hrefs: ["#products", "#products", "#products"],
+  },
+  {
+    label: "Green Gifts",
+    items: ["Gift Hampers", "Corporate Gifting", "Gift Cards"],
+    hrefs: ["#gifting", "#gifting", "#gifting"],
+  },
 ];
 
 export const QUICK_CATEGORIES = [
