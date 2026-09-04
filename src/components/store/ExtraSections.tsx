@@ -13,7 +13,8 @@ import {
   Youtube,
   Phone,
   Clock,
-  Loader2
+  Loader2,
+  CheckCircle2
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -285,6 +286,7 @@ export function ReviewsSection() {
 }
 
 export function ContactSection() {
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const submitFn = useServerFn(submitEnquiry);
   const mutation = useMutation({
     mutationFn: submitFn,
@@ -347,12 +349,31 @@ export function ContactSection() {
           </div>
 
           <div className="rounded-3xl bg-white p-8 shadow-sm lg:p-10">
-            <h3 className="font-display text-2xl font-bold text-gray-900">Send an Enquiry</h3>
-            <p className="mt-2 text-sm text-gray-500">
-              Fill in the details below and we'll get back to you within 2 hours.
-            </p>
-
-            <form 
+            {isSubmitted ? (
+              <div className="flex h-full flex-col items-center justify-center gap-4 py-12 text-center animate-in fade-in zoom-in duration-500">
+                <div className="flex size-20 items-center justify-center rounded-full bg-green-100 mb-2">
+                  <CheckCircle2 className="size-10 text-forest" />
+                </div>
+                <h2 className="font-display text-2xl font-bold text-forest">Request Submitted!</h2>
+                <p className="text-muted-foreground text-lg max-w-sm">
+                  Within 24 to 48 hours our team will connect with you.
+                </p>
+                <Button 
+                  variant="outline" 
+                  className="mt-6 rounded-xl border-forest/20 text-forest hover:bg-forest/5"
+                  onClick={() => setIsSubmitted(false)}
+                >
+                  Send another enquiry
+                </Button>
+              </div>
+            ) : (
+              <>
+                <h3 className="font-display text-2xl font-bold text-gray-900">Send an Enquiry</h3>
+                <p className="mt-2 text-sm text-gray-500">
+                  Fill in the details below and we'll get back to you within 2 hours.
+                </p>
+    
+                <form 
               className="mt-8 space-y-6"
               onSubmit={(e) => {
                 e.preventDefault();
@@ -379,6 +400,27 @@ export function ContactSection() {
                 const encodedMessage = encodeURIComponent(msg);
                 window.open(`https://wa.me/916360988785?text=${encodedMessage}`, '_blank');
                 (e.target as HTMLFormElement).reset();
+                setIsSubmitted(true);
+                
+                // Trigger confetti paper blast!
+                const duration = 3 * 1000;
+                const end = Date.now() + duration;
+
+                const frame = () => {
+                  confetti({
+                    particleCount: 10,
+                    angle: 270,
+                    spread: 120,
+                    startVelocity: 45,
+                    origin: { x: 0.5, y: -0.1 }, // Top center
+                    colors: ['#2C5A2E', '#4CAF50', '#FF5722', '#FFC107', '#03A9F4', '#E91E63', '#9C27B0', '#F6F4EB']
+                  });
+
+                  if (Date.now() < end) {
+                    requestAnimationFrame(frame);
+                  }
+                };
+                frame();
               }}
             >
               <div className="grid gap-6 sm:grid-cols-2">
@@ -434,7 +476,9 @@ export function ContactSection() {
                 {mutation.isPending ? <Loader2 className="mr-2 size-4 animate-spin" /> : <Send className="mr-2 size-4" />}
                 <span>{mutation.isPending ? "Sending..." : "Send My Enquiry"}</span>
               </Button>
-            </form>
+              </form>
+              </>
+            )}
           </div>
         </div>
       </div>

@@ -17,6 +17,7 @@ import { CategoriesManager } from "@/components/admin/CategoriesManager";
 import { ProductsManager } from "@/components/admin/ProductsManager";
 import { ReelsManager } from "@/components/admin/ReelsManager";
 import { BlogsManager } from "@/components/admin/BlogsManager";
+import { UpdatesManager } from "@/components/admin/UpdatesManager";
 import { AnalyticsDashboard } from "@/components/admin/AnalyticsDashboard";
 import { claimAdminRole, getAdminOverview, setEnquiryStatus } from "@/lib/admin.functions";
 import { supabase } from "@/integrations/supabase/client";
@@ -160,6 +161,9 @@ function AdminDashboard() {
             <TabsTrigger value="blogs">
               <FileText className="size-4" /> Blogs
             </TabsTrigger>
+            <TabsTrigger value="updates">
+              <Inbox className="size-4" /> Updates
+            </TabsTrigger>
             <TabsTrigger value="enquiries">
               <Inbox className="size-4" /> Enquiries
             </TabsTrigger>
@@ -257,6 +261,12 @@ function AdminDashboard() {
           <TabsContent value="blogs">
             <div className="mt-8">
               <BlogsManager />
+            </div>
+          </TabsContent>
+
+          <TabsContent value="updates">
+            <div className="mt-8">
+              <UpdatesManager />
             </div>
           </TabsContent>
         </Tabs>

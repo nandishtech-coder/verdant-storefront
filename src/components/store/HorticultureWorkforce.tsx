@@ -19,6 +19,7 @@ import {
   Shovel
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import confetti from "canvas-confetti";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -293,9 +294,41 @@ export function HorticultureWorkforce() {
 function PartnershipDialog() {
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const fd = new FormData(e.currentTarget);
+    const text = `*New Partnership Request*
+Company: ${fd.get('company')}
+Contact Person: ${fd.get('name')}
+Phone: ${fd.get('phone')}
+Email: ${fd.get('email')}
+Location Type: ${fd.get('location')}
+Gardeners Required: ${fd.get('gardeners') || 'Not specified'}
+Additional Details: ${fd.get('details') || 'None'}`;
+    
+    const whatsappUrl = `https://wa.me/916360988785?text=${encodeURIComponent(text)}`;
+    window.open(whatsappUrl, '_blank');
     setIsSubmitted(true);
+    
+    // Trigger confetti paper blast!
+    const duration = 3 * 1000;
+    const end = Date.now() + duration;
+
+    const frame = () => {
+      confetti({
+        particleCount: 10,
+        angle: 270,
+        spread: 120,
+        startVelocity: 45,
+        origin: { x: 0.5, y: -0.1 }, // Top center
+        colors: ['#2C5A2E', '#4CAF50', '#FF5722', '#FFC107', '#03A9F4', '#E91E63', '#9C27B0', '#F6F4EB']
+      });
+
+      if (Date.now() < end) {
+        requestAnimationFrame(frame);
+      }
+    };
+    frame();
   };
 
   return (
@@ -331,46 +364,46 @@ function PartnershipDialog() {
               <div className="grid sm:grid-cols-2 gap-3 sm:gap-4">
                 <div className="space-y-1 sm:space-y-2">
                   <label className="text-xs sm:text-sm font-semibold text-gray-900">Company Name <span className="text-red-500">*</span></label>
-                  <Input required placeholder="Your Company" className="bg-white h-8 sm:h-10 text-xs sm:text-sm" />
+                  <Input name="company" required placeholder="Your Company" className="bg-white h-8 sm:h-10 text-xs sm:text-sm" />
                 </div>
                 <div className="space-y-1 sm:space-y-2">
                   <label className="text-xs sm:text-sm font-semibold text-gray-900">Contact Person <span className="text-red-500">*</span></label>
-                  <Input required placeholder="Full Name" className="bg-white h-8 sm:h-10 text-xs sm:text-sm" />
+                  <Input name="name" required placeholder="Full Name" className="bg-white h-8 sm:h-10 text-xs sm:text-sm" />
                 </div>
               </div>
               <div className="grid sm:grid-cols-2 gap-3 sm:gap-4">
                 <div className="space-y-1 sm:space-y-2">
                   <label className="text-xs sm:text-sm font-semibold text-gray-900">Phone / WhatsApp <span className="text-red-500">*</span></label>
-                  <Input required placeholder="+91 XXXXX XXXXX" className="bg-white h-8 sm:h-10 text-xs sm:text-sm" />
+                  <Input name="phone" required placeholder="+91 XXXXX XXXXX" className="bg-white h-8 sm:h-10 text-xs sm:text-sm" />
                 </div>
                 <div className="space-y-1 sm:space-y-2">
                   <label className="text-xs sm:text-sm font-semibold text-gray-900">Email Address <span className="text-red-500">*</span></label>
-                  <Input required type="email" placeholder="your@email.com" className="bg-white h-8 sm:h-10 text-xs sm:text-sm" />
+                  <Input name="email" required type="email" placeholder="your@email.com" className="bg-white h-8 sm:h-10 text-xs sm:text-sm" />
                 </div>
               </div>
               <div className="grid sm:grid-cols-2 gap-3 sm:gap-4">
                 <div className="space-y-1 sm:space-y-2">
                   <label className="text-xs sm:text-sm font-semibold text-gray-900">Location Type <span className="text-red-500">*</span></label>
-                  <Select required>
+                  <Select name="location" required>
                     <SelectTrigger className="bg-white h-8 sm:h-10 text-xs sm:text-sm">
                       <SelectValue placeholder="Select location type" />
                     </SelectTrigger>
                     <SelectContent>
                       {DEPLOYMENT_AREAS.map(area => (
-                        <SelectItem key={area} value={area.toLowerCase().replace(/\s+/g, '-')} className="text-xs sm:text-sm">{area}</SelectItem>
+                        <SelectItem key={area} value={area} className="text-xs sm:text-sm">{area}</SelectItem>
                       ))}
-                      <SelectItem value="other" className="text-xs sm:text-sm">Other</SelectItem>
+                      <SelectItem value="Other" className="text-xs sm:text-sm">Other</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
                 <div className="space-y-1 sm:space-y-2">
                   <label className="text-xs sm:text-sm font-semibold text-gray-900">Gardeners Required</label>
-                  <Input type="number" placeholder="e.g. 5" className="bg-white h-8 sm:h-10 text-xs sm:text-sm" />
+                  <Input name="gardeners" type="number" placeholder="e.g. 5" className="bg-white h-8 sm:h-10 text-xs sm:text-sm" />
                 </div>
               </div>
               <div className="space-y-1 sm:space-y-2">
                 <label className="text-xs sm:text-sm font-semibold text-gray-900">Additional Details</label>
-                <Textarea placeholder="Tell us more about your specific requirements..." className="bg-white min-h-[60px] sm:min-h-[100px] text-xs sm:text-sm" />
+                <Textarea name="details" placeholder="Tell us more about your specific requirements..." className="bg-white min-h-[60px] sm:min-h-[100px] text-xs sm:text-sm" />
               </div>
               <Button type="submit" className="w-full h-10 sm:h-12 text-sm sm:text-base font-semibold bg-forest text-white hover:bg-forest/90 mt-2">
                 Submit Partnership Request

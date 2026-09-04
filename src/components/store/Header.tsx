@@ -1,5 +1,8 @@
 import { useState, useEffect, useRef } from "react";
-import { Link } from "@tanstack/react-router";
+import { Link as RouterLink } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
+import { useServerFn } from "@tanstack/react-start";
+import { listPublicUpdates } from "@/lib/updates.functions";
 import {
   ChevronDown,
   ChevronRight,
@@ -40,25 +43,27 @@ import {
 import { NAV, PRODUCTS } from "@/lib/store-data";
 import { useCart } from "./cart";
 
-const PERKS = [
-  { icon: Truck, text: "Free shipping on orders over ₹1,999" },
-  { icon: Zap, text: "Next Day Delivery available in metro areas" },
-  { icon: Sprout, text: "Live plants shipped in root-safe packaging" },
-  { icon: Leaf, text: "100% organic, non-toxic & pet safe" },
-];
-
 function AnnouncementBar() {
-  const row = [...PERKS, ...PERKS];
+  const fetchUpdates = useServerFn(listPublicUpdates);
+  const { data: updates = [] } = useQuery({
+    queryKey: ["public-updates"],
+    queryFn: () => fetchUpdates(),
+  });
+
+  if (updates.length === 0) return null;
+
+  const row = [...updates, ...updates, ...updates, ...updates];
+  
   return (
     <div className="overflow-hidden bg-forest-deep py-2.5 text-forest-foreground">
       <div className="flex w-max marquee-track">
-        {row.map((p, i) => (
+        {row.map((u, i) => (
           <span
             key={i}
-            className="flex shrink-0 items-center gap-2 px-8 text-xs tracking-wide sm:text-sm"
+            className="flex shrink-0 items-center gap-3 px-8 text-xs tracking-wide sm:text-sm"
           >
-            <p.icon className="size-4 opacity-90" />
-            {p.text}
+            <span className="text-forest-foreground/50 text-[10px]">●</span>
+            {u.text}
           </span>
         ))}
       </div>
@@ -169,7 +174,7 @@ export function Header() {
   useEffect(() => {
     if (mobileMenuOpen) {
       window.history.pushState({ mobileMenuOpen: true }, "");
-      
+
       const handlePopState = (e: PopStateEvent) => {
         setMobileMenuOpen(false);
       };
@@ -247,7 +252,10 @@ export function Header() {
                           <ul className="space-y-1 border-l border-dashed border-border/70 pl-3">
                             {n.items.map((i, idx) => {
                               const href = (n as any).hrefs ? (n as any).hrefs[idx] : "#products";
-                              const isInternalRoute = href.startsWith("/");
+                              const isService = href.startsWith("/service/");
+                              const isProduct = href.startsWith("/product/");
+                              const isCategory = href.startsWith("/category/");
+
                               const cls =
                                 "group flex items-center justify-between gap-2 rounded-xl px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-secondary hover:text-forest";
                               const inner = (
@@ -258,24 +266,42 @@ export function Header() {
                               );
                               return (
                                 <li key={i}>
-                                  {isInternalRoute ? (
-                                    <Link
+                                  {isService ? (
+                                    <RouterLink
                                       to="/service/$id"
                                       params={{ id: href.replace("/service/", "") }}
                                       onClick={() => handleMobileMenuClose(false)}
                                       className={cls}
                                     >
                                       {inner}
-                                    </Link>
+                                    </RouterLink>
+                                  ) : isProduct ? (
+                                    <RouterLink
+                                      to="/product/$id"
+                                      params={{ id: href.replace("/product/", "") }}
+                                      onClick={() => handleMobileMenuClose(false)}
+                                      className={cls}
+                                    >
+                                      {inner}
+                                    </RouterLink>
+                                  ) : isCategory ? (
+                                    <RouterLink
+                                      to="/category/$id"
+                                      params={{ id: href.replace("/category/", "") }}
+                                      onClick={() => handleMobileMenuClose(false)}
+                                      className={cls}
+                                    >
+                                      {inner}
+                                    </RouterLink>
                                   ) : (
-                                    <Link
+                                    <RouterLink
                                       to="/"
                                       hash={href.slice(1)}
                                       onClick={() => handleMobileMenuClose(false)}
                                       className={cls}
                                     >
                                       {inner}
-                                    </Link>
+                                    </RouterLink>
                                   )}
                                 </li>
                               );
@@ -345,7 +371,7 @@ export function Header() {
                   ) : (
                     results.map((p) => (
                       <li key={p.id}>
-                        <Link 
+                        <RouterLink
                           to="/product/$id"
                           params={{ id: p.id }}
                           onClick={() => setShowResults(false)}
@@ -360,7 +386,7 @@ export function Header() {
                             className="size-11 rounded-lg object-cover"
                           />
                           <span className="line-clamp-1 text-sm text-forest font-medium">{p.title}</span>
-                        </Link>
+                        </RouterLink>
                       </li>
                     ))
                   )}
@@ -413,22 +439,51 @@ export function Header() {
                 <div className="invisible absolute top-full left-0 w-56 translate-y-1 rounded-xl border border-border bg-card p-2 opacity-0 shadow-[var(--shadow-lift)] transition-all duration-200 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 z-50">
                   {n.items.map((i, idx) => {
                     const href = (n as any).hrefs ? (n as any).hrefs[idx] : "#products";
-                    const isInternalRoute = href.startsWith("/");
+                    const isService = href.startsWith("/service/");
+                    const isProduct = href.startsWith("/product/");
+                    const isCategory = href.startsWith("/category/");
                     const className = "block rounded-lg px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-secondary hover:text-forest";
-                    return isInternalRoute ? (
-                      <Link
-                        key={i}
-                        to="/service/$id"
-                        params={{ id: href.replace("/service/", "") }}
-                        className={className}
-                      >
-                        {i}
-                      </Link>
-                    ) : (
-                      <Link key={i} to="/" hash={href.slice(1)} className={className}>
-                        {i}
-                      </Link>
-                    );
+
+                    if (isService) {
+                      return (
+                        <RouterLink
+                          key={i}
+                          to="/service/$id"
+                          params={{ id: href.replace("/service/", "") }}
+                          className={className}
+                        >
+                          {i}
+                        </RouterLink>
+                      );
+                    } else if (isProduct) {
+                      return (
+                        <RouterLink
+                          key={i}
+                          to="/product/$id"
+                          params={{ id: href.replace("/product/", "") }}
+                          className={className}
+                        >
+                          {i}
+                        </RouterLink>
+                      );
+                    } else if (isCategory) {
+                      return (
+                        <RouterLink
+                          key={i}
+                          to="/category/$id"
+                          params={{ id: href.replace("/category/", "") }}
+                          className={className}
+                        >
+                          {i}
+                        </RouterLink>
+                      );
+                    } else {
+                      return (
+                        <RouterLink key={i} to="/" hash={href.slice(1)} className={className}>
+                          {i}
+                        </RouterLink>
+                      );
+                    }
                   })}
                 </div>
               </div>

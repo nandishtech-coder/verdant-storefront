@@ -109,3 +109,21 @@ ADD COLUMN IF NOT EXISTS interested_in text;
 -- Allow anyone to submit an enquiry
 ALTER TABLE public.enquiries ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "Allow public insert" ON public.enquiries FOR INSERT WITH CHECK (true);
+
+
+CREATE TABLE public.latest_updates (
+  id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
+  text text NOT NULL,
+  sort_order integer DEFAULT 0 NOT NULL,
+  is_active boolean DEFAULT true NOT NULL,
+  created_at timestamp with time zone DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
+-- Set up RLS (Row Level Security)
+ALTER TABLE public.latest_updates ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Allow public read access to latest_updates"
+  ON public.latest_updates FOR SELECT USING (true);
+
+CREATE POLICY "Allow admin full access to latest_updates"
+  ON public.latest_updates FOR ALL USING (auth.role() = 'authenticated');

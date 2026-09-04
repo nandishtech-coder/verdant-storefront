@@ -333,17 +333,17 @@ export const NAV = [
   {
     label: "Seeds",
     items: ["Vegetable Seeds", "Herb Seeds", "Flower Seeds"],
-    hrefs: ["#products", "#products", "#products"],
+    hrefs: ["/category/vegetable-seeds", "/category/herb-seeds", "/category/flower-seeds"],
   },
   {
     label: "Plant Care",
     items: ["Potting Mix", "Biostimulants", "Organic Pest Control"],
-    hrefs: ["#products", "#products", "#products"],
+    hrefs: ["/category/potting-mix", "/category/biostimulants", "/category/organic-pest-control"],
   },
   {
     label: "Garden Tools",
     items: ["Hand Tools", "Watering", "Accessories"],
-    hrefs: ["#products", "#products", "#products"],
+    hrefs: ["/category/hand-tools", "/category/watering", "/category/accessories"],
   },
   {
     label: "Green Gifts",

@@ -4,6 +4,7 @@ import { ArrowLeft, CheckCircle2, CalendarDays, Phone, Mail, Loader2, Send } fro
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { toast } from "sonner";
+import confetti from "canvas-confetti";
 import { Header } from "@/components/store/Header";
 import { Footer } from "@/components/store/Sections";
 import { CartDrawer } from "@/components/store/CartDrawer";
@@ -69,6 +70,7 @@ function EnquiryDialog({
   onOpenChange: (v: boolean) => void;
   serviceTitle: string;
 }) {
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const submitFn = useServerFn(submitEnquiry);
   const mutation = useMutation({
     mutationFn: submitFn,
@@ -85,21 +87,56 @@ function EnquiryDialog({
       ];
       const url = `https://wa.me/${PHONE.replace(/\D/g, "")}?text=${encodeURIComponent(lines.join("\n"))}`;
       toast.success("Enquiry sent successfully! Opening WhatsApp to confirm with our team.");
-      onOpenChange(false);
+      setIsSubmitted(true);
       window.open(url, "_blank", "noopener,noreferrer");
+      
+      // Trigger confetti paper blast!
+      const duration = 3 * 1000;
+      const end = Date.now() + duration;
+
+      const frame = () => {
+        confetti({
+          particleCount: 10,
+          angle: 270,
+          spread: 120,
+          startVelocity: 45,
+          origin: { x: 0.5, y: -0.1 }, // Top center
+          colors: ['#2C5A2E', '#4CAF50', '#FF5722', '#FFC107', '#03A9F4', '#E91E63', '#9C27B0', '#F6F4EB']
+        });
+
+        if (Date.now() < end) {
+          requestAnimationFrame(frame);
+        }
+      };
+      frame();
     },
     onError: (err: Error) => toast.error(err.message || "Failed to submit enquiry."),
   });
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={open} onOpenChange={(val) => {
+      onOpenChange(val);
+      if (!val) setTimeout(() => setIsSubmitted(false), 300);
+    }}>
       <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-lg">
-        <DialogHeader>
-          <DialogTitle className="font-display text-2xl text-forest">Send an Enquiry</DialogTitle>
-          <DialogDescription>
-            Tell us about your requirement for {serviceTitle.toLowerCase()} and our team will reach out.
-          </DialogDescription>
-        </DialogHeader>
+        {isSubmitted ? (
+          <div className="flex flex-col items-center justify-center gap-4 py-8 text-center">
+            <div className="flex size-20 items-center justify-center rounded-full bg-green-100 mb-2">
+              <CheckCircle2 className="size-10 text-forest" />
+            </div>
+            <h2 className="font-display text-2xl font-bold text-forest">Request Submitted!</h2>
+            <p className="text-muted-foreground text-lg">
+              Within 24 to 48 hours our team will connect with you.
+            </p>
+          </div>
+        ) : (
+          <>
+            <DialogHeader>
+              <DialogTitle className="font-display text-2xl text-forest">Send an Enquiry</DialogTitle>
+              <DialogDescription>
+                Tell us about your requirement for {serviceTitle.toLowerCase()} and our team will reach out.
+              </DialogDescription>
+            </DialogHeader>
         <form
           className="mt-2 space-y-4"
           onSubmit={(e) => {
@@ -156,6 +193,8 @@ function EnquiryDialog({
             {mutation.isPending ? "Sending..." : "Send My Enquiry"}
           </Button>
         </form>
+          </>
+        )}
       </DialogContent>
     </Dialog>
   );

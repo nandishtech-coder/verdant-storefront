@@ -111,8 +111,8 @@ export function CartDrawer() {
 
   return (
     <Sheet open={open} onOpenChange={handleClose}>
-      <SheetContent className="flex w-full flex-col gap-0 bg-cream p-0 sm:max-w-md">
-        <SheetHeader className="border-b border-border px-6 py-5">
+      <SheetContent className="flex w-[85vw] sm:max-w-md flex-col gap-0 border-l border-border bg-cream p-0 shadow-2xl overflow-hidden">
+        <SheetHeader className="border-b border-border px-4 py-5 sm:px-6">
           <SheetTitle className="font-display text-xl text-forest">
             Your Basket ({count})
           </SheetTitle>
@@ -122,8 +122,8 @@ export function CartDrawer() {
         </SheetHeader>
 
         {isSuccess ? (
-          <div className="flex flex-1 flex-col items-center justify-center gap-4 px-6 text-center">
-            <div className="flex size-20 items-center justify-center rounded-full bg-green-100 mb-2">
+          <div className="flex flex-1 flex-col items-center justify-center gap-4 px-4 sm:px-6 text-center overflow-y-auto">
+            <div className="flex size-20 items-center justify-center rounded-full bg-green-100 mb-2 mt-8">
               <CheckCircle2 className="size-10 text-forest" />
             </div>
             <h2 className="font-display text-2xl font-bold text-forest">Order Successful!</h2>
@@ -136,7 +136,7 @@ export function CartDrawer() {
           </div>
         ) : (
           <form onSubmit={handleCheckout} className="flex flex-1 flex-col overflow-hidden">
-            <div className="border-b border-border bg-secondary/60 px-6 py-4">
+            <div className="border-b border-border bg-secondary/60 px-4 py-4 sm:px-6">
               <div className="flex items-center gap-2 text-sm text-forest">
                 <Truck className="size-4 text-primary" />
                 {remaining > 0 ? (
@@ -152,7 +152,7 @@ export function CartDrawer() {
               <Progress value={pct} className="mt-3 h-2" />
             </div>
 
-            <div className="flex-1 overflow-y-auto px-6 py-5">
+            <div className="flex-1 overflow-y-auto px-4 py-5 sm:px-6">
               {lines.length === 0 ? (
                 <div className="flex flex-col items-center justify-center gap-3 py-20 text-center">
                   <div className="flex size-14 items-center justify-center rounded-full bg-secondary">
@@ -329,7 +329,7 @@ export function CartDrawer() {
             </div>
 
             {lines.length > 0 && (
-              <div className="border-t border-border bg-card px-6 py-5">
+              <div className="border-t border-border bg-card px-4 py-5 sm:px-6 shrink-0 z-10 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
                 <div className="flex items-center justify-between text-sm text-muted-foreground">
                   <span>Subtotal</span>
                   <span className="text-base font-semibold text-forest">{inr(subtotal)}</span>
