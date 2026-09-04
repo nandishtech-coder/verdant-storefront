@@ -2,16 +2,31 @@ import { useState, useEffect, useRef } from "react";
 import { Link } from "@tanstack/react-router";
 import {
   ChevronDown,
+  ChevronRight,
+  Flower2,
+  GraduationCap,
   Heart,
   Leaf,
   Menu,
+  Phone,
   Search,
   ShoppingBag,
+  Sparkles,
   User,
+  Users,
   Zap,
   Truck,
   Sprout,
 } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
+
+const MENU_ICONS: Record<string, LucideIcon> = {
+  "Our Services": Flower2,
+  "Professional Horticulture Workforce": Users,
+  Training: GraduationCap,
+  Shop: ShoppingBag,
+  Products: Sparkles,
+};
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -191,38 +206,94 @@ export function Header() {
                   <Menu className="size-5" />
                 </Button>
               </SheetTrigger>
-              <SheetContent side="left" className="bg-cream">
-                <SheetHeader>
-                  <SheetTitle className="font-display text-forest">Our Menu</SheetTitle>
+              <SheetContent
+                side="left"
+                className="w-[85vw] max-w-sm overflow-y-auto border-r border-border bg-cream p-0"
+              >
+                <SheetHeader className="bg-forest-deep px-5 py-5 text-left text-forest-foreground">
+                  <SheetTitle className="flex items-center gap-3 text-forest-foreground">
+                    <span className="grid size-11 shrink-0 place-items-center overflow-hidden rounded-xl bg-card">
+                      <img src="/logo.png" alt="GreenRoots" className="size-full object-cover" />
+                    </span>
+                    <span className="flex flex-col">
+                      <span className="font-display text-lg font-bold tracking-[0.08em] uppercase">
+                        GreenRoots
+                      </span>
+                      <span className="text-[0.6rem] tracking-widest uppercase opacity-80">
+                        Learn. Grow. Harvest.
+                      </span>
+                    </span>
+                  </SheetTitle>
                 </SheetHeader>
-                <Accordion type="single" collapsible className="px-4">
-                  {NAV.map((n) => (
-                    <AccordionItem key={n.label} value={n.label}>
-                      <AccordionTrigger className="text-forest">{n.label}</AccordionTrigger>
-                      <AccordionContent>
-                        <ul className="space-y-2">
-                          {n.items.map((i, idx) => {
-                            const href = (n as any).hrefs ? (n as any).hrefs[idx] : "#products";
-                            const isInternalRoute = href.startsWith("/");
-                            return (
-                              <li key={i}>
-                                {isInternalRoute ? (
-                                  <Link to={href} className="text-sm text-muted-foreground block w-full">
-                                    {i}
-                                  </Link>
-                                ) : (
-                                  <a href={href} className="text-sm text-muted-foreground">
-                                    {i}
-                                  </a>
-                                )}
-                              </li>
-                            );
-                          })}
-                        </ul>
-                      </AccordionContent>
-                    </AccordionItem>
-                  ))}
+
+                <Accordion type="single" collapsible className="space-y-2 px-3 py-4">
+                  {NAV.map((n) => {
+                    const Icon = MENU_ICONS[n.label] ?? Leaf;
+                    return (
+                      <AccordionItem
+                        key={n.label}
+                        value={n.label}
+                        className="overflow-hidden rounded-2xl border border-border bg-card shadow-[var(--shadow-soft)] data-[state=open]:border-primary/40"
+                      >
+                        <AccordionTrigger className="px-4 py-3 text-left text-sm font-semibold text-forest hover:no-underline">
+                          <span className="flex items-center gap-3">
+                            <span className="grid size-8 shrink-0 place-items-center rounded-lg bg-secondary text-primary">
+                              <Icon className="size-4" />
+                            </span>
+                            {n.label}
+                          </span>
+                        </AccordionTrigger>
+                        <AccordionContent className="px-2 pb-2">
+                          <ul className="space-y-1 border-l border-dashed border-border/70 pl-3">
+                            {n.items.map((i, idx) => {
+                              const href = (n as any).hrefs ? (n as any).hrefs[idx] : "#products";
+                              const isInternalRoute = href.startsWith("/");
+                              const cls =
+                                "group flex items-center justify-between gap-2 rounded-xl px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-secondary hover:text-forest";
+                              const inner = (
+                                <>
+                                  <span className="line-clamp-2">{i}</span>
+                                  <ChevronRight className="size-3.5 shrink-0 opacity-0 transition-opacity group-hover:opacity-70" />
+                                </>
+                              );
+                              return (
+                                <li key={i}>
+                                  {isInternalRoute ? (
+                                    <Link
+                                      to={href}
+                                      onClick={() => handleMobileMenuClose(false)}
+                                      className={cls}
+                                    >
+                                      {inner}
+                                    </Link>
+                                  ) : (
+                                    <a
+                                      href={href}
+                                      onClick={() => handleMobileMenuClose(false)}
+                                      className={cls}
+                                    >
+                                      {inner}
+                                    </a>
+                                  )}
+                                </li>
+                              );
+                            })}
+                          </ul>
+                        </AccordionContent>
+                      </AccordionItem>
+                    );
+                  })}
                 </Accordion>
+
+                <div className="px-4 pb-6">
+                  <a
+                    href="tel:+916360988785"
+                    className="flex items-center justify-center gap-2 rounded-2xl bg-forest px-4 py-3 text-sm font-semibold text-forest-foreground transition-colors hover:bg-forest-deep"
+                  >
+                    <Phone className="size-4" />
+                    Call us · +91 63609 88785
+                  </a>
+                </div>
               </SheetContent>
             </Sheet>
 
