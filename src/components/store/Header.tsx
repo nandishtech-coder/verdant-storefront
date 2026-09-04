@@ -260,20 +260,21 @@ export function Header() {
                                 <li key={i}>
                                   {isInternalRoute ? (
                                     <Link
-                                      to={href}
+                                      to={href as "/service/$id"}
                                       onClick={() => handleMobileMenuClose(false)}
                                       className={cls}
                                     >
                                       {inner}
                                     </Link>
                                   ) : (
-                                    <a
-                                      href={href}
+                                    <Link
+                                      to="/"
+                                      hash={href.slice(1)}
                                       onClick={() => handleMobileMenuClose(false)}
                                       className={cls}
                                     >
                                       {inner}
-                                    </a>
+                                    </Link>
                                   )}
                                 </li>
                               );
