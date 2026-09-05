@@ -53,11 +53,7 @@ function ProductPage() {
   >("idle");
 
   if (isPending) {
-    return (
-      <div className="py-20 text-center flex justify-center">
-        <Loader2 className="animate-spin text-forest size-8" />
-      </div>
-    );
+    return <PageLoader />;
   }
 
   if (!product) {
