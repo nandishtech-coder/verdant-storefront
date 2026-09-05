@@ -15,6 +15,7 @@ import { Badge } from "@/components/ui/badge";
 import { Minus, Plus, CheckCircle2, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Reveal } from "@/components/store/Reveal";
+import { PageLoader } from "@/components/store/PageLoader";
 
 export const Route = createFileRoute("/product/$id")({
   component: ProductPageWrapper,

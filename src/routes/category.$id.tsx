@@ -9,6 +9,7 @@ import { listProducts } from "@/lib/products.functions";
 import { ProductCard } from "@/components/store/ProductCard";
 import { Loader2, Leaf } from "lucide-react";
 import { Reveal } from "@/components/store/Reveal";
+import { PageLoader } from "@/components/store/PageLoader";
 
 export const Route = createFileRoute("/category/$id")({
   component: CategoryPageWrapper,

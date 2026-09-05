@@ -211,11 +211,7 @@ function ServicePage() {
   const service = services.find((s) => s.slug === id);
 
   if (isPending) {
-    return (
-      <div className="grid min-h-[60vh] place-items-center">
-        <Loader2 className="size-7 animate-spin text-primary" aria-label="Loading service" />
-      </div>
-    );
+    return <PageLoader />;
   }
 
   if (!service) {
