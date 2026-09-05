@@ -9,6 +9,7 @@ import { listProducts } from "@/lib/products.functions";
 import { ProductCard } from "@/components/store/ProductCard";
 import { Loader2, Leaf } from "lucide-react";
 import { Reveal } from "@/components/store/Reveal";
+import { PageLoader } from "@/components/store/PageLoader";
 
 export const Route = createFileRoute("/category/$id")({
   component: CategoryPageWrapper,
@@ -54,11 +55,7 @@ function CategoryPage() {
   const categoryName = id.split("-").map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(" ");
 
   if (isPending) {
-    return (
-      <div className="py-32 text-center flex justify-center">
-        <Loader2 className="animate-spin text-forest size-8" />
-      </div>
-    );
+    return <PageLoader />;
   }
 
   // Filter products by tag (case insensitive match)
