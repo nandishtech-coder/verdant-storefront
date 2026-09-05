@@ -9,6 +9,7 @@ import { Header } from "@/components/store/Header";
 import { Footer } from "@/components/store/Sections";
 import { CartDrawer } from "@/components/store/CartDrawer";
 import { CartProvider } from "@/components/store/cart";
+import { PageLoader } from "@/components/store/PageLoader";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
