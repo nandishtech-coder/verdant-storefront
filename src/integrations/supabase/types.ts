@@ -175,6 +175,10 @@ export type Database = {
           badge: string | null
           created_at: string | null
           id: string
+          description: string | null
+          material_type: string | null
+          weight: string | null
+          customer_support: string | null
           image: string
           is_active: boolean | null
           mrp: number
@@ -191,6 +195,10 @@ export type Database = {
           badge?: string | null
           created_at?: string | null
           id?: string
+          description?: string | null
+          material_type?: string | null
+          weight?: string | null
+          customer_support?: string | null
           image: string
           is_active?: boolean | null
           mrp: number
@@ -207,6 +215,10 @@ export type Database = {
           badge?: string | null
           created_at?: string | null
           id?: string
+          description?: string | null
+          material_type?: string | null
+          weight?: string | null
+          customer_support?: string | null
           image?: string
           is_active?: boolean | null
           mrp?: number

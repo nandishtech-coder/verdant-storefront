@@ -127,3 +127,146 @@ CREATE POLICY "Allow public read access to latest_updates"
 
 CREATE POLICY "Allow admin full access to latest_updates"
   ON public.latest_updates FOR ALL USING (auth.role() = 'authenticated');
+
+
+CREATE TABLE public.workforce_pages (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    slug TEXT NOT NULL UNIQUE,
+    title TEXT NOT NULL,
+    description TEXT NOT NULL,
+    image_url TEXT NOT NULL,
+    gallery_urls TEXT, 
+    icon TEXT NOT NULL,
+    sort_order INTEGER NOT NULL DEFAULT 0,
+    is_active BOOLEAN NOT NULL DEFAULT true,
+    about TEXT,
+    includes TEXT[],
+    cta_heading TEXT,
+    cta_note TEXT,
+    footnote TEXT,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
+-- Enable Row Level Security (RLS)
+ALTER TABLE public.workforce_pages ENABLE ROW LEVEL SECURITY;
+
+-- Allow anyone to read the workforce pages
+CREATE POLICY "Public read access" ON public.workforce_pages FOR SELECT USING (true);
+
+-- Allow authenticated admins to manage the workforce pages
+CREATE POLICY "Admin full access" ON public.workforce_pages FOR ALL TO authenticated USING (true) WITH CHECK (true);
+
+
+
+INSERT INTO public.workforce_pages (
+    slug, 
+    title, 
+    description, 
+    image_url, 
+    gallery_urls, 
+    icon, 
+    about, 
+    includes, 
+    cta_heading, 
+    cta_note, 
+    footnote
+) VALUES 
+(
+    'our-professional-training',
+    'Our Professional Training',
+    'Every Green Roots trainee undergoes a structured 2-month practical training programme covering the complete range of gardening and horticulture activities.',
+    '/images/our-professional-training.png',
+    '/images/train-gallery-1.png
+/images/train-gallery-2.png
+/images/train-gallery-3.png',
+    'GraduationCap',
+    'Our comprehensive 2-month training program is designed to equip our workforce with all the necessary skills for professional garden care and horticulture. The training is hands-on, practical, and supervised by industry experts.',
+    ARRAY[
+      'Garden setup and maintenance',
+      'Terrace, rooftop and kitchen gardening',
+      'Soil and growing-media management',
+      'Plant selection and identification',
+      'Nursery and seedling management',
+      'Plant nutrition and fertilization',
+      'Irrigation and water management',
+      'Pruning and plant care',
+      'Repotting and transplantation',
+      'Organic pest and disease management',
+      'Composting',
+      'Lawn and landscape maintenance',
+      'Gardening tools and equipment',
+      'Workplace safety and professional conduct'
+    ],
+    'Hire Trained Professionals',
+    'Looking for professionally trained gardening staff? Get in touch with us.',
+    'All our trainees undergo rigorous practical assessments.'
+),
+(
+    'training-certification',
+    'Training & Certification',
+    'After completing the 2-month training programme, every trainee undergoes rigorous assessment to receive their Green Roots Training Certificate.',
+    '/images/training-certification.png',
+    '/images/cert-showcase-1.png
+/images/cert-showcase-2.png
+/images/cert-showcase-3.png',
+    'Award',
+    'We believe in accountability and standards. Successful candidates receive a Green Roots Training Certificate and are eligible for professional deployment. Every deployed professional represents the Green Roots standard.',
+    ARRAY[
+      'Practical and knowledge-based assessment',
+      'Green Roots Training Certificate',
+      'Professional Uniform',
+      'ID Card provided',
+      'Safety Equipment training',
+      'Professional Conduct guidelines',
+      'Defined Work Standards'
+    ],
+    'Request Certified Staff',
+    'Deploy certified horticulture professionals at your property.',
+    'Our certification ensures consistent quality across all locations.'
+),
+(
+    'professional-deployment',
+    'Professional Deployment',
+    'We provide trained horticulture professionals for a variety of premium locations.',
+    '/images/professional-deployment.png',
+    '/images/deploy-gallery-1.png
+/images/deploy-gallery-2.png
+/images/deploy-gallery-3.png',
+    'Building2',
+    'Green Roots offers an end-to-end workforce solution. We manage the training, deployment, and ongoing professional development of our gardening staff so you receive reliable and scalable solutions, from a single professional to complete horticulture teams.',
+    ARRAY[
+      'IT & Corporate Campuses',
+      'Apartments & Gated Communities',
+      'Schools & Educational Institutions',
+      'Hotels & Resorts',
+      'Hospitals & Institutions',
+      'Commercial Properties'
+    ],
+    'Discuss Deployment',
+    'Let''s plan the horticulture workforce deployment for your property.',
+    'Scalable teams for any property size.'
+),
+(
+    'quality-audits-supervision',
+    'Quality Audits & Supervision',
+    'Our service doesn''t end with deployment. Green Roots conducts regular quality audits and performance reviews.',
+    '/images/quality-audits-supervision.png',
+    'https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?q=80&w=2000&auto=format&fit=crop
+https://images.unsplash.com/photo-1590682680695-43b964a3ae17?q=80&w=2000&auto=format&fit=crop
+https://images.unsplash.com/photo-1581578731548-c64695cc6952?q=80&w=2000&auto=format&fit=crop',
+    'CheckCircle2',
+    'To ensure consistent standards at every client location, we perform regular audits. Where required, we provide corrective training and expert horticulture guidance to maintain our high standards.',
+    ARRAY[
+      'Garden and plant health checks',
+      'Maintenance quality reviews',
+      'Attendance and work discipline monitoring',
+      'Safety practices evaluation',
+      'Professional conduct assessment',
+      'Service standards assurance',
+      'Client satisfaction surveys'
+    ],
+    'Learn About Our Standards',
+    'Find out how we guarantee quality at every site.',
+    'Continuous supervision and expert guidance included.'
+);

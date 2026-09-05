@@ -16,10 +16,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import {
-  deleteService,
-  listAllServices,
-  saveService,
-  type ServiceRow,
+  deleteWorkforcePage,
+  listAllWorkforcePages,
+  saveWorkforcePage,
+  type WorkforcePageRow,
 } from "@/lib/services.functions";
 import { SERVICE_ICON_NAMES, serviceIcon } from "@/lib/service-icons";
 
@@ -37,6 +37,7 @@ type FormState = {
   cta_heading: string;
   cta_note: string;
   footnote: string;
+  gallery_urls: string;
 };
 
 const emptyForm: FormState = {
@@ -52,16 +53,19 @@ const emptyForm: FormState = {
   cta_heading: "Book a Consultation",
   cta_note: "",
   footnote: "",
+  gallery_urls: "",
 };
 
 const slugify = (value: string) =>
   value.toLowerCase().trim().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 
-export function ServicesManager() {
+import { WORKFORCE_DEFAULTS, WORKFORCE_GALLERIES } from "@/lib/workforce-data";
+
+export function WorkforceManager() {
   const queryClient = useQueryClient();
-  const fetchAll = useServerFn(listAllServices);
-  const save = useServerFn(saveService);
-  const remove = useServerFn(deleteService);
+  const fetchAll = useServerFn(listAllWorkforcePages);
+  const save = useServerFn(saveWorkforcePage);
+  const remove = useServerFn(deleteWorkforcePage);
 
   const [form, setForm] = useState<FormState | null>(null);
 
@@ -76,37 +80,65 @@ export function ServicesManager() {
   };
 
   const saveMutation = useMutation({
-    mutationFn: ({ includes, ...rest }: FormState) =>
-      save({
+    mutationFn: ({ includes, ...rest }: FormState) => {
+      return save({
         data: {
           ...rest,
           includes: includes.split("\n").map((i) => i.trim()).filter(Boolean),
         },
-      }),
+      });
+    },
     onSuccess: async () => {
       await refresh();
       setForm(null);
-      toast.success("Service saved.");
+      toast.success("Workforce page saved.");
     },
-    onError: () => toast.error("Could not save the service. Check the slug is unique."),
+    onError: () => toast.error("Could not save. Check the slug is unique."),
   });
 
   const deleteMutation = useMutation({
     mutationFn: (id: string) => remove({ data: { id } }),
     onSuccess: async () => {
       await refresh();
-      toast.success("Service removed.");
+      toast.success("Page removed.");
     },
-    onError: () => toast.error("Could not remove the service."),
+    onError: () => toast.error("Could not remove."),
   });
 
-  const startEdit = (service: ServiceRow) =>
+  const initDefaults = useMutation({
+    mutationFn: async () => {
+      for (const def of WORKFORCE_DEFAULTS) {
+        const galleries = WORKFORCE_GALLERIES[def.slug] || [];
+        const galleryUrls = galleries.map((g: any) => g.src);
+        const combinedImageUrl = [def.image_url, ...galleryUrls].join("|||");
+
+        await save({
+          data: {
+            ...def,
+            image_url: combinedImageUrl,
+            is_active: true,
+            sort_order: 0,
+            cta_heading: def.cta_heading || "Discuss Deployment",
+            cta_note: def.cta_note || "",
+            footnote: def.footnote || "",
+          } as any,
+        });
+      }
+    },
+    onSuccess: async () => {
+      await refresh();
+      toast.success("Default pages initialized.");
+    },
+    onError: () => toast.error("Failed to initialize defaults."),
+  });
+
+  const startEdit = (service: WorkforcePageRow) => {
     setForm({
       id: service.id,
       slug: service.slug,
       title: service.title,
       description: service.description,
-      image_url: service.image_url,
+      image_url: service.image_url || "",
       icon: service.icon,
       sort_order: service.sort_order,
       is_active: service.is_active,
@@ -115,12 +147,14 @@ export function ServicesManager() {
       cta_heading: service.cta_heading ?? "Book a Consultation",
       cta_note: service.cta_note ?? "",
       footnote: service.footnote ?? "",
+      gallery_urls: service.gallery_urls ?? "",
     });
+  };
 
   if (services.isPending) {
     return (
       <div className="grid place-items-center py-20">
-        <Loader2 className="size-6 animate-spin text-forest" aria-label="Loading services" />
+        <Loader2 className="size-6 animate-spin text-forest" aria-label="Loading pages" />
       </div>
     );
   }
@@ -128,37 +162,25 @@ export function ServicesManager() {
   if (services.isError) {
     return (
       <div className="rounded-xl border border-border bg-card p-8 text-center">
-        <p className="text-muted-foreground">Could not load services.</p>
+        <p className="text-muted-foreground">Could not load pages.</p>
         <Button className="mt-4" onClick={() => services.refetch()}>Try again</Button>
       </div>
     );
   }
 
-  const WORKFORCE_SLUGS = [
-    "our-professional-training",
-    "training-certification",
-    "professional-deployment",
-    "quality-audits-supervision",
-  ];
-  const list = services.data.filter((s) => !WORKFORCE_SLUGS.includes(s.slug));
+  const WORKFORCE_SLUGS = WORKFORCE_DEFAULTS.map((w) => w.slug);
+  const list = services.data.filter((s) => WORKFORCE_SLUGS.includes(s.slug));
 
   return (
     <div className="grid gap-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <p className="text-sm font-semibold text-leaf">Website content</p>
-          <h2 className="mt-1 font-display text-3xl font-semibold text-forest">Our Services</h2>
+          <h2 className="mt-1 font-display text-3xl font-semibold text-forest">Professional Workforce</h2>
           <p className="mt-1 text-sm text-muted-foreground">
-            These entries power the "Our Services" section on the storefront.
+            Manage the content for the Professional Horticulture Workforce pages.
           </p>
         </div>
-        <Button
-          onClick={() =>
-            setForm({ ...emptyForm, sort_order: (list.at(-1)?.sort_order ?? 0) + 1 })
-          }
-        >
-          <Plus /> Add service
-        </Button>
       </div>
 
       {form && (
@@ -175,7 +197,7 @@ export function ServicesManager() {
         >
           <div className="flex items-center justify-between">
             <h3 className="font-display text-xl font-semibold text-forest">
-              {form.id ? "Edit service" : "New service"}
+              {form.id ? "Edit page" : "New page"}
             </h3>
             <Button type="button" variant="ghost" size="icon" onClick={() => setForm(null)}>
               <X />
@@ -262,6 +284,17 @@ export function ServicesManager() {
           </div>
 
           <div className="grid gap-2">
+            <Label htmlFor="svc-gallery">Gallery Images (One URL per line)</Label>
+            <Textarea
+              id="svc-gallery"
+              rows={4}
+              placeholder="/images/gallery1.png&#10;https://example.com/img2.jpg"
+              value={form.gallery_urls}
+              onChange={(e) => setForm((f) => (f ? { ...f, gallery_urls: e.target.value } : f))}
+            />
+          </div>
+
+          <div className="grid gap-2">
             <Label htmlFor="svc-includes">What's included — one item per line</Label>
             <Textarea
               id="svc-includes"
@@ -343,7 +376,7 @@ export function ServicesManager() {
         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
           {list.map((service) => {
             const Icon = serviceIcon(service.icon);
-            const mainImg = (service.image_url || "").split("|||")[0];
+            const mainImg = service.image_url || "";
             return (
               <article
                 key={service.id}

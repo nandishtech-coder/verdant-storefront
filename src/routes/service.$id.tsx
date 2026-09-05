@@ -20,7 +20,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { listServices } from "@/lib/services.functions";
+import { listServices, listPublicWorkforcePages } from "@/lib/services.functions";
 import { submitEnquiry } from "@/lib/enquiries.functions";
 import { serviceIcon } from "@/lib/service-icons";
 
@@ -201,17 +201,39 @@ function EnquiryDialog({
   );
 }
 
+import { WORKFORCE_GALLERIES } from "@/lib/workforce-data";
+
 function ServicePage() {
   const { id } = Route.useParams();
   const [enquiryOpen, setEnquiryOpen] = useState(false);
   const fetchServices = useServerFn(listServices);
-  const { data: services = [], isPending } = useQuery({
+  const fetchWorkforcePages = useServerFn(listPublicWorkforcePages);
+  
+  const { data: services = [], isPending: isServicesPending } = useQuery({
     queryKey: ["services", "public"],
     queryFn: () => fetchServices(),
   });
-  const service = services.find((s) => s.slug === id);
+  
+  const { data: workforcePages = [], isPending: isWorkforcePending } = useQuery({
+    queryKey: ["workforce_pages", "public"],
+    queryFn: () => fetchWorkforcePages(),
+  });
+  
+  const isPending = isServicesPending || isWorkforcePending;
+  
+  const dbService = services.find((s) => s.slug === id);
+  const dbWorkforce = workforcePages.find((w) => w.slug === id);
+  
+  let service = null;
+  if (dbWorkforce) {
+    const galleryUrls = (dbWorkforce.gallery_urls || "").split("\n").map(u => u.trim()).filter(Boolean);
+    const gallery = galleryUrls.map(src => ({ src, title: "Gallery Image" }));
+    service = { ...dbWorkforce, gallery };
+  } else if (dbService) {
+    service = { ...dbService, gallery: [] };
+  }
 
-  if (isPending) {
+  if (!service && isPending) {
     return <PageLoader />;
   }
 
@@ -293,6 +315,19 @@ function ServicePage() {
                     </li>
                   ))}
                 </ul>
+              </div>
+            )}
+
+            {service.gallery && service.gallery.length > 0 && (
+              <div className="pt-8 border-t border-border/50">
+                <h3 className="font-display text-2xl font-semibold text-forest mb-6">Gallery Showcase</h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  {service.gallery.map((img: any, i: number) => (
+                    <div key={i} className={`group relative overflow-hidden rounded-3xl shadow-sm border border-border/40 transition-all hover:shadow-lg aspect-video ${i % 5 === 2 ? 'sm:col-span-2' : ''}`}>
+                      <img src={img.src} alt={img.title} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                    </div>
+                  ))}
+                </div>
               </div>
             )}
           </div>

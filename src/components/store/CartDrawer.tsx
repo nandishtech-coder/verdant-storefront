@@ -16,6 +16,9 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useCart } from "./cart";
+import { useQuery } from "@tanstack/react-query";
+import { useServerFn } from "@tanstack/react-start";
+import { listPublicUpdates } from "@/lib/updates.functions";
 import { FREE_SHIPPING_THRESHOLD, inr } from "@/lib/store-data";
 
 export function CartDrawer() {
@@ -52,8 +55,26 @@ export function CartDrawer() {
     return undefined;
   }, [open, setOpen]);
 
-  const remaining = Math.max(0, FREE_SHIPPING_THRESHOLD - subtotal);
-  const pct = Math.min(100, (subtotal / FREE_SHIPPING_THRESHOLD) * 100);
+  const fetchUpdates = useServerFn(listPublicUpdates);
+  const { data: updates = [] } = useQuery({
+    queryKey: ["public-updates"],
+    queryFn: () => fetchUpdates(),
+  });
+
+  let threshold = FREE_SHIPPING_THRESHOLD;
+  const shippingUpdate = updates.find(u => {
+    const txt = u.text.toLowerCase();
+    return txt.includes("free") && (txt.includes("shipping") || txt.includes("delivery"));
+  });
+  if (shippingUpdate) {
+    const nums = shippingUpdate.text.match(/\d+/g);
+    if (nums && nums.length > 0) {
+      threshold = parseInt(nums[nums.length - 1], 10);
+    }
+  }
+
+  const remaining = Math.max(0, threshold - subtotal);
+  const pct = Math.min(100, (subtotal / threshold) * 100);
 
   const handleCheckout = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -81,7 +102,7 @@ export function CartDrawer() {
 
     message += `\n*Totals:*\n`;
     message += `Subtotal: ${inr(subtotal)}\n`;
-    const shipping = subtotal >= FREE_SHIPPING_THRESHOLD ? 0 : 100;
+    const shipping = subtotal >= threshold ? 0 : 100;
     message += `Shipping: ${shipping === 0 ? 'Free' : inr(shipping)}\n`;
     message += `*Total: ${inr(subtotal + shipping)}*\n`;
 

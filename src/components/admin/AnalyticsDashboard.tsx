@@ -44,7 +44,7 @@ export function AnalyticsDashboard({ data, enquiries }: { data: AnalyticsData, e
   return (
     <div className="space-y-8 animate-in fade-in duration-700">
       <div className="flex flex-col gap-2">
-        <h2 className="text-3xl font-display font-bold text-forest">Storefront Analytics</h2>
+        <h2 className="text-3xl font-display font-bold text-forest">GreenRoots Analytics</h2>
         <p className="text-muted-foreground">Welcome back! Here is what's happening across your platform today.</p>
       </div>
 

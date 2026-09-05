@@ -3,6 +3,7 @@ import { Link as RouterLink } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { listPublicUpdates } from "@/lib/updates.functions";
+import { listProducts } from "@/lib/products.functions";
 import {
   ChevronDown,
   ChevronRight,
@@ -79,8 +80,16 @@ function SearchDialog({
   onOpenChange: (v: boolean) => void;
 }) {
   const [q, setQ] = useState("");
+  const fetchProducts = useServerFn(listProducts);
+  const { data: dbProducts = [] } = useQuery({
+    queryKey: ["public-products"],
+    queryFn: () => fetchProducts(),
+  });
+  
+  const productsList = dbProducts.length > 0 ? dbProducts : PRODUCTS;
+
   const results = q.trim()
-    ? PRODUCTS.filter((p) => p.title.toLowerCase().includes(q.toLowerCase())).slice(0, 6)
+    ? productsList.filter((p) => p.title.toLowerCase().includes(q.toLowerCase())).slice(0, 6)
     : [];
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -119,7 +128,12 @@ function SearchDialog({
             )}
             {results.map((p) => (
               <li key={p.id}>
-                <button className="flex w-full items-center gap-3 rounded-xl p-2 text-left transition-colors hover:bg-secondary">
+                <RouterLink
+                  to="/product/$id"
+                  params={{ id: p.id }}
+                  onClick={() => onOpenChange(false)}
+                  className="flex w-full items-center gap-3 rounded-xl p-2 text-left transition-colors hover:bg-secondary"
+                >
                   <img
                     src={p.image}
                     alt={p.title}
@@ -129,7 +143,7 @@ function SearchDialog({
                     className="size-11 rounded-lg object-cover"
                   />
                   <span className="line-clamp-1 text-sm text-forest">{p.title}</span>
-                </button>
+                </RouterLink>
               </li>
             ))}
           </ul>
@@ -203,8 +217,16 @@ export function Header() {
     setMobileMenuOpen(false);
   };
 
+  const fetchProducts = useServerFn(listProducts);
+  const { data: dbProducts = [] } = useQuery({
+    queryKey: ["public-products"],
+    queryFn: () => fetchProducts(),
+  });
+  
+  const productsList = dbProducts.length > 0 ? dbProducts : PRODUCTS;
+
   const results = searchQuery.trim()
-    ? PRODUCTS.filter((p) => p.title.toLowerCase().includes(searchQuery.toLowerCase())).slice(0, 6)
+    ? productsList.filter((p) => p.title.toLowerCase().includes(searchQuery.toLowerCase())).slice(0, 6)
     : [];
 
   return (
@@ -334,7 +356,7 @@ export function Header() {
               </SheetContent>
             </Sheet>
 
-            <a href="#top" className="flex items-center gap-2">
+            <RouterLink to="/" className="flex items-center gap-2">
               <span className="logo-glow grid size-14 shrink-0 place-items-center overflow-hidden rounded-2xl bg-card lg:size-16">
                 <img
                   src="/logo.png"
@@ -350,7 +372,7 @@ export function Header() {
                   Learn. Grow. Harvest.
                 </span>
               </div>
-            </a>
+            </RouterLink>
           </div>
 
           {/* Spacer for mobile so icons push right */}

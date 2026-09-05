@@ -39,6 +39,10 @@ export function ProductsManager() {
   const [variants, setVariants] = useState("");
   const [tags, setTags] = useState("");
   const [badge, setBadge] = useState("");
+  const [description, setDescription] = useState("");
+  const [materialType, setMaterialType] = useState("");
+  const [weight, setWeight] = useState("");
+  const [customerSupport, setCustomerSupport] = useState("");
   const [isActive, setIsActive] = useState(true);
 
   const resetForm = () => {
@@ -51,6 +55,10 @@ export function ProductsManager() {
     setVariants("");
     setTags("");
     setBadge("");
+    setDescription("");
+    setMaterialType("");
+    setWeight("");
+    setCustomerSupport("");
     setIsActive(true);
   };
 
@@ -64,6 +72,10 @@ export function ProductsManager() {
     setVariants(prod.variants.join(", "));
     setTags(prod.tags.join(", "));
     setBadge(prod.badge || "");
+    setDescription(prod.description || "");
+    setMaterialType(prod.material_type || "");
+    setWeight(prod.weight || "");
+    setCustomerSupport(prod.customer_support || "");
     setIsActive(prod.is_active);
     setIsOpen(true);
   };
@@ -102,6 +114,10 @@ export function ProductsManager() {
       variants: variants.split(",").map(v => v.trim()).filter(Boolean),
       tags: tags.split(",").map(t => t.trim()).filter(Boolean),
       badge,
+      description,
+      material_type: materialType,
+      weight: weight,
+      customer_support: customerSupport,
       is_active: isActive,
     });
   };
@@ -155,6 +171,22 @@ export function ProductsManager() {
               <div className="space-y-2 col-span-2 sm:col-span-1">
                 <label className="text-sm font-medium">Badge</label>
                 <Input value={badge} onChange={e => setBadge(e.target.value)} placeholder="Sale, 15% OFF" />
+              </div>
+              <div className="space-y-2 col-span-2">
+                <label className="text-sm font-medium">Description</label>
+                <Textarea value={description} onChange={e => setDescription(e.target.value)} placeholder="Product description..." rows={4} />
+              </div>
+              <div className="space-y-2 col-span-2 sm:col-span-1">
+                <label className="text-sm font-medium">Material Type</label>
+                <Input value={materialType} onChange={e => setMaterialType(e.target.value)} placeholder="Premium Quality" />
+              </div>
+              <div className="space-y-2 col-span-2 sm:col-span-1">
+                <label className="text-sm font-medium">Weight</label>
+                <Input value={weight} onChange={e => setWeight(e.target.value)} placeholder="Standard, 1kg, etc." />
+              </div>
+              <div className="space-y-2 col-span-2 sm:col-span-1">
+                <label className="text-sm font-medium">Customer Support</label>
+                <Input value={customerSupport} onChange={e => setCustomerSupport(e.target.value)} placeholder="8453084530" />
               </div>
               <div className="flex items-center justify-between col-span-2 sm:col-span-1 mt-6">
                 <label className="text-sm font-medium">Active (Visible)</label>

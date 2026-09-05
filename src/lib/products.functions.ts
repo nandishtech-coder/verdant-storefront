@@ -22,12 +22,16 @@ export type ProductRow = {
   variants: string[];
   tags: string[];
   badge: string | null;
+  description: string | null;
+  material_type: string | null;
+  weight: string | null;
+  customer_support: string | null;
   is_active: boolean;
 };
 
 const CATEGORY_COLUMNS = "id, name, is_active, sort_order";
 const PRODUCT_COLUMNS =
-  "id, title, image, price, mrp, rating, reviews, variant_label, variants, tags, badge, is_active";
+  "id, title, image, price, mrp, rating, reviews, variant_label, variants, tags, badge, description, material_type, weight, customer_support, is_active";
 
 function publicClient() {
   const key = process.env["SUPABASE_PUBLISHABLE_KEY"]!;
@@ -140,6 +144,10 @@ export type ProductInput = {
   variants: string[];
   tags: string[];
   badge: string | null;
+  description: string | null;
+  material_type: string | null;
+  weight: string | null;
+  customer_support: string | null;
   is_active: boolean;
 };
 
@@ -158,6 +166,10 @@ export const saveProduct = createServerFn({ method: "POST" })
       variants: data.variants.map((v) => v.trim()).filter(Boolean),
       tags: data.tags.map((t) => t.trim()).filter(Boolean),
       badge: data.badge?.trim() || null,
+      description: data.description?.trim() || null,
+      material_type: data.material_type?.trim() || null,
+      weight: data.weight?.trim() || null,
+      customer_support: data.customer_support?.trim() || null,
       is_active: data.is_active,
     };
     if (data.id) {

@@ -324,10 +324,10 @@ export const NAV = [
       "Quality Audits & Supervision"
     ],
     hrefs: [
-      "#services",
-      "#services",
-      "#services",
-      "#services"
+      "/service/our-professional-training",
+      "/service/training-certification",
+      "/service/professional-deployment",
+      "/service/quality-audits-supervision"
     ]
   },
   {
