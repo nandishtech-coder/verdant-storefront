@@ -63,6 +63,17 @@ function Index() {
     return () => clearTimeout(timer);
   }, []);
 
+  // After the intro loader finishes, honor any hash in the URL (e.g. /#services).
+  useEffect(() => {
+    if (isLoading) return;
+    const hash = window.location.hash.slice(1);
+    if (!hash) return;
+    const t = setTimeout(() => {
+      document.getElementById(hash)?.scrollIntoView({ behavior: "smooth" });
+    }, 100);
+    return () => clearTimeout(t);
+  }, [isLoading]);
+
   return (
     <CartProvider>
       <div className="min-h-screen bg-background font-sans">
