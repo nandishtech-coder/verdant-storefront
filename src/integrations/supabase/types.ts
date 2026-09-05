@@ -146,6 +146,30 @@ export type Database = {
         }
         Relationships: []
       }
+      latest_updates: {
+        Row: {
+          created_at: string
+          id: string
+          is_active: boolean
+          sort_order: number
+          text: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          sort_order?: number
+          text: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          sort_order?: number
+          text?: string
+        }
+        Relationships: []
+      }
       products: {
         Row: {
           badge: string | null
