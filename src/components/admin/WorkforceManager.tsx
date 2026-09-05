@@ -15,6 +15,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { CustomLoader } from "@/components/ui/custom-loader";
 import {
   deleteWorkforcePage,
   listAllWorkforcePages,
@@ -154,7 +155,7 @@ export function WorkforceManager() {
   if (services.isPending) {
     return (
       <div className="grid place-items-center py-20">
-        <Loader2 className="size-6 animate-spin text-forest" aria-label="Loading pages" />
+        <CustomLoader text="Loading pages..." />
       </div>
     );
   }

@@ -4,6 +4,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { Loader2, Plus, Pencil, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
+import { CustomLoader } from "@/components/ui/custom-loader";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
@@ -122,7 +123,7 @@ export function ProductsManager() {
     });
   };
 
-  if (isPending) return <div className="p-8 flex justify-center"><Loader2 className="animate-spin text-forest" /></div>;
+  if (isPending) return <div className="p-8 flex justify-center"><CustomLoader text="Loading products..." /></div>;
 
   return (
     <div className="space-y-6">

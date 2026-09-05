@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { Edit2, Loader2, Plus, Trash2 } from "lucide-react";
+import { Edit2, Plus, Trash2 } from "lucide-react";
+import { CustomLoader } from "@/components/ui/custom-loader";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -89,8 +90,8 @@ export function UpdatesManager() {
 
   if (isPending) {
     return (
-      <div className="grid h-64 place-items-center rounded-xl border border-border bg-card">
-        <Loader2 className="size-6 animate-spin text-muted-foreground" />
+      <div className="flex justify-center p-8">
+        <CustomLoader text="Loading..." />
       </div>
     );
   }

@@ -4,6 +4,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { Loader2, Pencil, Plus, Trash2, X } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
+import { CustomLoader } from "@/components/ui/custom-loader";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -97,7 +98,7 @@ export function BlogsManager() {
   if (blogs.isPending) {
     return (
       <div className="grid place-items-center py-20">
-        <Loader2 className="size-6 animate-spin text-forest" aria-label="Loading blogs" />
+        <CustomLoader text="Loading blogs..." />
       </div>
     );
   }

@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { CustomLoader } from "@/components/ui/custom-loader";
 import { ServicesManager } from "@/components/admin/ServicesManager";
 import { WorkforceManager } from "@/components/admin/WorkforceManager";
 import { CategoriesManager } from "@/components/admin/CategoriesManager";
@@ -88,7 +89,7 @@ function AdminDashboard() {
   if (overview.isPending) {
     return (
       <main className="grid min-h-screen place-items-center bg-secondary">
-        <Loader2 className="size-7 animate-spin text-forest" aria-label="Loading dashboard" />
+        <CustomLoader text="Loading dashboard..." />
       </main>
     );
   }
@@ -334,9 +335,6 @@ function AdminDashboard() {
             </Tabs>
           </TabsContent>
 
-          <TabsContent value="services">
-            <ServicesManager />
-          </TabsContent>
 
           <TabsContent value="categories">
             <div className="mt-8">
