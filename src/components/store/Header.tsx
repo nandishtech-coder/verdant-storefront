@@ -187,11 +187,20 @@ export function Header() {
     return undefined;
   }, [mobileMenuOpen]);
 
+  const navigatingRef = useRef(false);
+
   const handleMobileMenuClose = (v: boolean) => {
-    if (!v && mobileMenuOpen && window.history.state?.mobileMenuOpen) {
+    if (!v && mobileMenuOpen && !navigatingRef.current && window.history.state?.mobileMenuOpen) {
       window.history.back();
     }
+    if (!v) navigatingRef.current = false;
     setMobileMenuOpen(v);
+  };
+
+  const handleMobileMenuNavigate = () => {
+    // A submenu link was tapped: let the router navigate, don't pop history.
+    navigatingRef.current = true;
+    setMobileMenuOpen(false);
   };
 
   const results = searchQuery.trim()
