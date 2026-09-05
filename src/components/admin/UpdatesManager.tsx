@@ -79,7 +79,7 @@ export function UpdatesManager() {
     }
     saveMutation.mutate({
       data: {
-        id: editing?.id,
+        ...(editing?.id ? { id: editing.id } : {}),
         text,
         sort_order: sortOrder,
         is_active: isActive,

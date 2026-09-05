@@ -279,7 +279,7 @@ export function Header() {
                                     <RouterLink
                                       to="/service/$id"
                                       params={{ id: href.replace("/service/", "") }}
-                                      onClick={() => handleMobileMenuClose(false)}
+                                      onClick={handleMobileMenuNavigate}
                                       className={cls}
                                     >
                                       {inner}
@@ -288,7 +288,7 @@ export function Header() {
                                     <RouterLink
                                       to="/product/$id"
                                       params={{ id: href.replace("/product/", "") }}
-                                      onClick={() => handleMobileMenuClose(false)}
+                                      onClick={handleMobileMenuNavigate}
                                       className={cls}
                                     >
                                       {inner}
@@ -297,7 +297,7 @@ export function Header() {
                                     <RouterLink
                                       to="/category/$id"
                                       params={{ id: href.replace("/category/", "") }}
-                                      onClick={() => handleMobileMenuClose(false)}
+                                      onClick={handleMobileMenuNavigate}
                                       className={cls}
                                     >
                                       {inner}
@@ -306,7 +306,7 @@ export function Header() {
                                     <RouterLink
                                       to="/"
                                       hash={href.slice(1)}
-                                      onClick={() => handleMobileMenuClose(false)}
+                                      onClick={handleMobileMenuNavigate}
                                       className={cls}
                                     >
                                       {inner}
