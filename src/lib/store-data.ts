@@ -348,7 +348,7 @@ export const NAV = [
   {
     label: "Green Gifts",
     items: ["Gift Hampers", "Corporate Gifting", "Gift Cards"],
-    hrefs: ["#gifting", "#gifting", "#gifting"],
+    hrefs: ["/category/gift-hampers", "/category/corporate-gifting", "/category/gift-cards"],
   },
 ];
 

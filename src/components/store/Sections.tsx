@@ -466,8 +466,9 @@ export function FeaturedProducts() {
               </div>
             ))
           ) : (
-            <div className="w-full py-12 text-center text-muted-foreground">
-              No products found matching "{searchQuery}"
+            <div className="w-full py-12 text-center text-muted-foreground flex flex-col items-center gap-2">
+              <span className="font-medium">No products found matching "{searchQuery}"</span>
+              <span className="text-sm">Our team will update the products shortly if they become available.</span>
             </div>
           )}
         </ScrollableRow>
@@ -523,8 +524,9 @@ export function ProductRow({ title, filterTag }: { title: string, filterTag?: st
               </div>
             ))
           ) : (
-            <div className="w-full py-12 text-center text-muted-foreground">
-              No products found
+            <div className="w-full py-12 text-center text-muted-foreground flex flex-col items-center gap-2">
+              <span className="font-medium">No products found</span>
+              <span className="text-sm">Our team will update the products shortly if they become available.</span>
             </div>
           )}
         </ScrollableRow>

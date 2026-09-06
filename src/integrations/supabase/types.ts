@@ -83,6 +83,30 @@ export type Database = {
         }
         Relationships: []
       }
+      category_content: {
+        Row: {
+          created_at: string
+          description: string | null
+          gallery: Json | null
+          id: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          gallery?: Json | null
+          id: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          gallery?: Json | null
+          id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       enquiries: {
         Row: {
           created_at: string

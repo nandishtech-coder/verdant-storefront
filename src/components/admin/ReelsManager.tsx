@@ -134,9 +134,9 @@ export function ReelsManager() {
         </Dialog>
       </div>
 
-      <div className="rounded-xl border bg-card overflow-hidden">
-        <table className="w-full text-sm text-left">
-          <thead className="bg-muted text-muted-foreground">
+      <div className="overflow-x-auto rounded-xl border border-border bg-card">
+        <table className="w-full text-sm text-left whitespace-nowrap">
+          <thead className="bg-secondary/50 text-muted-foreground">
             <tr>
               <th className="px-6 py-3 font-medium">Thumbnail</th>
               <th className="px-6 py-3 font-medium">Title</th>

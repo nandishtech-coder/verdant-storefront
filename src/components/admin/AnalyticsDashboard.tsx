@@ -3,7 +3,7 @@ import {
   Bar, BarChart, CartesianGrid, Legend, Cell, Pie, PieChart
 } from "recharts";
 import { 
-  CheckCircle2, Inbox, Layers, Leaf, Package, PlaySquare, FileText, TrendingUp 
+  CheckCircle2, Inbox, Layers, Leaf, Package, PlaySquare, FileText, TrendingUp, FolderTree 
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
@@ -20,7 +20,7 @@ type AnalyticsData = {
   enquiriesResolved: number;
 };
 
-export function AnalyticsDashboard({ data, enquiries }: { data: AnalyticsData, enquiries: any[] }) {
+export function AnalyticsDashboard({ data, enquiries, adminEmail }: { data: AnalyticsData, enquiries: any[], adminEmail?: string }) {
   // Calculate actual enquiries received over the last 7 days
   const trendData = useMemo(() => {
     const days = Array.from({ length: 7 }).map((_, i) => subDays(new Date(), 6 - i));
@@ -44,12 +44,14 @@ export function AnalyticsDashboard({ data, enquiries }: { data: AnalyticsData, e
   return (
     <div className="space-y-8 animate-in fade-in duration-700">
       <div className="flex flex-col gap-2">
-        <h2 className="text-3xl font-display font-bold text-forest">GreenRoots Analytics</h2>
-        <p className="text-muted-foreground">Welcome back! Here is what's happening across your platform today.</p>
+        <h2 className="text-3xl font-display font-bold text-forest">
+          Welcome To Admin {adminEmail ? adminEmail.split("@")[0]?.toUpperCase() : ""}
+        </h2>
+        <p className="text-muted-foreground">Here is what's happening across your platform today.</p>
       </div>
 
       {/* Metric Cards */}
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
         <Card className="border-none shadow-[var(--shadow-soft)] hover:shadow-md transition-all">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">Total Enquiries</CardTitle>
@@ -68,19 +70,6 @@ export function AnalyticsDashboard({ data, enquiries }: { data: AnalyticsData, e
 
         <Card className="border-none shadow-[var(--shadow-soft)] hover:shadow-md transition-all">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">Active Products</CardTitle>
-            <div className="flex size-10 items-center justify-center rounded-full bg-amber-500/10 text-amber-500">
-              <Package className="size-5" />
-            </div>
-          </CardHeader>
-          <CardContent>
-            <div className="text-3xl font-bold text-amber-500">{data.products}</div>
-            <p className="text-xs text-muted-foreground mt-1">Across {data.categories} categories</p>
-          </CardContent>
-        </Card>
-
-        <Card className="border-none shadow-[var(--shadow-soft)] hover:shadow-md transition-all">
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">Live Services</CardTitle>
             <div className="flex size-10 items-center justify-center rounded-full bg-emerald-500/10 text-emerald-500">
               <Leaf className="size-5" />
@@ -89,6 +78,32 @@ export function AnalyticsDashboard({ data, enquiries }: { data: AnalyticsData, e
           <CardContent>
             <div className="text-3xl font-bold text-emerald-600">{data.services}</div>
             <p className="text-xs text-muted-foreground mt-1">Ready for customers</p>
+          </CardContent>
+        </Card>
+
+        <Card className="border-none shadow-[var(--shadow-soft)] hover:shadow-md transition-all">
+          <CardHeader className="flex flex-row items-center justify-between pb-2">
+            <CardTitle className="text-sm font-medium text-muted-foreground">Active Categories</CardTitle>
+            <div className="flex size-10 items-center justify-center rounded-full bg-blue-500/10 text-blue-500">
+              <FolderTree className="size-5" />
+            </div>
+          </CardHeader>
+          <CardContent>
+            <div className="text-3xl font-bold text-blue-500">{data.categories}</div>
+            <p className="text-xs text-muted-foreground mt-1">Product categories</p>
+          </CardContent>
+        </Card>
+
+        <Card className="border-none shadow-[var(--shadow-soft)] hover:shadow-md transition-all">
+          <CardHeader className="flex flex-row items-center justify-between pb-2">
+            <CardTitle className="text-sm font-medium text-muted-foreground">Active Products</CardTitle>
+            <div className="flex size-10 items-center justify-center rounded-full bg-amber-500/10 text-amber-500">
+              <Package className="size-5" />
+            </div>
+          </CardHeader>
+          <CardContent>
+            <div className="text-3xl font-bold text-amber-500">{data.products}</div>
+            <p className="text-xs text-muted-foreground mt-1">Available across store</p>
           </CardContent>
         </Card>
 

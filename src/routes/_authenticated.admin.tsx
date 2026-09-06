@@ -2,7 +2,7 @@ import { useState } from "react";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { Inbox, Leaf, Loader2, LogOut, ShieldCheck, LayoutDashboard, FolderTree, Package, PlaySquare, FileText, Users, Menu } from "lucide-react";
+import { Inbox, Leaf, Loader2, LogOut, ShieldCheck, LayoutDashboard, FolderTree, Package, PlaySquare, FileText, Users, Menu, Gift } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
@@ -22,6 +22,7 @@ import { ProductsManager } from "@/components/admin/ProductsManager";
 import { ReelsManager } from "@/components/admin/ReelsManager";
 import { BlogsManager } from "@/components/admin/BlogsManager";
 import { UpdatesManager } from "@/components/admin/UpdatesManager";
+import { GreenGiftsManager } from "@/components/admin/GreenGiftsManager";
 import { AnalyticsDashboard } from "@/components/admin/AnalyticsDashboard";
 import { claimAdminRole, getAdminOverview, setEnquiryStatus } from "@/lib/admin.functions";
 import { supabase } from "@/integrations/supabase/client";
@@ -170,6 +171,9 @@ function AdminDashboard() {
                   <Button variant={adminTab === "updates" ? "secondary" : "ghost"} className="justify-start text-forest" onClick={() => { setAdminTab("updates"); setIsMobileMenuOpen(false); }}>
                     <Inbox className="mr-2 size-4" /> Updates
                   </Button>
+                  <Button variant={adminTab === "green-gifts" ? "secondary" : "ghost"} className="justify-start text-forest" onClick={() => { setAdminTab("green-gifts"); setIsMobileMenuOpen(false); }}>
+                    <Gift className="mr-2 size-4" /> Green Gifts Updates
+                  </Button>
                   <Button variant={adminTab === "enquiries" ? "secondary" : "ghost"} className="justify-start text-forest" onClick={() => { setAdminTab("enquiries"); setIsMobileMenuOpen(false); }}>
                     <Inbox className="mr-2 size-4" /> Enquiries
                   </Button>
@@ -219,6 +223,9 @@ function AdminDashboard() {
             <TabsTrigger value="updates">
               <Inbox className="size-4" /> Updates
             </TabsTrigger>
+            <TabsTrigger value="green-gifts">
+              <Gift className="size-4 mr-2" /> Green Gifts
+            </TabsTrigger>
             <TabsTrigger value="enquiries">
               <Inbox className="size-4" /> Enquiries
             </TabsTrigger>
@@ -226,7 +233,7 @@ function AdminDashboard() {
 
           <TabsContent value="dashboard" className="mt-8">
             {overview.data.analytics && (
-              <AnalyticsDashboard data={overview.data.analytics} enquiries={overview.data.enquiries} />
+              <AnalyticsDashboard data={overview.data.analytics} enquiries={overview.data.enquiries} adminEmail={overview.data.adminEmail} />
             )}
           </TabsContent>
 
@@ -238,13 +245,17 @@ function AdminDashboard() {
             <WorkforceManager />
           </TabsContent>
 
+          <TabsContent value="green-gifts" className="mt-8">
+            <GreenGiftsManager />
+          </TabsContent>
+
           <TabsContent value="enquiries" className="mt-8">
-            <div className="flex items-end justify-between gap-4">
+            <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-4">
               <div>
                 <p className="text-sm font-semibold text-leaf">Customer care</p>
                 <h1 className="mt-1 font-display text-4xl font-semibold text-forest">Enquiries</h1>
               </div>
-              <div className="flex gap-3 text-right">
+              <div className="grid grid-cols-2 sm:flex gap-3 text-right w-full sm:w-auto">
                 <div className="rounded-lg border border-border bg-card px-4 py-3 shadow-[var(--shadow-soft)]">
                   <p className="text-2xl font-semibold text-forest">{enquiries.length}</p>
                   <p className="text-xs text-muted-foreground">Total</p>

@@ -118,8 +118,8 @@ export function CategoriesManager() {
         </Dialog>
       </div>
 
-      <div className="rounded-xl border bg-card overflow-hidden">
-        <table className="w-full text-sm text-left">
+      <div className="overflow-x-auto rounded-xl border bg-card">
+        <table className="w-full text-sm text-left whitespace-nowrap">
           <thead className="bg-muted text-muted-foreground">
             <tr>
               <th className="px-6 py-3 font-medium">Name</th>

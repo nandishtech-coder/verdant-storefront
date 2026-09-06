@@ -270,3 +270,44 @@ https://images.unsplash.com/photo-1581578731548-c64695cc6952?q=80&w=2000&auto=fo
     'Find out how we guarantee quality at every site.',
     'Continuous supervision and expert guidance included.'
 );
+
+
+CREATE TABLE public.category_content (
+  id text PRIMARY KEY, -- matches the category ID (e.g., 'gift-hampers')
+  description text,
+  gallery jsonb DEFAULT '[]'::jsonb,
+  created_at timestamp with time zone DEFAULT timezone('utc'::text, now()) NOT NULL,
+  updated_at timestamp with time zone DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
+-- Enable RLS
+ALTER TABLE public.category_content ENABLE ROW LEVEL SECURITY;
+
+-- Allow public read access
+CREATE POLICY "Allow public read access on category_content" 
+  ON public.category_content FOR SELECT USING (true);
+
+-- Allow authenticated users (admin) to modify
+CREATE POLICY "Allow authenticated users to modify category_content" 
+  ON public.category_content FOR ALL USING (auth.role() = 'authenticated');
+
+INSERT INTO public.category_content (id, description, gallery) VALUES 
+(
+  'gift-hampers', 
+  'Discover our beautifully curated gift hampers, perfect for any occasion. Each hamper is thoughtfully assembled with eco-friendly products, vibrant plants, and premium accessories to bring joy and nature to your loved ones.', 
+  '["https://images.unsplash.com/photo-1549465220-1a8b9238cd48?w=800&q=80", "https://images.unsplash.com/photo-1513201099705-a9746e1e201f?w=800&q=80", "https://images.unsplash.com/photo-1577998634865-c7e63b655f4d?w=800&q=80"]'::jsonb
+),
+(
+  'corporate-gifting', 
+  'Elevate your corporate gifting with our premium selection of green gifts. From elegant desktop plants to bespoke sustainable kits, our corporate gifts are designed to leave a lasting impression on clients and employees alike.', 
+  '["https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80", "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&q=80", "https://images.unsplash.com/photo-1524758631624-e2822e304c36?w=800&q=80"]'::jsonb
+),
+(
+  'gift-cards', 
+  'Give the gift of choice with GreenRoots gift cards. The perfect present for plant lovers and gardening enthusiasts, allowing them to select exactly what their green space needs.', 
+  '["https://images.unsplash.com/photo-1607083206869-4c7672e72a8a?w=800&q=80", "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&q=80", "https://images.unsplash.com/photo-1513885535751-8b9238bd345a?w=800&q=80"]'::jsonb
+)
+ON CONFLICT (id) DO UPDATE SET 
+  description = EXCLUDED.description,
+  gallery = EXCLUDED.gallery,
+  updated_at = now();

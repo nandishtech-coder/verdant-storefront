@@ -10,8 +10,10 @@ export const getAdminOverview = createServerFn({ method: "GET" })
       _role: "admin",
     });
 
+    const { data: { user } } = await supabase.auth.getUser();
+
     if (!isAdmin) {
-      return { isAdmin: false as const, enquiries: [] };
+      return { isAdmin: false as const, enquiries: [], adminEmail: "" };
     }
 
     const [
@@ -38,6 +40,7 @@ export const getAdminOverview = createServerFn({ method: "GET" })
 
     return { 
       isAdmin: true as const, 
+      adminEmail: user?.email || "",
       enquiries: enquiriesData ?? [],
       analytics: {
         services: servicesCount ?? 0,
