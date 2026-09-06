@@ -62,7 +62,7 @@ export const listPublicWorkforcePages = createServerFn({ method: "GET" }).handle
     .eq("is_active", true)
     .order("sort_order", { ascending: true });
   if (error) return [] as WorkforcePageRow[];
-  return (data ?? []) as WorkforcePageRow[];
+  return (data ?? []) as unknown as WorkforcePageRow[];
 });
 
 /** Admin: every service, including hidden ones. */
@@ -138,7 +138,7 @@ export const listAllWorkforcePages = createServerFn({ method: "GET" })
       .select(WORKFORCE_COLUMNS)
       .order("sort_order", { ascending: true });
     if (error) throw error;
-    return (data ?? []) as WorkforcePageRow[];
+    return (data ?? []) as unknown as WorkforcePageRow[];
   });
 
 export type WorkforcePageInput = ServiceInput & {
