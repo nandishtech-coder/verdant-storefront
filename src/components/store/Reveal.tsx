@@ -40,6 +40,9 @@ export function Reveal({
       return;
     }
 
+    // Use a tiny threshold so very tall sections still reveal on small
+    // screens — a 12% threshold can never be reached when a section is
+    // taller than ~8x the viewport height (common on mobile).
     const observer = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
@@ -51,7 +54,7 @@ export function Reveal({
           }
         }
       },
-      { threshold: 0.12, rootMargin: "0px 0px -8% 0px" },
+      { threshold: 0.01, rootMargin: "0px 0px -4% 0px" },
     );
 
     observer.observe(el);
