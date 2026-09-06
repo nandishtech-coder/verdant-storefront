@@ -174,13 +174,12 @@ export type Database = {
         Row: {
           badge: string | null
           created_at: string | null
-          id: string
-          description: string | null
-          material_type: string | null
-          weight: string | null
           customer_support: string | null
+          description: string | null
+          id: string
           image: string
           is_active: boolean | null
+          material_type: string | null
           mrp: number
           price: number
           rating: number | null
@@ -190,17 +189,17 @@ export type Database = {
           updated_at: string | null
           variant_label: string | null
           variants: string[] | null
+          weight: string | null
         }
         Insert: {
           badge?: string | null
           created_at?: string | null
-          id?: string
-          description?: string | null
-          material_type?: string | null
-          weight?: string | null
           customer_support?: string | null
+          description?: string | null
+          id?: string
           image: string
           is_active?: boolean | null
+          material_type?: string | null
           mrp: number
           price: number
           rating?: number | null
@@ -210,17 +209,17 @@ export type Database = {
           updated_at?: string | null
           variant_label?: string | null
           variants?: string[] | null
+          weight?: string | null
         }
         Update: {
           badge?: string | null
           created_at?: string | null
-          id?: string
-          description?: string | null
-          material_type?: string | null
-          weight?: string | null
           customer_support?: string | null
+          description?: string | null
+          id?: string
           image?: string
           is_active?: boolean | null
+          material_type?: string | null
           mrp?: number
           price?: number
           rating?: number | null
@@ -230,6 +229,7 @@ export type Database = {
           updated_at?: string | null
           variant_label?: string | null
           variants?: string[] | null
+          weight?: string | null
         }
         Relationships: []
       }
@@ -338,6 +338,63 @@ export type Database = {
           id?: string
           role?: Database["public"]["Enums"]["app_role"]
           user_id?: string
+        }
+        Relationships: []
+      }
+      workforce_pages: {
+        Row: {
+          about: string | null
+          created_at: string
+          cta_heading: string | null
+          cta_note: string | null
+          description: string
+          footnote: string | null
+          gallery_urls: string | null
+          icon: string
+          id: string
+          image_url: string
+          includes: string[] | null
+          is_active: boolean
+          slug: string
+          sort_order: number
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          about?: string | null
+          created_at?: string
+          cta_heading?: string | null
+          cta_note?: string | null
+          description: string
+          footnote?: string | null
+          gallery_urls?: string | null
+          icon: string
+          id?: string
+          image_url: string
+          includes?: string[] | null
+          is_active?: boolean
+          slug: string
+          sort_order?: number
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          about?: string | null
+          created_at?: string
+          cta_heading?: string | null
+          cta_note?: string | null
+          description?: string
+          footnote?: string | null
+          gallery_urls?: string | null
+          icon?: string
+          id?: string
+          image_url?: string
+          includes?: string[] | null
+          is_active?: boolean
+          slug?: string
+          sort_order?: number
+          title?: string
+          updated_at?: string
         }
         Relationships: []
       }

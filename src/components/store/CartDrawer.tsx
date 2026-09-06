@@ -68,8 +68,9 @@ export function CartDrawer() {
   });
   if (shippingUpdate) {
     const nums = shippingUpdate.text.match(/\d+/g);
-    if (nums && nums.length > 0) {
-      threshold = parseInt(nums[nums.length - 1], 10);
+    const last = nums?.[nums.length - 1];
+    if (last) {
+      threshold = parseInt(last, 10);
     }
   }
 
