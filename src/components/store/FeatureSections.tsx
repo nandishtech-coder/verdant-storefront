@@ -62,10 +62,10 @@ export function GiftsGrowWithTime() {
               asChild
               className="mt-10 h-14 w-full rounded-full bg-forest px-8 text-base font-medium text-forest-foreground hover:bg-forest-deep sm:w-auto"
             >
-              <a href="#gifting">
+              <Link to="/green-gifts">
                 Explore Gifting Range
                 <ArrowRight className="ml-2 size-4" />
-              </a>
+              </Link>
             </Button>
           </div>
 
@@ -173,7 +173,7 @@ export function LatestBlogs() {
           <p className="mt-10 text-center text-muted-foreground">No blogs published yet.</p>
         ) : (
           <div className="mt-10 grid gap-8 md:grid-cols-3">
-            {blogs.map((post) => (
+            {blogs.slice(0, 3).map((post) => (
               <article key={post.id} className="group hover-lift bg-card shadow-[var(--shadow-soft)] flex flex-col rounded-2xl overflow-hidden">
                 <div className="relative aspect-[16/10] overflow-hidden bg-sand">
                   <img
@@ -218,10 +218,10 @@ export function LatestBlogs() {
             asChild
             className="h-14 rounded-full bg-forest px-10 text-sm font-semibold tracking-[0.1em] text-forest-foreground uppercase hover:bg-forest-deep hover:shadow-lg"
           >
-            <a href="#blogs">
+            <Link to="/blogs">
               VIEW ALL ARTICLES
               <ArrowRight className="ml-2 size-4" />
-            </a>
+            </Link>
           </Button>
         </div>
       </div>

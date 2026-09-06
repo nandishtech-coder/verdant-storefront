@@ -576,10 +576,10 @@ export function GiftingBanner() {
             ))}
           </ul>
           <Button size="lg" className="w-fit rounded-xl" asChild>
-            <a href="#products">
+            <Link to="/green-gifts">
               Explore Gifting Sets
               <ArrowRight className="size-4" />
-            </a>
+            </Link>
           </Button>
         </div>
       </div>

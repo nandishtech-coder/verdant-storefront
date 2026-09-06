@@ -112,7 +112,7 @@ const VALUES = [
 export function HorticultureWorkforce() {
   return (
     <section id="horticulture-workforce" className="bg-[#fcfbf9] py-20 lg:py-32 overflow-hidden">
-      <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="w-full px-4 sm:px-8 lg:px-12">
         
         {/* Header Section */}
         <div className="text-center max-w-4xl mx-auto mb-20">
@@ -241,14 +241,14 @@ export function HorticultureWorkforce() {
             <p className="text-lg text-muted-foreground">With Green Roots, clients receive more than gardening manpower.</p>
           </div>
           
-          <div className="flex flex-wrap justify-center gap-3 md:gap-4">
+          <div className="flex overflow-x-auto whitespace-nowrap gap-3 md:gap-4 pb-6 px-4 w-full snap-x [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
             {WORKFORCE_FLOW.map((step, index) => (
-              <div key={step} className="flex items-center">
+              <div key={step} className="flex items-center shrink-0 snap-center">
                 <div className="px-4 py-2 sm:px-6 sm:py-3 bg-white border border-border/50 shadow-sm rounded-full text-sm sm:text-base font-semibold text-forest">
                   {step}
                 </div>
                 {index < WORKFORCE_FLOW.length - 1 && (
-                  <ArrowRight className="size-4 sm:size-5 text-muted-foreground ml-3 md:ml-4 hidden sm:block" />
+                  <ArrowRight className="size-4 sm:size-5 text-muted-foreground ml-3 md:ml-4" />
                 )}
               </div>
             ))}
