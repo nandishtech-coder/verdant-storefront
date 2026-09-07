@@ -354,10 +354,12 @@ function ServicePage() {
                 >
                   <a
                     href={`tel:${PHONE}`}
-                    className="flex flex-wrap items-center justify-center gap-x-2 gap-y-0.5 whitespace-normal leading-tight"
+                    className="flex flex-col items-center justify-center gap-1 sm:flex-row sm:gap-2 sm:whitespace-nowrap"
                   >
-                    <Phone className="size-4 shrink-0 group-hover:animate-pulse" />
-                    <span>Call us to book</span>
+                    <span className="inline-flex items-center justify-center gap-2">
+                      <Phone className="size-4 shrink-0 group-hover:animate-pulse" />
+                      Call us to book
+                    </span>
                     <span className="hidden sm:inline">·</span>
                     <span>{PHONE_DISPLAY}</span>
                   </a>
