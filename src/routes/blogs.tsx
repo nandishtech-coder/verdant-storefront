@@ -25,7 +25,7 @@ function BlogsPage() {
       <div className="flex min-h-screen flex-col bg-[#fdfaf6]">
         <Header />
         
-        <main className="flex-1 pb-24 pt-32">
+        <main className="flex-1 pb-24 pt-8 md:pt-12">
           <div className="mx-auto max-w-7xl px-6 lg:px-8">
             <Reveal variant="down">
               <div className="text-center mb-16">
