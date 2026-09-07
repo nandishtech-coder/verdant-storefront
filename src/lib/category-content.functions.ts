@@ -62,7 +62,7 @@ export const saveCategoryContent = createServerFn({ method: "POST" })
       .from("category_content")
       .upsert({
         id: data.id,
-        description: data.description,
+        description: data.description ?? null,
         gallery: data.gallery as unknown as any,
         updated_at: new Date().toISOString(),
       });
