@@ -96,9 +96,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
     ],
   }),
-  loader: async () => {
+  loader: async ({ context }) => {
     try {
-      const settings = await getSiteSettings();
+      const settings = await context.queryClient.fetchQuery({
+        queryKey: ["site_settings"],
+        queryFn: () => getSiteSettings(),
+      });
       return { settings };
     } catch (e) {
       console.error("Failed to load site settings", e);

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { getSiteSettings, updateSiteSettings } from "@/lib/settings.functions";
+import { Route as rootRoute } from "@/routes/__root";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -9,13 +10,16 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
+import { CustomLoader } from "@/components/ui/custom-loader";
 
 export function MaintenanceManager() {
   const queryClient = useQueryClient();
+  const { settings: initialSettings } = rootRoute.useLoaderData();
 
   const { data: settings, isLoading } = useQuery({
     queryKey: ["site_settings"],
     queryFn: () => getSiteSettings(),
+    initialData: initialSettings,
   });
 
   const [heading, setHeading] = useState("");
@@ -48,7 +52,9 @@ export function MaintenanceManager() {
   if (isLoading) {
     return (
       <div className="flex justify-center p-8">
-        <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+        <div className="scale-75 origin-top">
+          <CustomLoader text="" />
+        </div>
       </div>
     );
   }
