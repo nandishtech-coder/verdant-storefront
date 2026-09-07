@@ -235,24 +235,111 @@ export function HorticultureWorkforce() {
         </div>
 
         {/* Process Flow */}
-        <div className="mb-24">
-          <div className="text-center mb-12">
-            <h3 className="font-display text-3xl font-bold text-forest mb-4">A Complete Workforce Solution</h3>
-            <p className="text-lg text-muted-foreground">With Green Roots, clients receive more than gardening manpower.</p>
-          </div>
+        <div className="mb-32 flex flex-col items-center justify-center overflow-visible px-2 sm:px-4 w-full">
+          
+          <style>{`
+            @keyframes spin-forward {
+              from { transform: rotate(0deg); }
+              to { transform: rotate(360deg); }
+            }
+            @keyframes spin-backward {
+              from { transform: rotate(0deg); }
+              to { transform: rotate(-360deg); }
+            }
+            .ferris-wheel {
+              animation: spin-forward 45s linear infinite;
+            }
+            .ferris-cabin {
+              animation: spin-backward 45s linear infinite;
+            }
+          `}</style>
 
-          <div className="flex overflow-x-auto whitespace-nowrap gap-3 md:gap-4 pb-6 px-4 w-full snap-x [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
-            {WORKFORCE_FLOW.map((step, index) => (
-              <div key={step} className="flex items-center shrink-0 snap-center">
-                <div className="px-4 py-2 sm:px-6 sm:py-3 bg-white border border-border/50 shadow-sm rounded-full text-sm sm:text-base font-semibold text-forest">
-                  {step}
-                </div>
-                {index < WORKFORCE_FLOW.length - 1 && (
-                  <ArrowRight className="size-4 sm:size-5 text-muted-foreground ml-3 md:ml-4" />
-                )}
-              </div>
-            ))}
+          <div className="relative aspect-square w-full max-w-[280px] sm:max-w-[400px] md:max-w-[500px] flex items-center justify-center mx-auto z-10">
+            {/* The Spinning Wheel */}
+            <div 
+              className="ferris-wheel absolute inset-0 rounded-full border-[4px] sm:border-[6px] border-forest overflow-hidden shadow-2xl"
+              style={{
+                background: `conic-gradient(
+                  #f0f7ea 0deg 40deg,
+                  #fdfaf6 40deg 80deg,
+                  #eaf3e3 80deg 120deg,
+                  #f9f5ed 120deg 160deg,
+                  #e3efd9 160deg 200deg,
+                  #fcfcf9 200deg 240deg,
+                  #edf4e8 240deg 280deg,
+                  #f4f1e1 280deg 320deg,
+                  #e8f2e2 320deg 360deg
+                )`
+              }}
+            >
+              {/* Segment Dividers */}
+              {WORKFORCE_FLOW.map((_, i) => (
+                <div 
+                  key={`divider-${i}`}
+                  className="absolute bottom-1/2 left-1/2 w-[2px] sm:w-[3px] h-1/2 bg-forest origin-bottom -translate-x-1/2"
+                  style={{ transform: `rotate(${(i * 360) / 9}deg)` }}
+                />
+              ))}
+
+              {/* Texts in each slice */}
+              {WORKFORCE_FLOW.map((step, i) => {
+                const angle = (i * 360) / 9 + 20; 
+                return (
+                  <div 
+                    key={`slice-${i}`}
+                    className="absolute inset-0 flex justify-center origin-center pointer-events-none"
+                    style={{ transform: `rotate(${angle}deg)` }}
+                  >
+                    <div className="absolute top-[16.5%] -translate-y-1/2">
+                      <div style={{ transform: `rotate(-${angle}deg)` }}>
+                        <div className="ferris-cabin flex flex-col items-center text-center w-[75px] sm:w-[90px] md:w-[110px]">
+                          <span className="text-forest font-bold text-[10px] sm:text-xs md:text-sm bg-[#fcfbf9] rounded-full size-5 sm:size-7 md:size-8 flex items-center justify-center mb-1 sm:mb-1.5 border-2 border-forest shadow-md">
+                            {i + 1}
+                          </span>
+                          <span className="text-forest font-bold text-[9px] sm:text-[10px] md:text-xs leading-tight drop-shadow-md">
+                            {step}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+            
+            {/* The Static Central Circle */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 size-[100px] sm:size-[140px] md:size-[170px] rounded-full bg-forest border-[4px] sm:border-[6px] border-white shadow-xl flex flex-col items-center justify-center text-center p-2 sm:p-4 z-20">
+              <h3 className="font-display text-xs sm:text-base md:text-xl font-bold text-cream mb-1">Workforce Solution</h3>
+              <p className="text-cream/80 text-[7px] sm:text-[9px] md:text-[11px] leading-tight hidden sm:block">With Green Roots, clients receive more than gardening manpower.</p>
+            </div>
           </div>
+          
+          {/* Stem and Leaves Structure */}
+          <div className="flex flex-col items-center -mt-4 sm:-mt-6 relative z-0 w-full">
+            {/* The Leaves Container */}
+            <div className="relative flex items-end justify-center w-full max-w-[95%] sm:max-w-[480px] md:max-w-[600px]">
+              
+              {/* Left Leaf */}
+              <div className="flex-1 bg-white border-[3px] sm:border-4 border-forest border-r-0 sm:border-r-0 rounded-tl-2xl sm:rounded-tl-3xl rounded-bl-2xl sm:rounded-bl-3xl rounded-br-none rounded-tr-full shadow-xl flex items-center justify-start h-[50px] sm:h-[90px] md:h-[110px] pl-2 sm:pl-8 md:pl-10">
+                 <span className="font-display text-forest font-bold text-[9px] sm:text-base md:text-xl tracking-wider sm:tracking-widest uppercase">Learn. Grow.</span>
+              </div>
+              
+              {/* The Continuous Stem */}
+              <div className="w-[4px] sm:w-[6px] h-[80px] sm:h-[150px] md:h-[180px] bg-forest shrink-0 relative z-10"></div>
+              
+              {/* Right Leaf */}
+              <div className="flex-1 bg-white border-[3px] sm:border-4 border-forest border-l-0 sm:border-l-0 rounded-tr-2xl sm:rounded-tr-3xl rounded-br-2xl sm:rounded-br-3xl rounded-bl-none rounded-tl-full shadow-xl flex items-center justify-end h-[50px] sm:h-[90px] md:h-[110px] pr-2 sm:pr-8 md:pr-10">
+                 <span className="font-display text-forest font-bold text-[9px] sm:text-base md:text-xl tracking-wider sm:tracking-widest uppercase">Harvest.</span>
+              </div>
+
+              {/* Logo Badge Overlay in the Center */}
+              <div className="absolute bottom-[25px] sm:bottom-[45px] md:bottom-[55px] left-1/2 -translate-x-1/2 translate-y-1/2 bg-white rounded-full border-[3px] sm:border-4 border-forest shadow-md size-[50px] sm:size-24 md:size-28 flex items-center justify-center z-20 overflow-hidden">
+                 <img src="/logo.png" alt="Green Roots" className="size-full object-cover scale-[1.02]" />
+              </div>
+
+            </div>
+          </div>
+          
         </div>
 
         {/* Values Grid */}
