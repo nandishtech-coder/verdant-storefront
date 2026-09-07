@@ -347,10 +347,19 @@ function ServicePage() {
               </p>
 
               <div className="space-y-4 mb-8">
-                <Button asChild size="lg" className="w-full rounded-xl text-base shadow-md group">
-                  <a href={`tel:${PHONE}`}>
-                    <Phone className="size-4 mr-2 group-hover:animate-pulse" />
-                    Call us to book · {PHONE_DISPLAY}
+                <Button
+                  asChild
+                  size="lg"
+                  className="h-auto w-full rounded-xl px-4 py-3 text-sm font-semibold shadow-md group md:text-base"
+                >
+                  <a
+                    href={`tel:${PHONE}`}
+                    className="flex flex-wrap items-center justify-center gap-x-2 gap-y-0.5 whitespace-normal leading-tight"
+                  >
+                    <Phone className="size-4 shrink-0 group-hover:animate-pulse" />
+                    <span>Call us to book</span>
+                    <span className="hidden sm:inline">·</span>
+                    <span>{PHONE_DISPLAY}</span>
                   </a>
                 </Button>
                 <Button
