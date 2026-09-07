@@ -2,7 +2,7 @@ import { useState } from "react";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { Inbox, Leaf, Loader2, LogOut, ShieldCheck, LayoutDashboard, FolderTree, Package, PlaySquare, FileText, Users, Menu, Gift } from "lucide-react";
+import { Inbox, Leaf, Loader2, LogOut, ShieldCheck, Shield, LayoutDashboard, FolderTree, Package, PlaySquare, FileText, Users, Menu, Gift } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
@@ -24,6 +24,7 @@ import { BlogsManager } from "@/components/admin/BlogsManager";
 import { UpdatesManager } from "@/components/admin/UpdatesManager";
 import { GreenGiftsManager } from "@/components/admin/GreenGiftsManager";
 import { AnalyticsDashboard } from "@/components/admin/AnalyticsDashboard";
+import { MaintenanceManager } from "@/components/admin/MaintenanceManager";
 import { claimAdminRole, getAdminOverview, setEnquiryStatus } from "@/lib/admin.functions";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -177,6 +178,11 @@ function AdminDashboard() {
                   <Button variant={adminTab === "enquiries" ? "secondary" : "ghost"} className="justify-start text-forest" onClick={() => { setAdminTab("enquiries"); setIsMobileMenuOpen(false); }}>
                     <Inbox className="mr-2 size-4" /> Enquiries
                   </Button>
+                  {overview.data.isSuperAdmin && (
+                    <Button variant={adminTab === "maintenance" ? "secondary" : "ghost"} className="justify-start text-forest" onClick={() => { setAdminTab("maintenance"); setIsMobileMenuOpen(false); }}>
+                      <Shield className="mr-2 size-4" /> Maintenance
+                    </Button>
+                  )}
                 </div>
               </SheetContent>
             </Sheet>
@@ -229,6 +235,11 @@ function AdminDashboard() {
             <TabsTrigger value="enquiries">
               <Inbox className="size-4" /> Enquiries
             </TabsTrigger>
+            {overview.data.isSuperAdmin && (
+              <TabsTrigger value="maintenance">
+                <Shield className="size-4 mr-2" /> Maintenance
+              </TabsTrigger>
+            )}
           </TabsList>
 
           <TabsContent value="dashboard" className="mt-8">
@@ -374,6 +385,12 @@ function AdminDashboard() {
           <TabsContent value="updates">
             <div className="mt-8">
               <UpdatesManager />
+            </div>
+          </TabsContent>
+          
+          <TabsContent value="maintenance">
+            <div className="mt-8">
+              <MaintenanceManager />
             </div>
           </TabsContent>
         </Tabs>

@@ -11,6 +11,10 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { getSiteSettings } from "../lib/settings.functions";
+import { trackPageView } from "../lib/tracking.functions";
+import { AlertTriangle, Wrench } from "lucide-react";
+import { Toaster } from "@/components/ui/sonner";
 
 function NotFoundComponent() {
   return (
@@ -92,6 +96,15 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
     ],
   }),
+  loader: async () => {
+    try {
+      const settings = await getSiteSettings();
+      return { settings };
+    } catch (e) {
+      console.error("Failed to load site settings", e);
+      return { settings: { maintenance_mode: false, maintenance_heading: "Maintenance", maintenance_message: "Updating site." } };
+    }
+  },
   shellComponent: RootShell,
   component: RootComponent,
   notFoundComponent: NotFoundComponent,
@@ -114,11 +127,45 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const { settings } = Route.useLoaderData();
+  const router = useRouter();
+  const currentPath = router.state.location.pathname;
+
+  useEffect(() => {
+    // Generate a simple unique visitor id per session/browser if not exists
+    let visitorId = localStorage.getItem("visitorId");
+    if (!visitorId) {
+      visitorId = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+      localStorage.setItem("visitorId", visitorId);
+    }
+    trackPageView({ data: { path: currentPath, visitorId } }).catch(console.error);
+  }, [currentPath]);
+
+  const isAdminRoute = currentPath.startsWith("/admin");
+  const isMaintenanceMode = settings?.maintenance_mode;
+
+  if (isMaintenanceMode && !isAdminRoute) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-background px-4">
+        <div className="max-w-xl text-center space-y-6 bg-card p-10 rounded-2xl shadow-xl border">
+          <div className="mx-auto bg-primary/10 w-24 h-24 rounded-full flex items-center justify-center">
+            <Wrench className="w-12 h-12 text-primary" />
+          </div>
+          <h1 className="text-4xl font-bold tracking-tight text-foreground">
+            {settings?.maintenance_heading || "Website Under Maintenance"}
+          </h1>
+          <p className="text-lg text-muted-foreground whitespace-pre-wrap">
+            {settings?.maintenance_message || "We are currently updating our website. Please check back later."}
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <QueryClientProvider client={queryClient}>
-      {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <Outlet />
+      <Toaster />
     </QueryClientProvider>
   );
 }

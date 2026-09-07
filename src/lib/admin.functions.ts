@@ -9,11 +9,15 @@ export const getAdminOverview = createServerFn({ method: "GET" })
       _user_id: userId,
       _role: "admin",
     });
+    const { data: isSuperAdmin } = await supabase.rpc("has_role", {
+      _user_id: userId,
+      _role: "super_admin",
+    });
 
     const { data: { user } } = await supabase.auth.getUser();
 
-    if (!isAdmin) {
-      return { isAdmin: false as const, enquiries: [], adminEmail: "" };
+    if (!isAdmin && !isSuperAdmin) {
+      return { isAdmin: false as const, isSuperAdmin: false as const, enquiries: [], adminEmail: "" };
     }
 
     const [
@@ -40,6 +44,7 @@ export const getAdminOverview = createServerFn({ method: "GET" })
 
     return { 
       isAdmin: true as const, 
+      isSuperAdmin: !!isSuperAdmin,
       adminEmail: user?.email || "",
       enquiries: enquiriesData ?? [],
       analytics: {

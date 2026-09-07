@@ -1,13 +1,13 @@
 import { useState } from "react";
-import { 
-  Building2, 
-  GraduationCap, 
-  Award, 
-  BadgeCheck, 
-  CheckCircle2, 
-  Briefcase, 
-  HeartHandshake, 
-  ShieldCheck, 
+import {
+  Building2,
+  GraduationCap,
+  Award,
+  BadgeCheck,
+  CheckCircle2,
+  Briefcase,
+  HeartHandshake,
+  ShieldCheck,
   ArrowRight,
   TrendingUp,
   Leaf,
@@ -113,7 +113,7 @@ export function HorticultureWorkforce() {
   return (
     <section id="horticulture-workforce" className="bg-[#fcfbf9] py-20 lg:py-32 overflow-hidden">
       <div className="w-full px-4 sm:px-8 lg:px-12">
-        
+
         {/* Header Section */}
         <div className="text-center max-w-4xl mx-auto mb-20">
           <Badge variant="secondary" className="mb-6 bg-forest/10 text-forest hover:bg-forest/20 text-sm px-4 py-1.5">
@@ -121,7 +121,7 @@ export function HorticultureWorkforce() {
             Enterprise Solutions
           </Badge>
           <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-forest mb-8 leading-tight tracking-tight">
-            Professional Horticulture Workforce.<br className="hidden md:block"/> Managed by Green Roots.
+            Professional Horticulture Workforce.<br className="hidden md:block" /> Managed by Green Roots.
           </h2>
           <p className="text-xl text-muted-foreground leading-relaxed">
             We provide trained, certified and professionally managed Garden Care Professionals for IT companies, corporate campuses, apartments, schools, hospitals, hotels, institutions and commercial properties.
@@ -141,7 +141,7 @@ export function HorticultureWorkforce() {
             <p className="text-lg text-muted-foreground leading-relaxed">
               Every Green Roots trainee undergoes a structured 2-month practical training programme covering the complete range of gardening and horticulture activities.
             </p>
-            
+
             <div className="grid sm:grid-cols-2 gap-3 pt-6">
               {TRAINING_TOPICS.map((topic, i) => (
                 <div key={i} className="flex items-center gap-3 p-3.5 rounded-2xl bg-white border border-forest/10 shadow-sm hover:shadow-md hover:border-forest/30 transition-all group">
@@ -153,7 +153,7 @@ export function HorticultureWorkforce() {
               ))}
             </div>
           </div>
-          
+
           <div className="relative lg:h-full">
             <div className="absolute inset-0 bg-gradient-to-tr from-forest/5 to-transparent rounded-3xl transform rotate-3 scale-105" />
             <div className="relative lg:h-full flex flex-col bg-white p-8 sm:p-12 rounded-3xl shadow-[0_20px_60px_-15px_rgba(0,0,0,0.05)] border border-border/50">
@@ -169,7 +169,7 @@ export function HorticultureWorkforce() {
               <p className="text-muted-foreground leading-relaxed mb-8">
                 After completing the 2-month training programme, every trainee undergoes rigorous assessment. Successful candidates receive a Green Roots Training Certificate and are eligible for professional deployment.
               </p>
-              
+
               <div className="border-t border-border/60 pt-8">
                 <h4 className="font-display text-lg font-bold text-forest mb-4 flex items-center gap-2">
                   <BadgeCheck className="size-5 text-forest" />
@@ -240,7 +240,7 @@ export function HorticultureWorkforce() {
             <h3 className="font-display text-3xl font-bold text-forest mb-4">A Complete Workforce Solution</h3>
             <p className="text-lg text-muted-foreground">With Green Roots, clients receive more than gardening manpower.</p>
           </div>
-          
+
           <div className="flex overflow-x-auto whitespace-nowrap gap-3 md:gap-4 pb-6 px-4 w-full snap-x [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
             {WORKFORCE_FLOW.map((step, index) => (
               <div key={step} className="flex items-center shrink-0 snap-center">
@@ -277,7 +277,7 @@ export function HorticultureWorkforce() {
             <ShieldCheck className="size-10" />
           </div>
           <h3 className="font-display text-3xl md:text-5xl font-bold text-forest mb-6 leading-tight">
-            We don't just provide gardeners.<br/>
+            We don't just provide gardeners.<br />
             <span className="text-forest/70">We build skilled horticulture professionals.</span>
           </h3>
           <p className="text-xl text-muted-foreground mb-10 max-w-2xl mx-auto leading-relaxed">
@@ -305,11 +305,11 @@ Email: ${fd.get('email')}
 Location Type: ${fd.get('location')}
 Gardeners Required: ${fd.get('gardeners') || 'Not specified'}
 Additional Details: ${fd.get('details') || 'None'}`;
-    
+
     const whatsappUrl = `https://wa.me/916360988785?text=${encodeURIComponent(text)}`;
     window.open(whatsappUrl, '_blank');
     setIsSubmitted(true);
-    
+
     // Trigger confetti paper blast!
     const duration = 3 * 1000;
     const end = Date.now() + duration;

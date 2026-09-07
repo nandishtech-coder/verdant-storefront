@@ -9,6 +9,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 import { useMemo } from "react";
 import { format, subDays, isSameDay } from "date-fns";
+import { useQuery } from "@tanstack/react-query";
+import { getPageViewsDailyStats } from "@/lib/tracking.functions";
 
 type AnalyticsData = {
   services: number;
@@ -33,6 +35,26 @@ export function AnalyticsDashboard({ data, enquiries, adminEmail }: { data: Anal
       };
     });
   }, [enquiries]);
+
+  const { data: usageStats, isLoading: isUsageLoading } = useQuery({
+    queryKey: ["page-views-stats"],
+    queryFn: () => getPageViewsDailyStats(),
+  });
+
+  const displayUsageStats = useMemo(() => {
+    if (!usageStats || usageStats.length === 0) {
+      // Return empty 7 days if no data
+      return Array.from({ length: 7 }).map((_, i) => ({
+        date: format(subDays(new Date(), 6 - i), 'MMM d'),
+        pageViews: 0,
+        uniqueVisitors: 0
+      }));
+    }
+    return usageStats.map(stat => ({
+      ...stat,
+      date: format(new Date(stat.date), 'MMM d')
+    }));
+  }, [usageStats]);
 
   const distributionData = [
     { name: "Services", value: data.services, color: "#10b981" },
@@ -119,6 +141,49 @@ export function AnalyticsDashboard({ data, enquiries, adminEmail }: { data: Anal
             <p className="text-xs text-muted-foreground mt-1 flex gap-2">
               <span>{data.reels} Reels</span> • <span>{data.blogs} Blogs</span>
             </p>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Usage Analytics Section */}
+      <div className="grid gap-6">
+        <Card className="border-none shadow-[var(--shadow-soft)]">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <TrendingUp className="size-5 text-forest" />
+              Website Usage (Page Views & Visitors)
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="px-2 pb-4 sm:px-6">
+            <div className="h-[300px] w-full">
+              {isUsageLoading ? (
+                <div className="flex items-center justify-center h-full text-muted-foreground">Loading usage stats...</div>
+              ) : (
+                <ResponsiveContainer width="100%" height="100%">
+                  <AreaChart data={displayUsageStats} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+                    <defs>
+                      <linearGradient id="colorViews" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="#10b981" stopOpacity={0.3} />
+                        <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
+                      </linearGradient>
+                      <linearGradient id="colorVisitors" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="#f59e0b" stopOpacity={0.3} />
+                        <stop offset="95%" stopColor="#f59e0b" stopOpacity={0} />
+                      </linearGradient>
+                    </defs>
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
+                    <XAxis dataKey="date" axisLine={false} tickLine={false} tick={{ fill: "#6b7280", fontSize: 12 }} dy={10} />
+                    <YAxis axisLine={false} tickLine={false} tick={{ fill: "#6b7280", fontSize: 12 }} dx={-10} allowDecimals={false} />
+                    <Tooltip 
+                      contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)' }}
+                    />
+                    <Legend iconType="circle" wrapperStyle={{ paddingTop: '20px' }} />
+                    <Area type="monotone" dataKey="pageViews" name="Page Views" stroke="#10b981" strokeWidth={3} fillOpacity={1} fill="url(#colorViews)" />
+                    <Area type="monotone" dataKey="uniqueVisitors" name="Unique Visitors" stroke="#f59e0b" strokeWidth={3} fillOpacity={1} fill="url(#colorVisitors)" />
+                  </AreaChart>
+                </ResponsiveContainer>
+              )}
+            </div>
           </CardContent>
         </Card>
       </div>
