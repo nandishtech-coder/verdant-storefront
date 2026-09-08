@@ -288,7 +288,8 @@ export function Header() {
                               const isCategory = href.startsWith("/category/");
 
                               const cls =
-                                "group flex items-center justify-between gap-2 rounded-xl px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-secondary hover:text-forest";
+                                "group flex items-center justify-between gap-2 rounded-xl px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-secondary hover:text-forest [&.active]:bg-forest/10 [&.active]:text-forest [&.active]:font-medium";
+                              const activeProps = { className: "active" };
                               const inner = (
                                 <>
                                   <span className="line-clamp-2">{i}</span>
@@ -303,6 +304,7 @@ export function Header() {
                                       params={{ id: href.replace("/service/", "") }}
                                       onClick={handleMobileMenuNavigate}
                                       className={cls}
+                                      activeProps={activeProps}
                                     >
                                       {inner}
                                     </RouterLink>
@@ -312,6 +314,7 @@ export function Header() {
                                       params={{ id: href.replace("/product/", "") }}
                                       onClick={handleMobileMenuNavigate}
                                       className={cls}
+                                      activeProps={activeProps}
                                     >
                                       {inner}
                                     </RouterLink>
@@ -321,6 +324,7 @@ export function Header() {
                                       params={{ id: href.replace("/category/", "") }}
                                       onClick={handleMobileMenuNavigate}
                                       className={cls}
+                                      activeProps={activeProps}
                                     >
                                       {inner}
                                     </RouterLink>
@@ -473,7 +477,8 @@ export function Header() {
                     const isService = href.startsWith("/service/");
                     const isProduct = href.startsWith("/product/");
                     const isCategory = href.startsWith("/category/");
-                    const className = "block rounded-lg px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-secondary hover:text-forest";
+                    const className = "block rounded-lg px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-secondary hover:text-forest [&.active]:bg-forest/10 [&.active]:text-forest [&.active]:font-medium";
+                    const activeProps = { className: "active" };
 
                     if (isService) {
                       return (
@@ -482,6 +487,7 @@ export function Header() {
                           to="/service/$id"
                           params={{ id: href.replace("/service/", "") }}
                           className={className}
+                          activeProps={activeProps}
                         >
                           {i}
                         </RouterLink>
@@ -493,6 +499,7 @@ export function Header() {
                           to="/product/$id"
                           params={{ id: href.replace("/product/", "") }}
                           className={className}
+                          activeProps={activeProps}
                         >
                           {i}
                         </RouterLink>
@@ -504,6 +511,7 @@ export function Header() {
                           to="/category/$id"
                           params={{ id: href.replace("/category/", "") }}
                           className={className}
+                          activeProps={activeProps}
                         >
                           {i}
                         </RouterLink>

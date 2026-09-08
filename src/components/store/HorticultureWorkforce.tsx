@@ -236,7 +236,7 @@ export function HorticultureWorkforce() {
 
         {/* Process Flow */}
         <div className="mb-32 flex flex-col items-center justify-center overflow-visible px-2 sm:px-4 w-full">
-          
+
           <style>{`
             @keyframes spin-forward {
               from { transform: rotate(0deg); }
@@ -256,7 +256,7 @@ export function HorticultureWorkforce() {
 
           <div className="relative aspect-square w-full max-w-[280px] sm:max-w-[400px] md:max-w-[500px] flex items-center justify-center mx-auto z-10">
             {/* The Spinning Wheel */}
-            <div 
+            <div
               className="ferris-wheel absolute inset-0 rounded-full border-[4px] sm:border-[6px] border-forest overflow-hidden shadow-2xl"
               style={{
                 background: `conic-gradient(
@@ -274,7 +274,7 @@ export function HorticultureWorkforce() {
             >
               {/* Segment Dividers */}
               {WORKFORCE_FLOW.map((_, i) => (
-                <div 
+                <div
                   key={`divider-${i}`}
                   className="absolute bottom-1/2 left-1/2 w-[2px] sm:w-[3px] h-1/2 bg-forest origin-bottom -translate-x-1/2"
                   style={{ transform: `rotate(${(i * 360) / 9}deg)` }}
@@ -283,9 +283,9 @@ export function HorticultureWorkforce() {
 
               {/* Texts in each slice */}
               {WORKFORCE_FLOW.map((step, i) => {
-                const angle = (i * 360) / 9 + 20; 
+                const angle = (i * 360) / 9 + 20;
                 return (
-                  <div 
+                  <div
                     key={`slice-${i}`}
                     className="absolute inset-0 flex justify-center origin-center pointer-events-none"
                     style={{ transform: `rotate(${angle}deg)` }}
@@ -306,40 +306,47 @@ export function HorticultureWorkforce() {
                 )
               })}
             </div>
-            
+
             {/* The Static Central Circle */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 size-[100px] sm:size-[140px] md:size-[170px] rounded-full bg-forest border-[4px] sm:border-[6px] border-white shadow-xl flex flex-col items-center justify-center text-center p-2 sm:p-4 z-20">
               <h3 className="font-display text-xs sm:text-base md:text-xl font-bold text-cream mb-1">Workforce Solution</h3>
               <p className="text-cream/80 text-[7px] sm:text-[9px] md:text-[11px] leading-tight hidden sm:block">With Green Roots, clients receive more than gardening manpower.</p>
             </div>
           </div>
-          
+
           {/* Stem and Leaves Structure */}
           <div className="flex flex-col items-center -mt-4 sm:-mt-6 relative z-0 w-full">
             {/* The Leaves Container */}
             <div className="relative flex items-end justify-center w-full max-w-[95%] sm:max-w-[480px] md:max-w-[600px]">
-              
+
               {/* Left Leaf */}
-              <div className="flex-1 bg-white border-[3px] sm:border-4 border-forest border-r-0 sm:border-r-0 rounded-tl-2xl sm:rounded-tl-3xl rounded-bl-2xl sm:rounded-bl-3xl rounded-br-none rounded-tr-full shadow-xl flex items-center justify-start h-[50px] sm:h-[90px] md:h-[110px] pl-2 sm:pl-8 md:pl-10">
-                 <span className="font-display text-forest font-bold text-[9px] sm:text-base md:text-xl tracking-wider sm:tracking-widest uppercase">Learn. Grow.</span>
+              <div className="flex-1 bg-forest/10 border-[3px] sm:border-4 border-forest border-r-0 sm:border-r-0 rounded-tl-none rounded-bl-full rounded-br-none rounded-tr-full shadow-xl flex items-center justify-center h-[50px] sm:h-[90px] md:h-[110px]">
+                <span className="font-display text-forest font-bold text-[9px] sm:text-base md:text-xl tracking-wider sm:tracking-widest uppercase">Learn</span>
               </div>
-              
+
               {/* The Continuous Stem */}
               <div className="w-[4px] sm:w-[6px] h-[80px] sm:h-[150px] md:h-[180px] bg-forest shrink-0 relative z-10"></div>
-              
+
               {/* Right Leaf */}
-              <div className="flex-1 bg-white border-[3px] sm:border-4 border-forest border-l-0 sm:border-l-0 rounded-tr-2xl sm:rounded-tr-3xl rounded-br-2xl sm:rounded-br-3xl rounded-bl-none rounded-tl-full shadow-xl flex items-center justify-end h-[50px] sm:h-[90px] md:h-[110px] pr-2 sm:pr-8 md:pr-10">
-                 <span className="font-display text-forest font-bold text-[9px] sm:text-base md:text-xl tracking-wider sm:tracking-widest uppercase">Harvest.</span>
+              <div className="flex-1 bg-forest/10 border-[3px] sm:border-4 border-forest border-l-0 sm:border-l-0 rounded-tr-none rounded-br-full rounded-bl-none rounded-tl-full shadow-xl flex items-center justify-center h-[50px] sm:h-[90px] md:h-[110px]">
+                <span className="font-display text-forest font-bold text-[9px] sm:text-base md:text-xl tracking-wider sm:tracking-widest uppercase">Harvest</span>
               </div>
 
               {/* Logo Badge Overlay in the Center */}
               <div className="absolute bottom-[25px] sm:bottom-[45px] md:bottom-[55px] left-1/2 -translate-x-1/2 translate-y-1/2 bg-white rounded-full border-[3px] sm:border-4 border-forest shadow-md size-[50px] sm:size-24 md:size-28 flex items-center justify-center z-20 overflow-hidden">
-                 <img src="/logo.png" alt="Green Roots" className="size-full object-cover scale-[1.02]" />
+                <img src="/logo.png" alt="Green Roots" className="size-full object-cover scale-[1.02]" />
               </div>
 
             </div>
+
+            {/* Grow Box Below Logo */}
+            <div className="relative z-10 -mt-[3px] sm:-mt-[4px]">
+              <div className="bg-forest/10 border-[3px] sm:border-4 border-forest rounded-full shadow-xl px-6 sm:px-12 py-2 sm:py-3 flex items-center justify-center min-w-[80px] sm:min-w-[160px]">
+                <span className="font-display text-forest font-bold text-[9px] sm:text-base md:text-xl tracking-wider sm:tracking-widest uppercase">Grow</span>
+              </div>
+            </div>
           </div>
-          
+
         </div>
 
         {/* Values Grid */}
