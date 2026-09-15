@@ -307,7 +307,7 @@ export function MainServices() {
   });
 
   return (
-    <section className="px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
+    <section id="services" className="px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
       <div className="mx-auto w-full">
         <div className="text-center max-w-3xl mx-auto mb-16">
           <Badge variant="secondary" className="mb-4 bg-primary/10 text-primary hover:bg-primary/20">
@@ -1123,29 +1123,28 @@ export function Footer() {
                 </a>
               ))}
             </div>
-            <div className="mt-8 flex flex-wrap gap-3">
-              {["NPOP Certified", "FSSAI Licensed", "ISO 22000"].map((badge) => (
-                <span
-                  key={badge}
-                  className="rounded-full border border-yellow-500/40 text-yellow-500 px-4 py-1.5 text-xs font-medium"
-                >
-                  {badge}
-                </span>
-              ))}
-            </div>
+
           </div>
 
           {/* Column 2: Quick Links */}
           <div>
             <h3 className="font-display text-lg font-semibold">Quick Links</h3>
             <ul className="mt-6 space-y-3.5 text-sm text-cream/80">
-              {["About Us", "Contact Us", "Our Services"].map((link) => (
-                <li key={link}>
-                  <a href="#top" className="transition-colors hover:text-primary">
-                    {link}
-                  </a>
-                </li>
-              ))}
+              <li>
+                <Link to="/about-us" className="transition-colors hover:text-primary">
+                  About Us
+                </Link>
+              </li>
+              <li>
+                <Link to="/" hash="contact" className="transition-colors hover:text-primary">
+                  Contact Us
+                </Link>
+              </li>
+              <li>
+                <Link to="/" hash="services" className="transition-colors hover:text-primary">
+                  Our Services
+                </Link>
+              </li>
             </ul>
           </div>
 
@@ -1154,21 +1153,20 @@ export function Footer() {
             <h3 className="font-display text-lg font-semibold">Products</h3>
             <ul className="mt-6 space-y-3.5 text-sm text-cream/80">
               {[
-                "Fresh Seeds",
-                "Indoor Plants",
-                "Ceramic Planters",
-                "Organic Manures",
-                "Garden Tools",
-                "Green Gifts",
+                { name: "Seeds", id: "seeds" },
+                { name: "Plant Care", id: "plant-care" },
+                { name: "Garden Tools", id: "garden-tools" },
+                { name: "Green Gifts", id: "green-gifts" },
               ].map((link) => (
-                <li key={link}>
-                  <a
-                    href="#top"
+                <li key={link.name}>
+                  <Link
+                    to="/category/$id"
+                    params={{ id: link.id }}
                     className="flex items-center gap-2 transition-colors hover:text-primary"
                   >
                     <ArrowRight className="size-3.5" />
-                    {link}
-                  </a>
+                    {link.name}
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -1213,10 +1211,7 @@ export function Footer() {
                 <Clock className="size-4 shrink-0 mt-0.5" />
                 <span>Mon–Sat: 6AM – 6PM</span>
               </li>
-              <li className="flex items-start gap-3">
-                <Truck className="size-4 shrink-0 mt-0.5" />
-                <span>Free delivery above ₹500</span>
-              </li>
+
             </ul>
           </div>
         </div>
@@ -1242,15 +1237,15 @@ export function Footer() {
 
           <div className="flex flex-col gap-4 md:flex-row md:items-center md:gap-8">
             <div className="flex gap-4">
-              <a href="#top" className="transition-colors hover:text-cream">
+              <Link to="/privacy-policy" className="transition-colors hover:text-cream">
                 Privacy Policy
-              </a>
-              <a href="#top" className="transition-colors hover:text-cream">
+              </Link>
+              <Link to="/terms-of-service" className="transition-colors hover:text-cream">
                 Terms of Service
-              </a>
-              <a href="#top" className="transition-colors hover:text-cream">
+              </Link>
+              <Link to="/refund-policy" className="transition-colors hover:text-cream">
                 Refund Policy
-              </a>
+              </Link>
             </div>
 
             <a

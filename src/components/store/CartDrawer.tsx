@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import confetti from "canvas-confetti";
-import { Minus, Plus, ShoppingBag, Trash2, Truck, CheckCircle2 } from "lucide-react";
+import { Check, ChevronRight, Info, Minus, Plus, ShoppingBag, Trash2, Truck, X, Gift, CheckCircle2 } from "lucide-react";
 import {
   Sheet,
   SheetContent,
@@ -159,19 +159,11 @@ export function CartDrawer() {
         ) : (
           <form onSubmit={handleCheckout} className="flex flex-1 flex-col overflow-hidden">
             <div className="border-b border-border bg-secondary/60 px-4 py-4 sm:px-6">
-              <div className="flex items-center gap-2 text-sm text-forest">
-                <Truck className="size-4 text-primary" />
-                {remaining > 0 ? (
-                  <span>
-                    You're <strong>{inr(remaining)}</strong> away from free shipping
-                  </span>
-                ) : (
-                  <span>
-                    <strong>Free shipping unlocked</strong> — nice one!
-                  </span>
-                )}
+              <div className="flex items-center justify-center gap-2 text-sm text-forest font-medium">
+                <span>
+                  ✨ Hand-picked with love. 100% Organic & Pet-Safe! 🌿
+                </span>
               </div>
-              <Progress value={pct} className="mt-3 h-2" />
             </div>
 
             <div className="flex-1 overflow-y-auto px-4 py-5 sm:px-6">

@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useState } from "react";
 import { Header } from "@/components/store/Header";
 import { Footer } from "@/components/store/Sections";
 import { CartDrawer } from "@/components/store/CartDrawer";
@@ -11,7 +12,8 @@ import { ProductCard } from "@/components/store/ProductCard";
 import { Loader2, Leaf } from "lucide-react";
 import { Reveal } from "@/components/store/Reveal";
 import { PageLoader } from "@/components/store/PageLoader";
-
+import { NAV } from "@/lib/store-data";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 export const Route = createFileRoute("/category/$id")({
   component: CategoryPageWrapper,
 });
@@ -62,14 +64,33 @@ function CategoryPage() {
   // e.g., 'vegetable-seeds' -> 'Vegetable Seeds'
   const categoryName = id.split("-").map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(" ");
 
+  const [activeTab, setActiveTab] = useState("All");
+
   if (productsPending || contentPending) {
     return <PageLoader />;
   }
 
+  const navItem = NAV.find(n => n.label.toLowerCase() === categoryName.toLowerCase());
+  const subCategories = navItem ? navItem.items : [];
+  const hasSubCategories = subCategories.length > 0;
+
   // Filter products by tag (case insensitive match)
-  const categoryProducts = products.filter((p) =>
-    p.tags && p.tags.some(tag => tag.toLowerCase() === categoryName.toLowerCase())
-  );
+  const categoryProducts = products.filter((p) => {
+    if (!p.tags) return false;
+
+    if (hasSubCategories) {
+      if (activeTab === "All") {
+        return p.tags.some(tag => 
+          tag.toLowerCase() === categoryName.toLowerCase() ||
+          subCategories.some((sub: string) => sub.toLowerCase() === tag.toLowerCase())
+        );
+      } else {
+        return p.tags.some(tag => tag.toLowerCase() === activeTab.toLowerCase());
+      }
+    } else {
+      return p.tags.some(tag => tag.toLowerCase() === categoryName.toLowerCase());
+    }
+  });
 
   const bgImage = categoryImages[id];
 
@@ -107,6 +128,25 @@ function CategoryPage() {
                   <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-500"></div>
                 </div>
               ))}
+            </div>
+          </Reveal>
+        )}
+
+        {hasSubCategories && (
+          <Reveal variant="up">
+            <div className="mb-8 flex justify-start">
+              <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full overflow-x-auto hide-scrollbar">
+                <TabsList className="flex flex-wrap justify-start h-auto w-fit rounded-xl bg-secondary p-1">
+                  <TabsTrigger value="All" className="rounded-lg text-xs sm:text-sm">
+                    All
+                  </TabsTrigger>
+                  {subCategories.map((sub: string) => (
+                    <TabsTrigger key={sub} value={sub} className="rounded-lg text-xs sm:text-sm">
+                      {sub}
+                    </TabsTrigger>
+                  ))}
+                </TabsList>
+              </Tabs>
             </div>
           </Reveal>
         )}

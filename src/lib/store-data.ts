@@ -337,18 +337,18 @@ export const NAV = [
   },
   {
     label: "Plant Care",
-    items: ["Potting Mix", "Biostimulants", "Organic Pest Control"],
-    hrefs: ["/category/potting-mix", "/category/biostimulants", "/category/organic-pest-control"],
+    items: ["Potting Mix", "Organic Pest Control"],
+    hrefs: ["/category/potting-mix", "/category/organic-pest-control"],
   },
   {
     label: "Garden Tools",
-    items: ["Hand Tools", "Watering", "Accessories"],
-    hrefs: ["/category/hand-tools", "/category/watering", "/category/accessories"],
+    items: ["Hand Tools"],
+    hrefs: ["/category/hand-tools"],
   },
   {
     label: "Green Gifts",
-    items: ["Gift Hampers", "Corporate Gifting", "Gift Cards"],
-    hrefs: ["/category/gift-hampers", "/category/corporate-gifting", "/category/gift-cards"],
+    items: ["Gift Hampers", "Corporate Gifting"],
+    hrefs: ["/category/gift-hampers", "/category/corporate-gifting"],
   },
 ];
 

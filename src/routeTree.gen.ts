@@ -11,8 +11,12 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
+import { Route as AboutUsRouteImport } from './routes/about-us'
 import { Route as BlogsRouteImport } from './routes/blogs'
 import { Route as GreenGiftsRouteImport } from './routes/green-gifts'
+import { Route as PrivacyPolicyRouteImport } from './routes/privacy-policy'
+import { Route as RefundPolicyRouteImport } from './routes/refund-policy'
+import { Route as TermsOfServiceRouteImport } from './routes/terms-of-service'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated.admin'
 import { Route as AdminLoginRouteImport } from './routes/admin.login'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
@@ -29,6 +33,11 @@ const AuthenticatedRoute = AuthenticatedRouteImport.update({
   id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AboutUsRoute = AboutUsRouteImport.update({
+  id: '/about-us',
+  path: '/about-us',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const BlogsRoute = BlogsRouteImport.update({
   id: '/blogs',
   path: '/blogs',
@@ -37,6 +46,21 @@ const BlogsRoute = BlogsRouteImport.update({
 const GreenGiftsRoute = GreenGiftsRouteImport.update({
   id: '/green-gifts',
   path: '/green-gifts',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyPolicyRoute = PrivacyPolicyRouteImport.update({
+  id: '/privacy-policy',
+  path: '/privacy-policy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RefundPolicyRoute = RefundPolicyRouteImport.update({
+  id: '/refund-policy',
+  path: '/refund-policy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TermsOfServiceRoute = TermsOfServiceRouteImport.update({
+  id: '/terms-of-service',
+  path: '/terms-of-service',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
@@ -72,8 +96,12 @@ const ServiceIdRoute = ServiceIdRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about-us': typeof AboutUsRoute
   '/blogs': typeof BlogsRoute
   '/green-gifts': typeof GreenGiftsRoute
+  '/privacy-policy': typeof PrivacyPolicyRoute
+  '/refund-policy': typeof RefundPolicyRoute
+  '/terms-of-service': typeof TermsOfServiceRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/admin/login': typeof AdminLoginRoute
   '/blog/$slug': typeof BlogSlugRoute
@@ -83,8 +111,12 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about-us': typeof AboutUsRoute
   '/blogs': typeof BlogsRoute
   '/green-gifts': typeof GreenGiftsRoute
+  '/privacy-policy': typeof PrivacyPolicyRoute
+  '/refund-policy': typeof RefundPolicyRoute
+  '/terms-of-service': typeof TermsOfServiceRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/admin/login': typeof AdminLoginRoute
   '/blog/$slug': typeof BlogSlugRoute
@@ -96,8 +128,12 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteWithChildren
+  '/about-us': typeof AboutUsRoute
   '/blogs': typeof BlogsRoute
   '/green-gifts': typeof GreenGiftsRoute
+  '/privacy-policy': typeof PrivacyPolicyRoute
+  '/refund-policy': typeof RefundPolicyRoute
+  '/terms-of-service': typeof TermsOfServiceRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/admin/login': typeof AdminLoginRoute
   '/blog/$slug': typeof BlogSlugRoute
@@ -109,8 +145,12 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/about-us'
     | '/blogs'
     | '/green-gifts'
+    | '/privacy-policy'
+    | '/refund-policy'
+    | '/terms-of-service'
     | '/admin'
     | '/admin/login'
     | '/blog/$slug'
@@ -120,8 +160,12 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/about-us'
     | '/blogs'
     | '/green-gifts'
+    | '/privacy-policy'
+    | '/refund-policy'
+    | '/terms-of-service'
     | '/admin'
     | '/admin/login'
     | '/blog/$slug'
@@ -132,8 +176,12 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/_authenticated'
+    | '/about-us'
     | '/blogs'
     | '/green-gifts'
+    | '/privacy-policy'
+    | '/refund-policy'
+    | '/terms-of-service'
     | '/_authenticated/admin'
     | '/admin/login'
     | '/blog/$slug'
@@ -145,8 +193,12 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
+  AboutUsRoute: typeof AboutUsRoute
   BlogsRoute: typeof BlogsRoute
   GreenGiftsRoute: typeof GreenGiftsRoute
+  PrivacyPolicyRoute: typeof PrivacyPolicyRoute
+  RefundPolicyRoute: typeof RefundPolicyRoute
+  TermsOfServiceRoute: typeof TermsOfServiceRoute
   AdminLoginRoute: typeof AdminLoginRoute
   BlogSlugRoute: typeof BlogSlugRoute
   CategoryIdRoute: typeof CategoryIdRoute
@@ -170,6 +222,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/about-us': {
+      id: '/about-us'
+      path: '/about-us'
+      fullPath: '/about-us'
+      preLoaderRoute: typeof AboutUsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/blogs': {
       id: '/blogs'
       path: '/blogs'
@@ -182,6 +241,27 @@ declare module '@tanstack/react-router' {
       path: '/green-gifts'
       fullPath: '/green-gifts'
       preLoaderRoute: typeof GreenGiftsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy-policy': {
+      id: '/privacy-policy'
+      path: '/privacy-policy'
+      fullPath: '/privacy-policy'
+      preLoaderRoute: typeof PrivacyPolicyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/refund-policy': {
+      id: '/refund-policy'
+      path: '/refund-policy'
+      fullPath: '/refund-policy'
+      preLoaderRoute: typeof RefundPolicyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/terms-of-service': {
+      id: '/terms-of-service'
+      path: '/terms-of-service'
+      fullPath: '/terms-of-service'
+      preLoaderRoute: typeof TermsOfServiceRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated/admin': {
@@ -244,8 +324,12 @@ const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRoute: AuthenticatedRouteWithChildren,
+  AboutUsRoute: AboutUsRoute,
   BlogsRoute: BlogsRoute,
   GreenGiftsRoute: GreenGiftsRoute,
+  PrivacyPolicyRoute: PrivacyPolicyRoute,
+  RefundPolicyRoute: RefundPolicyRoute,
+  TermsOfServiceRoute: TermsOfServiceRoute,
   AdminLoginRoute: AdminLoginRoute,
   BlogSlugRoute: BlogSlugRoute,
   CategoryIdRoute: CategoryIdRoute,

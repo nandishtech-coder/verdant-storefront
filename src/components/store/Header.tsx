@@ -440,14 +440,7 @@ export function Header() {
                 </span>
               )}
             </Button>
-            <Button
-              variant="ghost"
-              size="icon"
-              aria-label="Account"
-              className="relative size-9 sm:size-10"
-            >
-              <User className="size-4 sm:size-5" />
-            </Button>
+
             <Button
               onClick={() => setOpen(true)}
               className="relative ml-0.5 sm:ml-1 rounded-xl h-9 sm:h-10 px-2.5 sm:px-4"

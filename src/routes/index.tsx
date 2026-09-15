@@ -13,14 +13,12 @@ import {
 import {
   InstagramReels,
   OurServices,
-  FeaturedProducts,
   ProductRow,
   Footer,
   GiftingBanner,
   Hero,
   MainServices,
   TrustRibbon,
-  DynamicCategoryRows,
 } from "@/components/store/Sections";
 import { HorticultureWorkforce } from "@/components/store/HorticultureWorkforce";
 import {
@@ -108,10 +106,6 @@ function Index() {
               <Reveal variant="left">
                 <HorticultureWorkforce />
               </Reveal>
-              <Reveal variant="left">
-                <FeaturedProducts />
-              </Reveal>
-              <DynamicCategoryRows />
               <Reveal variant="left">
                 <GiftingBanner />
               </Reveal>

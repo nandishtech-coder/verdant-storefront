@@ -299,7 +299,7 @@ export function ContactSection() {
   });
 
   return (
-    <section className="px-4 py-16 lg:px-8">
+    <section id="contact" className="px-4 py-16 lg:px-8">
       <div className="mx-auto w-full">
         <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
           <div>
