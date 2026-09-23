@@ -5,7 +5,7 @@ export const trackPageView = createServerFn({ method: "POST" })
   .handler(async ({ data }) => {
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     // Silently log page view
-    await supabaseAdmin.from("page_views").insert({
+    await supabaseAdmin.from("page_views" as any).insert({
       path: data.path,
       visitor_id: data.visitorId
     });
@@ -13,19 +13,20 @@ export const trackPageView = createServerFn({ method: "POST" })
   });
 
 export const getPageViewsDailyStats = createServerFn({ method: "GET" })
-  .handler(async () => {
+  .validator((data: { month: string }) => data)
+  .handler(async ({ data: { month } }) => {
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     
-    // We only want to fetch page_views in a scalable way. 
-    // For small scale we can fetch them all and group by day, but usually you'd use an RPC or View.
-    // For simplicity right now, fetch last 30 days
-    const thirtyDaysAgo = new Date();
-    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+    // Parse the YYYY-MM string
+    const [year, m] = month.split('-');
+    const startDate = new Date(parseInt(year || "0"), parseInt(m || "0") - 1, 1);
+    const endDate = new Date(parseInt(year || "0"), parseInt(m || "0"), 0, 23, 59, 59, 999);
 
     const { data, error } = await supabaseAdmin
-      .from("page_views")
+      .from("page_views" as any)
       .select("created_at, visitor_id")
-      .gte("created_at", thirtyDaysAgo.toISOString())
+      .gte("created_at", startDate.toISOString())
+      .lte("created_at", endDate.toISOString())
       .order("created_at", { ascending: true });
 
     if (error) {
@@ -36,7 +37,7 @@ export const getPageViewsDailyStats = createServerFn({ method: "GET" })
     // Process data to group by date
     const stats: Record<string, { date: string; pageViews: number; uniqueVisitors: Set<string> }> = {};
     
-    data.forEach((row) => {
+    data.forEach((row: any) => {
       const dateObj = new Date(row.created_at);
       const dateStr = `${dateObj.getFullYear()}-${String(dateObj.getMonth() + 1).padStart(2, '0')}-${String(dateObj.getDate()).padStart(2, '0')}`;
       

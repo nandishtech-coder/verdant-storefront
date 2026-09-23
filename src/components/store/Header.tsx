@@ -27,6 +27,7 @@ import type { LucideIcon } from "lucide-react";
 const MENU_ICONS: Record<string, LucideIcon> = {
   "Our Services": Flower2,
   "Professional Horticulture Workforce": Users,
+  "Recent Projects & Highlights": Sparkles,
   Training: GraduationCap,
   Shop: ShoppingBag,
   Products: Sparkles,
@@ -457,12 +458,12 @@ export function Header() {
 
         {/* Desktop Navigation (Bottom Row) */}
         <div className="hidden xl:block w-full border-t border-border/40 bg-white/40">
-          <nav className="mx-auto flex w-full max-w-6xl items-center justify-center gap-x-8 py-2 px-8">
+          <nav className="mx-auto flex w-full max-w-[1400px] items-center justify-center gap-x-4 xl:gap-x-6 py-2 px-4">
             {NAV.map((n) => (
               <div key={n.label} className="group relative">
-                <button className="flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-medium text-forest transition-colors hover:bg-secondary">
+                <button className="flex items-center gap-1 rounded-lg px-2 xl:px-3 py-2 text-sm font-medium text-forest transition-colors hover:bg-secondary whitespace-nowrap">
                   {n.label}
-                  <ChevronDown className="size-3.5 transition-transform group-hover:rotate-180" />
+                  <ChevronDown className="size-3.5 transition-transform group-hover:rotate-180 shrink-0" />
                 </button>
                 <div className="invisible absolute top-full left-0 w-56 translate-y-1 rounded-xl border border-border bg-card p-2 opacity-0 shadow-[var(--shadow-lift)] transition-all duration-200 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 z-50">
                   {n.items.map((i, idx) => {

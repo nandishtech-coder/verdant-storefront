@@ -311,3 +311,47 @@ ON CONFLICT (id) DO UPDATE SET
   description = EXCLUDED.description,
   gallery = EXCLUDED.gallery,
   updated_at = now();
+
+
+CREATE TABLE IF NOT EXISTS public.recent_projects (
+    id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
+    title text NOT NULL,
+    description text NOT NULL,
+    image_url text NOT NULL,
+    status text NOT NULL,
+    sort_order integer DEFAULT 0 NOT NULL,
+    is_active boolean DEFAULT true NOT NULL,
+    created_at timestamp with time zone DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+-- Enable Row Level Security (RLS)
+ALTER TABLE public.recent_projects ENABLE ROW LEVEL SECURITY;
+-- Create policy to allow public read access
+CREATE POLICY "Public can view active recent projects" 
+ON public.recent_projects FOR SELECT 
+USING (is_active = true);
+
+INSERT INTO public.recent_projects (title, description, image_url, status, sort_order, is_active)
+VALUES
+('Corporate Campus Greening', 'Complete landscape overhaul and indoor plant setup for a 5-acre IT park.', '/vegetable-seeds-banner.png', 'Completed', 10, true),
+('Eco-Friendly Residential Complex', 'Implementing organic terrace gardens and common area landscaping for 500+ apartments.', '/organic-pest-control-banner.png', 'In Progress', 20, true),
+('Hospital Healing Garden', 'Designed and maintained a therapeutic green space for patient recovery and staff relaxation.', '/potting-mix-banner.png', 'Completed', 30, true);
+
+
+-- Allow admins and super admins to insert, update, and delete projects
+CREATE POLICY "Admins can manage recent projects" 
+ON public.recent_projects 
+FOR ALL 
+USING (
+    public.has_role(auth.uid(), 'admin') OR public.has_role(auth.uid(), 'super_admin')
+);
+
+
+CREATE TABLE IF NOT EXISTS public.page_views (
+    id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
+    path text NOT NULL,
+    visitor_id text NOT NULL,
+    created_at timestamp with time zone DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
+-- Secure the table (our server functions bypass this to write the logs safely)
+ALTER TABLE public.page_views ENABLE ROW LEVEL SECURITY;

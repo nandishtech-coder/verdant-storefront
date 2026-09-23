@@ -2,7 +2,7 @@ import { useState } from "react";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { Inbox, Leaf, Loader2, LogOut, ShieldCheck, Shield, LayoutDashboard, FolderTree, Package, PlaySquare, FileText, Users, Menu, Gift } from "lucide-react";
+import { Inbox, Leaf, Loader2, LogOut, ShieldCheck, Shield, LayoutDashboard, FolderTree, Package, PlaySquare, FileText, Users, Menu, Gift, Sparkles } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
@@ -25,6 +25,7 @@ import { UpdatesManager } from "@/components/admin/UpdatesManager";
 import { GreenGiftsManager } from "@/components/admin/GreenGiftsManager";
 import { AnalyticsDashboard } from "@/components/admin/AnalyticsDashboard";
 import { MaintenanceManager } from "@/components/admin/MaintenanceManager";
+import { RecentProjectsManager } from "@/components/admin/RecentProjectsManager";
 import { claimAdminRole, getAdminOverview, setEnquiryStatus } from "@/lib/admin.functions";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -157,6 +158,9 @@ function AdminDashboard() {
                   <Button variant={adminTab === "workforce" ? "secondary" : "ghost"} className="justify-start text-forest" onClick={() => { setAdminTab("workforce"); setIsMobileMenuOpen(false); }}>
                     <Users className="mr-2 size-4" /> Professional Workforce
                   </Button>
+                  <Button variant={adminTab === "recent-projects" ? "secondary" : "ghost"} className="justify-start text-forest" onClick={() => { setAdminTab("recent-projects"); setIsMobileMenuOpen(false); }}>
+                    <Sparkles className="mr-2 size-4" /> Recent Projects
+                  </Button>
                   <Button variant={adminTab === "categories" ? "secondary" : "ghost"} className="justify-start text-forest" onClick={() => { setAdminTab("categories"); setIsMobileMenuOpen(false); }}>
                     <FolderTree className="mr-2 size-4" /> Categories
                   </Button>
@@ -187,12 +191,22 @@ function AdminDashboard() {
               </SheetContent>
             </Sheet>
 
-            <span className="hidden md:grid size-10 place-items-center rounded-lg bg-forest-foreground/10">
-              <Leaf className="size-5" />
-            </span>
-            <div>
-              <p className="font-display text-xl font-semibold">GreenRoots</p>
-              <p className="text-xs text-forest-foreground/70">Admin dashboard</p>
+            <div className="flex items-center gap-2">
+              <span className="grid size-10 shrink-0 place-items-center overflow-hidden rounded-xl bg-card lg:size-12 shadow-sm">
+                <img
+                  src="/logo.png"
+                  alt="GreenRoots"
+                  className="size-full scale-[1.02] object-cover"
+                />
+              </span>
+              <div className="flex flex-col">
+                <span className="font-display text-lg font-bold tracking-[0.1em] uppercase lg:text-xl drop-shadow-sm">
+                  GREENROOTS
+                </span>
+                <span className="text-[0.6rem] font-medium tracking-widest text-forest-foreground/80 uppercase mt-[-2px]">
+                  Admin Dashboard
+                </span>
+              </div>
             </div>
           </div>
           <Button variant="ghost" className="text-forest-foreground hover:bg-forest-foreground/10 hover:text-forest-foreground" onClick={signOut}>
@@ -203,8 +217,8 @@ function AdminDashboard() {
       </header>
 
       <div className="mx-auto max-w-7xl px-4 py-6 md:py-10 sm:px-6 lg:px-8">
-        <Tabs value={adminTab} onValueChange={setAdminTab}>
-          <TabsList className="hidden md:inline-flex flex-wrap h-auto">
+        <Tabs value={adminTab} onValueChange={setAdminTab} className="w-full">
+          <TabsList className="hidden md:flex h-auto max-w-full justify-start overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
             <TabsTrigger value="dashboard">
               <LayoutDashboard className="size-4" /> Dashboard
             </TabsTrigger>
@@ -213,6 +227,9 @@ function AdminDashboard() {
             </TabsTrigger>
             <TabsTrigger value="workforce">
               <Users className="size-4" /> Professional Workforce
+            </TabsTrigger>
+            <TabsTrigger value="recent-projects">
+              <Sparkles className="size-4" /> Recent Projects
             </TabsTrigger>
             <TabsTrigger value="categories">
               <FolderTree className="size-4" /> Categories
@@ -254,6 +271,10 @@ function AdminDashboard() {
 
           <TabsContent value="workforce" className="mt-8">
             <WorkforceManager />
+          </TabsContent>
+
+          <TabsContent value="recent-projects" className="mt-8">
+            <RecentProjectsManager />
           </TabsContent>
 
           <TabsContent value="green-gifts" className="mt-8">

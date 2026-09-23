@@ -331,6 +331,11 @@ export const NAV = [
     ]
   },
   {
+    label: "Recent Projects & Highlights",
+    items: ["View All Projects"],
+    hrefs: ["#recent-projects"],
+  },
+  {
     label: "Seeds",
     items: ["Vegetable Seeds", "Herb Seeds", "Flower Seeds"],
     hrefs: ["/category/vegetable-seeds", "/category/herb-seeds", "/category/flower-seeds"],

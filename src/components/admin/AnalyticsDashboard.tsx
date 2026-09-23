@@ -7,10 +7,11 @@ import {
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-import { useMemo } from "react";
-import { format, subDays, isSameDay } from "date-fns";
+import { useState, useMemo } from "react";
+import { format, subDays, isSameDay, startOfMonth, endOfMonth, eachDayOfInterval } from "date-fns";
 import { useQuery } from "@tanstack/react-query";
 import { getPageViewsDailyStats } from "@/lib/tracking.functions";
+import { getEnquiriesDailyStats } from "@/lib/admin.functions";
 
 type AnalyticsData = {
   services: number;
@@ -23,38 +24,49 @@ type AnalyticsData = {
 };
 
 export function AnalyticsDashboard({ data, enquiries, adminEmail }: { data: AnalyticsData, enquiries: any[], adminEmail?: string }) {
-  // Calculate actual enquiries received over the last 7 days
-  const trendData = useMemo(() => {
-    const days = Array.from({ length: 7 }).map((_, i) => subDays(new Date(), 6 - i));
-    
-    return days.map(day => {
-      const dayEnquiries = enquiries.filter(e => isSameDay(new Date(e.created_at), day));
-      return {
-        name: format(day, 'MMM d'),
-        enquiries: dayEnquiries.length,
-      };
-    });
-  }, [enquiries]);
+  const [selectedMonth, setSelectedMonth] = useState<string>(format(new Date(), 'yyyy-MM'));
 
   const { data: usageStats, isLoading: isUsageLoading } = useQuery({
-    queryKey: ["page-views-stats"],
-    queryFn: () => getPageViewsDailyStats(),
+    queryKey: ["page-views-stats", selectedMonth],
+    queryFn: () => getPageViewsDailyStats({ data: { month: selectedMonth } }),
   });
 
+  const { data: enquiriesStats, isLoading: isEnquiriesLoading } = useQuery({
+    queryKey: ["enquiries-stats", selectedMonth],
+    queryFn: () => getEnquiriesDailyStats({ data: { month: selectedMonth } }),
+  });
+
+  // Calculate days in the selected month
+  const monthDays = useMemo(() => {
+    const [year, m] = selectedMonth.split('-');
+    const date = new Date(parseInt(year || "0"), parseInt(m || "0") - 1, 1);
+    const start = startOfMonth(date);
+    const end = endOfMonth(date);
+    return eachDayOfInterval({ start, end });
+  }, [selectedMonth]);
+
   const displayUsageStats = useMemo(() => {
-    if (!usageStats || usageStats.length === 0) {
-      // Return empty 7 days if no data
-      return Array.from({ length: 7 }).map((_, i) => ({
-        date: format(subDays(new Date(), 6 - i), 'MMM d'),
-        pageViews: 0,
-        uniqueVisitors: 0
-      }));
-    }
-    return usageStats.map(stat => ({
-      ...stat,
-      date: format(new Date(stat.date), 'MMM d')
-    }));
-  }, [usageStats]);
+    return monthDays.map(day => {
+      const dateStr = format(day, 'yyyy-MM-dd');
+      const stat = usageStats?.find(s => s.date === dateStr);
+      return {
+        date: format(day, 'MMM d'),
+        pageViews: stat?.pageViews || 0,
+        uniqueVisitors: stat?.uniqueVisitors || 0
+      };
+    });
+  }, [usageStats, monthDays]);
+
+  const trendData = useMemo(() => {
+    return monthDays.map(day => {
+      const dateStr = format(day, 'yyyy-MM-dd');
+      const stat = enquiriesStats?.find(s => s.date === dateStr);
+      return {
+        name: format(day, 'MMM d'),
+        enquiries: stat?.enquiries || 0
+      };
+    });
+  }, [enquiriesStats, monthDays]);
 
   const distributionData = [
     { name: "Services", value: data.services, color: "#10b981" },
@@ -65,11 +77,27 @@ export function AnalyticsDashboard({ data, enquiries, adminEmail }: { data: Anal
 
   return (
     <div className="space-y-8 animate-in fade-in duration-700">
-      <div className="flex flex-col gap-2">
-        <h2 className="text-3xl font-display font-bold text-forest">
-          Welcome To Admin {adminEmail ? adminEmail.split("@")[0]?.toUpperCase() : ""}
-        </h2>
-        <p className="text-muted-foreground">Here is what's happening across your platform today.</p>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="flex flex-col gap-2">
+          <h2 className="text-3xl font-display font-bold text-forest">
+            Welcome To Admin {adminEmail ? adminEmail.split("@")[0]?.toUpperCase() : ""}
+          </h2>
+          <p className="text-muted-foreground">Here is what's happening across your platform today.</p>
+        </div>
+        
+        {/* Month Picker */}
+        <div className="flex items-center gap-2 bg-white px-4 py-2 rounded-lg shadow-sm border">
+          <label htmlFor="month-picker" className="text-sm font-medium text-muted-foreground whitespace-nowrap">
+            View Analytics For:
+          </label>
+          <input 
+            id="month-picker"
+            type="month" 
+            value={selectedMonth}
+            onChange={(e) => setSelectedMonth(e.target.value)}
+            className="text-sm outline-none border-none bg-transparent font-medium text-forest cursor-pointer"
+          />
+        </div>
       </div>
 
       {/* Metric Cards */}
@@ -151,7 +179,7 @@ export function AnalyticsDashboard({ data, enquiries, adminEmail }: { data: Anal
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <TrendingUp className="size-5 text-forest" />
-              Website Usage (Page Views & Visitors)
+              Website Usage (Page Views & Visitors) - {format(new Date(selectedMonth + "-01T00:00:00"), 'MMMM yyyy')}
             </CardTitle>
           </CardHeader>
           <CardContent className="px-2 pb-4 sm:px-6">
@@ -194,7 +222,7 @@ export function AnalyticsDashboard({ data, enquiries, adminEmail }: { data: Anal
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <TrendingUp className="size-5 text-forest" />
-              Platform Growth (Last 7 Days)
+              Platform Growth (Enquiries) - {format(new Date(selectedMonth + "-01T00:00:00"), 'MMMM yyyy')}
             </CardTitle>
           </CardHeader>
           <CardContent className="px-2 pb-4 sm:px-6">
