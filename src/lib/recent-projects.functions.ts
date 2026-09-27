@@ -40,7 +40,7 @@ export const listProjects = createServerFn({ method: "GET" }).handler(async () =
     .order("sort_order", { ascending: true })
     .order("created_at", { ascending: false });
   if (error) return [] as RecentProjectRow[];
-  return (data ?? []) as RecentProjectRow[];
+  return (data ?? []) as unknown as RecentProjectRow[];
 });
 
 /** Admin: every project, including hidden ones. */
@@ -53,7 +53,7 @@ export const listAllProjects = createServerFn({ method: "GET" })
       .order("sort_order", { ascending: true })
       .order("created_at", { ascending: false });
     if (error) throw error;
-    return (data ?? []) as RecentProjectRow[];
+    return (data ?? []) as unknown as RecentProjectRow[];
   });
 
 export type ProjectInput = {
