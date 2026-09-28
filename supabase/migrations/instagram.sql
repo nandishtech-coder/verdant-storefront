@@ -355,3 +355,43 @@ CREATE TABLE IF NOT EXISTS public.page_views (
 
 -- Secure the table (our server functions bypass this to write the logs safely)
 ALTER TABLE public.page_views ENABLE ROW LEVEL SECURITY;
+
+
+-- Create Guidelines table
+CREATE TABLE IF NOT EXISTS public.guidelines (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    slug TEXT NOT NULL UNIQUE,
+    title TEXT NOT NULL,
+    content TEXT NOT NULL,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
+-- Enable Row Level Security (RLS)
+ALTER TABLE public.guidelines ENABLE ROW LEVEL SECURITY;
+
+-- Allow public read access to guidelines
+CREATE POLICY "Anyone can read guidelines" ON public.guidelines
+    FOR SELECT USING (true);
+
+-- Allow admins to insert guidelines
+CREATE POLICY "Admins can insert guidelines" ON public.guidelines
+    FOR INSERT WITH CHECK (public.has_role(auth.uid(), 'admin'));
+
+-- Allow admins to update guidelines
+CREATE POLICY "Admins can update guidelines" ON public.guidelines
+    FOR UPDATE USING (public.has_role(auth.uid(), 'admin'));
+
+-- Allow admins to delete guidelines
+CREATE POLICY "Admins can delete guidelines" ON public.guidelines
+    FOR DELETE USING (public.has_role(auth.uid(), 'admin'));
+
+-- Grant access to standard roles
+GRANT ALL ON public.guidelines TO service_role, anon, authenticated;
+
+-- Insert initial pages
+INSERT INTO public.guidelines (slug, title, content) VALUES
+('privacy-policy', 'Privacy Policy', 'Your Privacy Policy content goes here...'),
+('terms-of-service', 'Terms of Service', 'Your Terms of Service content goes here...'),
+('refund-policy', 'Refund Policy', 'Your Refund Policy content goes here...')
+ON CONFLICT (slug) DO NOTHING;

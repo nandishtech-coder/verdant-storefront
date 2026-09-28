@@ -22,7 +22,7 @@ import { ProductsManager } from "@/components/admin/ProductsManager";
 import { ReelsManager } from "@/components/admin/ReelsManager";
 import { BlogsManager } from "@/components/admin/BlogsManager";
 import { UpdatesManager } from "@/components/admin/UpdatesManager";
-import { GreenGiftsManager } from "@/components/admin/GreenGiftsManager";
+import { GuidelinesManager } from "@/components/admin/GuidelinesManager";
 import { AnalyticsDashboard } from "@/components/admin/AnalyticsDashboard";
 import { MaintenanceManager } from "@/components/admin/MaintenanceManager";
 import { RecentProjectsManager } from "@/components/admin/RecentProjectsManager";
@@ -176,8 +176,8 @@ function AdminDashboard() {
                   <Button variant={adminTab === "updates" ? "secondary" : "ghost"} className="justify-start text-forest" onClick={() => { setAdminTab("updates"); setIsMobileMenuOpen(false); }}>
                     <Inbox className="mr-2 size-4" /> Updates
                   </Button>
-                  <Button variant={adminTab === "green-gifts" ? "secondary" : "ghost"} className="justify-start text-forest" onClick={() => { setAdminTab("green-gifts"); setIsMobileMenuOpen(false); }}>
-                    <Gift className="mr-2 size-4" /> Green Gifts Updates
+                  <Button variant={adminTab === "guidelines" ? "secondary" : "ghost"} className="justify-start text-forest" onClick={() => { setAdminTab("guidelines"); setIsMobileMenuOpen(false); }}>
+                    <FileText className="mr-2 size-4" /> Guidelines
                   </Button>
                   <Button variant={adminTab === "enquiries" ? "secondary" : "ghost"} className="justify-start text-forest" onClick={() => { setAdminTab("enquiries"); setIsMobileMenuOpen(false); }}>
                     <Inbox className="mr-2 size-4" /> Enquiries
@@ -246,8 +246,8 @@ function AdminDashboard() {
             <TabsTrigger value="updates">
               <Inbox className="size-4" /> Updates
             </TabsTrigger>
-            <TabsTrigger value="green-gifts">
-              <Gift className="size-4 mr-2" /> Green Gifts
+            <TabsTrigger value="guidelines">
+              <FileText className="size-4 mr-2" /> Guidelines
             </TabsTrigger>
             <TabsTrigger value="enquiries">
               <Inbox className="size-4" /> Enquiries
@@ -275,10 +275,6 @@ function AdminDashboard() {
 
           <TabsContent value="recent-projects" className="mt-8">
             <RecentProjectsManager />
-          </TabsContent>
-
-          <TabsContent value="green-gifts" className="mt-8">
-            <GreenGiftsManager />
           </TabsContent>
 
           <TabsContent value="enquiries" className="mt-8">
@@ -406,6 +402,12 @@ function AdminDashboard() {
           <TabsContent value="updates">
             <div className="mt-8">
               <UpdatesManager />
+            </div>
+          </TabsContent>
+
+          <TabsContent value="guidelines">
+            <div className="mt-8">
+              <GuidelinesManager />
             </div>
           </TabsContent>
           

@@ -1074,7 +1074,7 @@ const WhatsappIcon = ({ className }: { className?: string }) => (
 export function Footer() {
   return (
     <footer className="mt-12 md:mt-20">
-      <div className="w-full overflow-hidden leading-[0] text-forest">
+      <div className="-mb-1 w-full overflow-hidden leading-[0] text-forest">
         <svg
           viewBox="0 0 1200 120"
           preserveAspectRatio="none"
@@ -1091,8 +1091,8 @@ export function Footer() {
           {/* Column 1: Brand & Info */}
           <div className="flex flex-col lg:col-span-2 lg:pr-8">
             <div className="flex items-center gap-3">
-              <span className="grid size-12 place-items-center rounded-xl bg-cream/10 text-cream">
-                <Leaf className="size-6" />
+              <span className="grid size-12 shrink-0 place-items-center overflow-hidden rounded-xl bg-card">
+                <img src="/logo.png" alt="GreenRoots" className="size-full scale-[1.02] object-cover" />
               </span>
               <div className="flex flex-col">
                 <span className="font-display text-2xl font-semibold leading-none">GreenRoots</span>
@@ -1156,7 +1156,6 @@ export function Footer() {
                 { name: "Seeds", id: "seeds" },
                 { name: "Plant Care", id: "plant-care" },
                 { name: "Garden Tools", id: "garden-tools" },
-                { name: "Green Gifts", id: "green-gifts" },
               ].map((link) => (
                 <li key={link.name}>
                   <Link
@@ -1216,7 +1215,7 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mx-auto mt-16 w-full border-t border-cream/10 pt-8 flex flex-col gap-4 text-xs text-cream/60 md:flex-row md:items-end md:justify-between">
+        <div className="mx-auto mt-6 w-full flex flex-col gap-4 text-xs text-cream/60 md:flex-row md:items-end md:justify-between">
           <div className="flex flex-col gap-2">
             <p>
               © 2026 <span className="text-primary font-medium">GreenRoots</span>. All rights

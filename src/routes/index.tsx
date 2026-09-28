@@ -6,7 +6,6 @@ import { Reveal } from "@/components/store/Reveal";
 import { CartDrawer } from "@/components/store/CartDrawer";
 import { Header } from "@/components/store/Header";
 import {
-  GiftsGrowWithTime,
   FanFavorites,
   LatestBlogs,
 } from "@/components/store/FeatureSections";
@@ -15,7 +14,6 @@ import {
   OurServices,
   ProductRow,
   Footer,
-  GiftingBanner,
   Hero,
   MainServices,
   TrustRibbon,
@@ -107,16 +105,10 @@ function Index() {
                 <HorticultureWorkforce />
               </Reveal>
               <Reveal variant="left">
-                <GiftingBanner />
-              </Reveal>
-              <Reveal variant="left">
                 <InstagramReels />
               </Reveal>
               <Reveal variant="left">
                 <OurServices />
-              </Reveal>
-              <Reveal variant="left">
-                <GiftsGrowWithTime />
               </Reveal>
               <Reveal variant="left">
                 <FanFavorites />

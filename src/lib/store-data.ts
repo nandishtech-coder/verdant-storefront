@@ -350,11 +350,6 @@ export const NAV = [
     items: ["Hand Tools"],
     hrefs: ["/category/hand-tools"],
   },
-  {
-    label: "Green Gifts",
-    items: ["Gift Hampers", "Corporate Gifting"],
-    hrefs: ["/category/gift-hampers", "/category/corporate-gifting"],
-  },
 ];
 
 export const QUICK_CATEGORIES = [
