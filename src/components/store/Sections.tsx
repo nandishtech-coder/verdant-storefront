@@ -1071,7 +1071,7 @@ const WhatsappIcon = ({ className }: { className?: string }) => (
   </svg>
 );
 
-export function Footer() {
+export function Footer({ isAdmin }: { isAdmin?: boolean } = {}) {
   return (
     <footer className="mt-12 md:mt-20">
       <div className="-mb-1 w-full overflow-hidden leading-[0] text-forest">
@@ -1126,7 +1126,9 @@ export function Footer() {
 
           </div>
 
-          {/* Column 2: Quick Links */}
+          {!isAdmin && (
+            <>
+              {/* Column 2: Quick Links */}
           <div>
             <h3 className="font-display text-lg font-semibold">Quick Links</h3>
             <ul className="mt-6 space-y-3.5 text-sm text-cream/80">
@@ -1213,6 +1215,8 @@ export function Footer() {
 
             </ul>
           </div>
+            </>
+          )}
         </div>
 
         <div className="mx-auto mt-6 w-full flex flex-col gap-4 text-xs text-cream/60 md:flex-row md:items-end md:justify-between">

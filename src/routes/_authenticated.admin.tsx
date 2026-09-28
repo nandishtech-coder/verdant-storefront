@@ -23,6 +23,7 @@ import { ReelsManager } from "@/components/admin/ReelsManager";
 import { BlogsManager } from "@/components/admin/BlogsManager";
 import { UpdatesManager } from "@/components/admin/UpdatesManager";
 import { GuidelinesManager } from "@/components/admin/GuidelinesManager";
+import { Footer } from "@/components/store/Sections";
 import { AnalyticsDashboard } from "@/components/admin/AnalyticsDashboard";
 import { MaintenanceManager } from "@/components/admin/MaintenanceManager";
 import { RecentProjectsManager } from "@/components/admin/RecentProjectsManager";
@@ -418,6 +419,7 @@ function AdminDashboard() {
           </TabsContent>
         </Tabs>
       </div>
+      <Footer isAdmin />
     </main>
   );
 }
